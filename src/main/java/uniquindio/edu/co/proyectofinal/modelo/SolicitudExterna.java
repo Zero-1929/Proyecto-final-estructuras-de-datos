@@ -4,8 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Representa una solicitud de reserva recibida por el canal externo.
+ * Se procesa en orden de llegada.
+ */
 public class SolicitudExterna {
 
+    /**
+     * Atributos
+     */
     private final String idSolicitud;
     private final String nombreSolicitante;
     private final String documento;
@@ -19,6 +26,19 @@ public class SolicitudExterna {
     private EstadoSolicitud estado;
     private String motivoRechazo;
 
+    /**
+     * Crea una solicitud con la fecha de recepción actual.
+     *
+     * @param idSolicitud identificador de la solicitud
+     * @param nombreSolicitante nombre de quien solicita
+     * @param documento documento del solicitante
+     * @param telefono teléfono de contacto
+     * @param correo correo electrónico
+     * @param codigoApartamento código del apartamento solicitado
+     * @param fechaEntrada fecha de entrada
+     * @param fechaSalida fecha de salida
+     * @param numeroPersonas cantidad de personas
+     */
     public SolicitudExterna(String idSolicitud, String nombreSolicitante, String documento,
                             String telefono, String correo, String codigoApartamento,
                             LocalDate fechaEntrada, LocalDate fechaSalida, int numeroPersonas) {
@@ -26,6 +46,20 @@ public class SolicitudExterna {
                 fechaEntrada, fechaSalida, numeroPersonas, LocalDateTime.now());
     }
 
+    /**
+     * Crea una solicitud con todos sus datos.
+     *
+     * @param idSolicitud identificador de la solicitud
+     * @param nombreSolicitante nombre de quien solicita
+     * @param documento documento del solicitante
+     * @param telefono teléfono de contacto
+     * @param correo correo electrónico
+     * @param codigoApartamento código del apartamento solicitado
+     * @param fechaEntrada fecha de entrada
+     * @param fechaSalida fecha de salida
+     * @param numeroPersonas cantidad de personas
+     * @param fechaRecepcion fecha y hora de recepción
+     */
     public SolicitudExterna(String idSolicitud, String nombreSolicitante, String documento,
                             String telefono, String correo, String codigoApartamento,
                             LocalDate fechaEntrada, LocalDate fechaSalida, int numeroPersonas,
@@ -55,58 +89,126 @@ public class SolicitudExterna {
         this.estado = EstadoSolicitud.PENDIENTE;
     }
 
+    /**
+     * Obtiene el identificador de la solicitud.
+     *
+     * @return id de la solicitud
+     */
     public String getIdSolicitud() {
         return idSolicitud;
     }
 
+    /**
+     * Obtiene el nombre del solicitante.
+     *
+     * @return nombre del solicitante
+     */
     public String getNombreSolicitante() {
         return nombreSolicitante;
     }
 
+    /**
+     * Obtiene el documento del solicitante.
+     *
+     * @return documento
+     */
     public String getDocumento() {
         return documento;
     }
 
+    /**
+     * Obtiene el teléfono del solicitante.
+     *
+     * @return teléfono
+     */
     public String getTelefono() {
         return telefono;
     }
 
+    /**
+     * Obtiene el correo del solicitante.
+     *
+     * @return correo electrónico
+     */
     public String getCorreo() {
         return correo;
     }
 
+    /**
+     * Obtiene el código del apartamento solicitado.
+     *
+     * @return código del apartamento
+     */
     public String getCodigoApartamento() {
         return codigoApartamento;
     }
 
+    /**
+     * Obtiene la fecha de entrada.
+     *
+     * @return fecha de entrada
+     */
     public LocalDate getFechaEntrada() {
         return fechaEntrada;
     }
 
+    /**
+     * Obtiene la fecha de salida.
+     *
+     * @return fecha de salida
+     */
     public LocalDate getFechaSalida() {
         return fechaSalida;
     }
 
+    /**
+     * Obtiene la cantidad de personas.
+     *
+     * @return número de personas
+     */
     public int getNumeroPersonas() {
         return numeroPersonas;
     }
 
+    /**
+     * Obtiene la fecha y hora de recepción.
+     *
+     * @return fecha de recepción
+     */
     public LocalDateTime getFechaRecepcion() {
         return fechaRecepcion;
     }
 
+    /**
+     * Obtiene el estado de la solicitud.
+     *
+     * @return estado actual
+     */
     public EstadoSolicitud getEstado() {
         return estado;
     }
 
+    /**
+     * Obtiene el motivo de rechazo.
+     *
+     * @return motivo de rechazo o null si no fue rechazada
+     */
     public String getMotivoRechazo() {
         return motivoRechazo;
     }
 
+    /**
+     * Calcula la cantidad de noches solicitadas.
+     *
+     * @return número de noches
+     */
     public long noches() {
         return ChronoUnit.DAYS.between(fechaEntrada, fechaSalida);
     }
 
+    /**
+     * Marca la solicitud como procesada.
+     */
     public void marcarProcesada() {
         if (estado != EstadoSolicitud.PENDIENTE) {
             throw new IllegalStateException("Solo se puede procesar una solicitud pendiente");
@@ -115,6 +217,11 @@ public class SolicitudExterna {
         this.motivoRechazo = null;
     }
 
+    /**
+     * Marca la solicitud como rechazada.
+     *
+     * @param motivo motivo del rechazo
+     */
     public void marcarRechazada(String motivo) {
         if (estado != EstadoSolicitud.PENDIENTE) {
             throw new IllegalStateException("Solo se puede rechazar una solicitud pendiente");
@@ -123,6 +230,12 @@ public class SolicitudExterna {
         this.estado = EstadoSolicitud.RECHAZADA;
     }
 
+    /**
+     * Compara dos solicitudes por identificador.
+     *
+     * @param obj objeto a comparar
+     * @return true si tienen el mismo identificador
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -134,11 +247,23 @@ public class SolicitudExterna {
         return idSolicitud.equals(otra.idSolicitud);
     }
 
+    /**
+     * Genera el código hash a partir del identificador.
+     *
+     * @return código hash del identificador
+     */
     @Override
     public int hashCode() {
         return idSolicitud.hashCode();
     }
 
+    /**
+     * Valida que un texto no sea nulo ni vacío.
+     *
+     * @param valor texto a validar
+     * @param campo nombre del campo para el mensaje
+     * @return texto sin espacios externos
+     */
     private static String validarTexto(String valor, String campo) {
         if (valor == null || valor.isBlank()) {
             throw new IllegalArgumentException("El campo " + campo + " no puede ser nulo o vacío");
