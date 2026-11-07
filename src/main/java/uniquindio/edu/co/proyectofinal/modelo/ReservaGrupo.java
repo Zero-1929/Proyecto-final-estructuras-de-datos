@@ -11,7 +11,7 @@ import java.util.List;
  * Permite administrar las reservas que pertenecen
  * al grupo y consultar su informacion.
  *
- * @author Integrante 3
+ *
  */
 public class ReservaGrupo {
 

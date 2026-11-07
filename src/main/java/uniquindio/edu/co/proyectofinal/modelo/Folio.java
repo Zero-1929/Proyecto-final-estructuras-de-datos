@@ -2,31 +2,40 @@
 package uniquindio.edu.co.proyectofinal.modelo;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Representa el folio o cuenta economica de una reserva
- * dentro del Sistema de Gestion de Alojamiento (SGA).
+ * Representa el folio o cuenta económica de una reserva
+ * dentro del Sistema de Gestión de Alojamiento (SGA).
  *
- * Permite registrar los movimientos economicos,
- * consultar los cargos, los pagos y calcular
- * el saldo pendiente de la cuenta.
+ * Permite registrar movimientos económicos, consultar
+ * cargos, pagos y saldos, y deshacer la última operación
+ * mediante el registro de un movimiento contrario.
  *
- * @author Integrante 3
+ * El historial de operaciones utiliza temporalmente
+ * ArrayList para simular una pila. Posteriormente se
+ * reemplazará por la estructura Pila<T> desarrollada
+ * por el equipo.
+ *
+ *
  */
 public class Folio {
 
-    // Identificador unico del folio.
+    // Identificador único del folio.
     private final int id;
 
-    // Lista de movimientos economicos registrados.
+    // Lista de todos los movimientos económicos del folio.
     private final List<Movimiento> movimientos;
+
+    // Historial temporal que simula una pila de operaciones.
+    private final List<Movimiento> historialOperaciones;
 
     /**
      * Constructor de la clase Folio.
      *
-     * @param id identificador unico del folio.
+     * @param id identificador único del folio.
      */
     public Folio(int id) {
 
@@ -38,6 +47,7 @@ public class Folio {
 
         this.id = id;
         this.movimientos = new ArrayList<>();
+        this.historialOperaciones = new ArrayList<>();
     }
 
     /**
@@ -50,18 +60,25 @@ public class Folio {
     }
 
     /**
-     * Obtiene los movimientos registrados en el folio.
+     * Obtiene una copia de los movimientos registrados.
      *
-     * @return lista de movimientos economicos.
+     * Se devuelve una copia para evitar modificaciones
+     * directas sobre la lista interna.
+     *
+     * @return lista de movimientos económicos.
      */
     public List<Movimiento> getMovimientos() {
         return new ArrayList<>(movimientos);
     }
 
     /**
-     * Registra un nuevo movimiento en el folio.
+     * Registra un nuevo movimiento económico en el folio.
      *
-     * @param movimiento movimiento economico que se desea registrar.
+     * El movimiento se agrega tanto al registro económico
+     * como al historial de operaciones para permitir
+     * deshacerlo posteriormente.
+     *
+     * @param movimiento movimiento económico que se desea registrar.
      */
     public void agregarMovimiento(Movimiento movimiento) {
 
@@ -72,13 +89,14 @@ public class Folio {
         }
 
         movimientos.add(movimiento);
+        historialOperaciones.add(movimiento);
     }
 
     /**
      * Calcula el total de los cargos registrados.
      *
-     * Incluye los cargos por alojamiento,
-     * servicios adicionales y ajustes de cargo.
+     * Incluye cargos por alojamiento, servicios adicionales
+     * y ajustes que aumentan el saldo.
      *
      * @return valor total de los cargos.
      */
@@ -136,14 +154,13 @@ public class Folio {
      * @return saldo de la cuenta.
      */
     public BigDecimal calcularSaldo() {
-
         return calcularTotalCargos().subtract(calcularTotalPagos());
     }
 
     /**
      * Comprueba si el folio no tiene movimientos registrados.
      *
-     * @return true si no tiene movimientos, false en caso contrario.
+     * @return true si no tiene movimientos.
      */
     public boolean estaVacio() {
         return movimientos.isEmpty();
@@ -152,7 +169,7 @@ public class Folio {
     /**
      * Comprueba si el folio se encuentra completamente saldado.
      *
-     * @return true si el saldo es cero, false en caso contrario.
+     * @return true si el saldo es cero.
      */
     public boolean estaSaldado() {
         return calcularSaldo().compareTo(BigDecimal.ZERO) == 0;
@@ -161,7 +178,7 @@ public class Folio {
     /**
      * Comprueba si el folio tiene un saldo pendiente por pagar.
      *
-     * @return true si el saldo es positivo, false en caso contrario.
+     * @return true si el saldo es positivo.
      */
     public boolean tieneSaldoPendiente() {
         return calcularSaldo().compareTo(BigDecimal.ZERO) > 0;
@@ -170,7 +187,7 @@ public class Folio {
     /**
      * Comprueba si el folio tiene un saldo a favor.
      *
-     * @return true si el saldo es negativo, false en caso contrario.
+     * @return true si el saldo es negativo.
      */
     public boolean tieneSaldoAFavor() {
         return calcularSaldo().compareTo(BigDecimal.ZERO) < 0;
@@ -179,9 +196,106 @@ public class Folio {
     /**
      * Obtiene la cantidad de movimientos registrados.
      *
-     * @return numero de movimientos.
+     * @return número de movimientos.
      */
     public int cantidadMovimientos() {
         return movimientos.size();
+    }
+
+    /**
+     * Comprueba si existe alguna operación que pueda deshacerse.
+     *
+     * @return true si el historial contiene operaciones.
+     */
+    public boolean puedeDeshacer() {
+        return !historialOperaciones.isEmpty();
+    }
+
+    /**
+     * Deshace la última operación registrada en el historial.
+     *
+     * No elimina ni modifica el movimiento original.
+     * En su lugar, registra un movimiento contrario que
+     * compensa su efecto económico.
+     *
+     * El movimiento contrario no se agrega nuevamente
+     * al historial de operaciones, evitando ciclos
+     * de reversiones.
+     *
+     * @param nuevoId identificador del movimiento contrario.
+     */
+    public void deshacerUltimaOperacion(int nuevoId) {
+
+        if (nuevoId <= 0) {
+            throw new IllegalArgumentException(
+                    "El identificador debe ser mayor que cero."
+            );
+        }
+
+        if (historialOperaciones.isEmpty()) {
+            throw new IllegalStateException(
+                    "No existen operaciones para deshacer."
+            );
+        }
+
+        // Consulta la última operación registrada.
+        Movimiento original =
+                historialOperaciones.get(historialOperaciones.size() - 1);
+
+        // Crea el movimiento que revierte su efecto.
+        Movimiento contrario = crearMovimientoContrario(original, nuevoId);
+
+        // Retira la operación del historial, pero no del folio.
+        historialOperaciones.remove(historialOperaciones.size() - 1);
+
+        // Registra el movimiento contrario en el folio.
+        movimientos.add(contrario);
+    }
+
+    /**
+     * Crea un movimiento contrario al movimiento original.
+     *
+     * Los cargos se revierten mediante abonos y los pagos
+     * se revierten mediante cargos.
+     *
+     * @param original movimiento que se desea revertir.
+     * @param nuevoId identificador del movimiento contrario.
+     * @return nuevo movimiento que compensa el original.
+     */
+    private Movimiento crearMovimientoContrario(
+            Movimiento original, int nuevoId) {
+
+        TipoMovimiento tipoContrario;
+
+        switch (original.getTipo()) {
+
+            case PAGO:
+                tipoContrario = TipoMovimiento.AJUSTE_CARGO;
+                break;
+
+            case CARGO_ALOJAMIENTO:
+            case CARGO_ADICIONAL:
+            case AJUSTE_CARGO:
+                tipoContrario = TipoMovimiento.AJUSTE_ABONO;
+                break;
+
+            case AJUSTE_ABONO:
+                tipoContrario = TipoMovimiento.AJUSTE_CARGO;
+                break;
+
+            default:
+                throw new IllegalStateException(
+                        "No se puede revertir este tipo de movimiento."
+                );
+        }
+
+        return new Movimiento(
+                nuevoId,
+                "Reversión del movimiento " + original.getId()
+                        + ": " + original.getDescripcion(),
+                tipoContrario,
+                original.getMonto(),
+                LocalDateTime.now()
+        );
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * un cargo por alojamiento, un cargo adicional
  * o un ajuste que aumenta o disminuye el saldo.
  *
- * @author Integrante 3
+ *
  */
 public class Movimiento {
 
