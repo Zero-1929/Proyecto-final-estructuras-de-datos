@@ -1,12 +1,15 @@
 package uniquindio.edu.co.proyectofinal.estructuras;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Árbol binario de búsqueda genérico.
  * Los elementos repetidos se ubican en el subárbol derecho.
  *
  * @param <T> tipo de dato, debe ser comparable
  */
-public class ABB<T extends Comparable<? super T>> {
+public class ABB<T extends Comparable<? super T>> implements Iterable<T> {
 
     /**
      * Atributos
@@ -398,6 +401,50 @@ public class ABB<T extends Comparable<? super T>> {
         if (dato == null) {
             throw new IllegalArgumentException("El dato no puede ser nulo");
         }
+    }
+
+    /**
+     * Crea un iterador que recorre el árbol en inorden.
+     *
+     * @return iterador del árbol
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            private final Pila<NodoArbol<T>> pila = new Pila<>();
+            private NodoArbol<T> actual = raiz;
+
+            /**
+             * Comprueba si queda otro elemento.
+             *
+             * @return true si hay otro elemento
+             */
+            @Override
+            public boolean hasNext() {
+                return actual != null || !pila.estaVacia();
+            }
+
+            /**
+             * Obtiene el siguiente elemento en inorden.
+             *
+             * @return dato del siguiente nodo
+             */
+            @Override
+            public T next() {
+                while (actual != null) {
+                    pila.apilar(actual);
+                    actual = actual.getIzquierdo();
+                }
+                if (pila.estaVacia()) {
+                    throw new NoSuchElementException(
+                            "No existen más elementos en el árbol");
+                }
+                NodoArbol<T> nodo = pila.desapilar();
+                actual = nodo.getDerecho();
+                return nodo.getDato();
+            }
+        };
     }
 
     /**
