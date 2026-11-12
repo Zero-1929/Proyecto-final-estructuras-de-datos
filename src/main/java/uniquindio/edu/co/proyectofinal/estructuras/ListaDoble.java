@@ -1,12 +1,15 @@
 package uniquindio.edu.co.proyectofinal.estructuras;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Lista doblemente enlazada genérica.
  * Permite recorrer sus elementos en ambos sentidos.
  *
  * @param <T> tipo de dato almacenado
  */
-public class ListaDoble<T> {
+public class ListaDoble<T> implements Iterable<T> {
 
     /**
      * Atributos
@@ -313,6 +316,45 @@ public class ListaDoble<T> {
      */
     private boolean sonIguales(T primero, T segundo) {
         return primero == null ? segundo == null : primero.equals(segundo);
+    }
+
+    /**
+     * Crea un iterador que recorre la lista desde el inicio hasta el fin.
+     *
+     * @return iterador de la lista
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            private NodoDoble<T> actual = inicio;
+
+            /**
+             * Comprueba si queda otro elemento.
+             *
+             * @return true si hay otro elemento
+             */
+            @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            /**
+             * Obtiene el siguiente elemento.
+             *
+             * @return dato del siguiente nodo
+             */
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException(
+                            "No existen más elementos en la lista");
+                }
+                T dato = actual.getDato();
+                actual = actual.getSiguiente();
+                return dato;
+            }
+        };
     }
 
     /**

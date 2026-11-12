@@ -1,12 +1,15 @@
 package uniquindio.edu.co.proyectofinal.estructuras;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Pila genérica implementada con nodos enlazados.
  * Sigue el principio LIFO (último en entrar, primero en salir).
  *
  * @param <T> tipo de dato almacenado
  */
-public class Pila<T> {
+public class Pila<T> implements Iterable<T> {
 
     /**
      * Atributos
@@ -113,6 +116,45 @@ public class Pila<T> {
      */
     private boolean sonIguales(T primero, T segundo) {
         return primero == null ? segundo == null : primero.equals(segundo);
+    }
+
+    /**
+     * Crea un iterador que recorre la pila desde la cima hasta el fondo.
+     *
+     * @return iterador de la pila
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            private NodoPila<T> actual = cima;
+
+            /**
+             * Comprueba si queda otro elemento.
+             *
+             * @return true si hay otro elemento
+             */
+            @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            /**
+             * Obtiene el siguiente elemento.
+             *
+             * @return dato del siguiente nodo
+             */
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException(
+                            "No existen más elementos en la pila");
+                }
+                T dato = actual.getDato();
+                actual = actual.getSiguiente();
+                return dato;
+            }
+        };
     }
 
     /**
