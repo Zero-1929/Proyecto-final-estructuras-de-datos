@@ -2,6 +2,7 @@
 package uniquindio.edu.co.proyectofinal.modelo;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 /**
@@ -38,6 +39,9 @@ public class Reserva {
 
     // Fecha y hora en que se creó la reserva.
     private final LocalDateTime fechaCreacion;
+
+    // Hora estimada de llegada del huésped.
+    private LocalTime horaLlegadaEstimada;
 
     // Folio donde se registran los cargos y pagos.
     private final Folio folio;
@@ -78,7 +82,7 @@ public class Reserva {
     public Reserva(String codigo, Huesped huesped,
                    Apartamento apartamento, Estancia estancia,
                    CanalReserva canalReserva, Folio folio,
-                   LocalDateTime fechaCreacion) {
+                   LocalDateTime fechaCreacion,LocalTime horaLlegadaEstimada) {
 
         if (codigo == null || codigo.isBlank()) {
             throw new IllegalArgumentException(
@@ -129,6 +133,7 @@ public class Reserva {
         this.canalReserva = canalReserva;
         this.folio = folio;
         this.fechaCreacion = fechaCreacion;
+        this.horaLlegadaEstimada = horaLlegadaEstimada;
 
         // Toda reserva nueva inicia en estado pendiente.
         this.estado = EstadoReserva.PENDIENTE;
@@ -162,6 +167,10 @@ public class Reserva {
 
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
+    }
+
+    public LocalTime getHoraLlegadaEstimada() {
+        return horaLlegadaEstimada;
     }
 
     public Folio getFolio() {
@@ -236,6 +245,21 @@ public class Reserva {
         }
 
         estado = EstadoReserva.NO_PRESENTADO;
+    }
+
+    /**
+     * Actualiza la hora estimada de llegada del huésped.
+     *
+     * @param horaLlegadaEstimada hora prevista de llegada.
+     */
+    public void setHoraLlegadaEstimada(LocalTime horaLlegadaEstimada) {
+        if (horaLlegadaEstimada == null) {
+            throw new IllegalArgumentException(
+                    "La hora estimada de llegada no puede ser nula."
+            );
+        }
+
+        this.horaLlegadaEstimada = horaLlegadaEstimada;
     }
 
     // -------------------- CONSULTAS --------------------
@@ -343,6 +367,7 @@ public class Reserva {
                 + ", estado=" + estado
                 + ", canalReserva=" + canalReserva
                 + ", fechaCreacion=" + fechaCreacion
+                + ", horaLlegadaEstimada=" + horaLlegadaEstimada
                 + '}';
     }
 }
