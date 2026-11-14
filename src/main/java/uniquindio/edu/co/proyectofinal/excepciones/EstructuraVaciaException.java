@@ -1,4 +1,4 @@
-package uniquindio.edu.co.proyectofinal.Excepciones;
+package uniquindio.edu.co.proyectofinal.excepciones;
 
 /**
  * Excepción personalizada que representa un intento de realizar

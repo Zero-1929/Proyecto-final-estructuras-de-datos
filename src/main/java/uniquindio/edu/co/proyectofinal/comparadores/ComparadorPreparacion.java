@@ -1,4 +1,4 @@
-package uniquindio.edu.co.proyectofinal.Comparadores;
+package uniquindio.edu.co.proyectofinal.comparadores;
 
 
 package uniquindio.edu.co.proyectofinal.comparadores;
