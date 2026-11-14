@@ -1,40 +1,28 @@
-
 package uniquindio.edu.co.proyectofinal.modelo;
 
-import java.util.ArrayList;
-import java.util.List;
+import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
 
 /**
  * Representa un conjunto de reservas individuales
  * asociadas a un mismo grupo.
  *
- * Permite administrar las reservas que pertenecen
- * al grupo y consultar su informacion.
- *
- *
+ * Utiliza ListaDoble para almacenar las reservas
+ * sin depender de colecciones de Java.
  */
 public class ReservaGrupo {
 
-    // Codigo unico que identifica el grupo.
     private final String codigoGrupo;
-
-    // Huesped responsable del grupo.
     private final Huesped responsable;
-
-    // Reservas individuales que pertenecen al grupo.
-    private final List<Reserva> reservas;
+    private final ListaDoble<Reserva> reservas;
 
     /**
-     * Constructor de la clase ReservaGrupo.
-     *
-     * @param codigoGrupo codigo identificador del grupo.
-     * @param responsable huesped responsable del grupo.
+     * Constructor de la clase.
      */
     public ReservaGrupo(String codigoGrupo, Huesped responsable) {
 
         if (codigoGrupo == null || codigoGrupo.isBlank()) {
             throw new IllegalArgumentException(
-                    "El codigo del grupo no puede estar vacio."
+                    "El código del grupo no puede estar vacío."
             );
         }
 
@@ -46,46 +34,33 @@ public class ReservaGrupo {
 
         this.codigoGrupo = codigoGrupo.trim();
         this.responsable = responsable;
-        this.reservas = new ArrayList<>();
+        this.reservas = new ListaDoble<>();
     }
 
-    /**
-     * Obtiene el codigo identificador del grupo.
-     *
-     * @return codigo del grupo.
-     */
     public String getCodigoGrupo() {
         return codigoGrupo;
     }
 
-    /**
-     * Obtiene el huesped responsable del grupo.
-     *
-     * @return huesped responsable.
-     */
     public Huesped getResponsable() {
         return responsable;
     }
 
     /**
-     * Obtiene una copia de las reservas del grupo.
-     *
-     * Se devuelve una copia para evitar que otras clases
-     * modifiquen directamente la lista interna.
-     *
-     * @return lista de reservas del grupo.
+     * Devuelve una copia de las reservas del grupo.
      */
-    public List<Reserva> getReservas() {
-        return new ArrayList<>(reservas);
+    public ListaDoble<Reserva> getReservas() {
+
+        ListaDoble<Reserva> copia = new ListaDoble<>();
+
+        for (Reserva reserva : reservas) {
+            copia.agregarFinal(reserva);
+        }
+
+        return copia;
     }
 
     /**
      * Agrega una reserva al grupo.
-     *
-     * No permite agregar reservas nulas ni reservas
-     * que ya se encuentren registradas en el grupo.
-     *
-     * @param reserva reserva que se desea agregar.
      */
     public void agregarReserva(Reserva reserva) {
 
@@ -95,45 +70,43 @@ public class ReservaGrupo {
             );
         }
 
-        if (reservas.contains(reserva)) {
+        if (reservas.contiene(reserva)) {
             throw new IllegalArgumentException(
                     "La reserva ya pertenece a este grupo."
             );
         }
 
-        reservas.add(reserva);
+        reservas.agregarFinal(reserva);
     }
 
     /**
-     * Elimina una reserva del grupo utilizando su codigo.
-     *
-     * @param codigoReserva codigo de la reserva que se desea eliminar.
-     * @return true si la reserva fue eliminada.
+     * Elimina una reserva mediante su código.
      */
     public boolean eliminarReserva(String codigoReserva) {
 
         if (codigoReserva == null || codigoReserva.isBlank()) {
             throw new IllegalArgumentException(
-                    "El codigo de la reserva no puede estar vacio."
+                    "El código de la reserva no puede estar vacío."
             );
         }
 
-        return reservas.removeIf(
-                reserva -> reserva.getCodigo().equals(codigoReserva)
-        );
+        Reserva reserva = buscarReserva(codigoReserva);
+
+        if (reserva == null) {
+            return false;
+        }
+
+        return reservas.eliminar(reserva);
     }
 
     /**
-     * Busca una reserva dentro del grupo por su codigo.
-     *
-     * @param codigoReserva codigo de la reserva que se desea buscar.
-     * @return la reserva encontrada o null si no existe.
+     * Busca una reserva mediante su código.
      */
     public Reserva buscarReserva(String codigoReserva) {
 
         if (codigoReserva == null || codigoReserva.isBlank()) {
             throw new IllegalArgumentException(
-                    "El codigo de la reserva no puede estar vacio."
+                    "El código de la reserva no puede estar vacío."
             );
         }
 
@@ -147,30 +120,14 @@ public class ReservaGrupo {
         return null;
     }
 
-    /**
-     * Consulta la cantidad de reservas que tiene el grupo.
-     *
-     * @return cantidad de reservas.
-     */
     public int cantidadReservas() {
-        return reservas.size();
+        return reservas.tamano();
     }
 
-    /**
-     * Comprueba si el grupo tiene reservas registradas.
-     *
-     * @return true si no hay reservas registradas.
-     */
     public boolean estaVacio() {
-        return reservas.isEmpty();
+        return reservas.estaVacia();
     }
 
-    /**
-     * Compara dos grupos por su codigo identificador.
-     *
-     * @param obj objeto que se desea comparar.
-     * @return true si ambos grupos tienen el mismo codigo.
-     */
     @Override
     public boolean equals(Object obj) {
 
@@ -185,26 +142,16 @@ public class ReservaGrupo {
         return codigoGrupo.equals(otra.codigoGrupo);
     }
 
-    /**
-     * Genera el codigo hash del grupo.
-     *
-     * @return codigo hash del grupo.
-     */
     @Override
     public int hashCode() {
         return codigoGrupo.hashCode();
     }
 
-    /**
-     * Representacion textual del grupo.
-     *
-     * @return informacion principal del grupo.
-     */
     @Override
     public String toString() {
 
         return "Grupo: " + codigoGrupo
                 + " | Responsable: " + responsable.getNombre()
-                + " | Cantidad de reservas: " + reservas.size();
+                + " | Cantidad de reservas: " + reservas.tamano();
     }
 }
