@@ -2,7 +2,7 @@ package uniquindio.edu.co.proyectofinal.modelo;
 
 import java.math.BigDecimal;
 
-public class Apartamento {
+public class Apartamento implements Comparable<Apartamento> {
 
     private String codigo;
     private String nombre;
@@ -24,7 +24,7 @@ public class Apartamento {
      *
      * Las tarifas pueden ser null mientras todavía no se hayan configurado.
      */
-    public Apartamento(
+    public Apartamento (
             String codigo,
             String nombre,
             String bloque,
@@ -325,6 +325,29 @@ public class Apartamento {
     public boolean tieneCapacidadPara(int cantidadPersonas) {
         return cantidadPersonas > 0 && cantidadPersonas <= capacidad;
     }
+
+
+    /**
+     * Compara apartamentos por su código único.
+     *
+     * Este es el orden natural requerido para almacenar
+     * apartamentos en el árbol binario de búsqueda.
+     *
+     * @param otro apartamento con el que se compara.
+     * @return resultado de la comparación de códigos.
+     */
+    @Override
+    public int compareTo(Apartamento otro) {
+
+        if (otro == null) {
+            throw new IllegalArgumentException(
+                    "No se puede comparar con un apartamento nulo."
+            );
+        }
+
+        return this.codigo.compareTo(otro.codigo);
+    }
+
 
     @Override
     public String toString() {
