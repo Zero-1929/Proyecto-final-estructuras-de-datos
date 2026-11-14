@@ -1,8 +1,5 @@
 package uniquindio.edu.co.proyectofinal.comparadores;
 
-
-package uniquindio.edu.co.proyectofinal.comparadores;
-
 import uniquindio.edu.co.proyectofinal.modelo.Reserva;
 
 import java.time.LocalDate;

@@ -48,23 +48,26 @@ public class Reserva {
 
     /**
      * Constructor principal de la reserva.
-     *
-     * La fecha de creación se establece automáticamente
-     * con la fecha y hora actuales.
-     *
-     * @param codigo código único de la reserva.
-     * @param huesped huésped responsable.
-     * @param apartamento apartamento asignado.
-     * @param estancia periodo de alojamiento.
-     * @param canalReserva canal por el que se realizó la reserva.
-     * @param folio folio asociado a la reserva.
+     * La fecha de creación se establece automáticamente.
      */
     public Reserva(String codigo, Huesped huesped,
                    Apartamento apartamento, Estancia estancia,
                    CanalReserva canalReserva, Folio folio) {
 
         this(codigo, huesped, apartamento, estancia,
-                canalReserva, folio, LocalDateTime.now());
+                canalReserva, folio, LocalDateTime.now(), null);
+    }
+
+    /**
+     * Constructor que permite establecer la fecha de creación.
+     */
+    public Reserva(String codigo, Huesped huesped,
+                   Apartamento apartamento, Estancia estancia,
+                   CanalReserva canalReserva, Folio folio,
+                   LocalDateTime fechaCreacion) {
+
+        this(codigo, huesped, apartamento, estancia,
+                canalReserva, folio, fechaCreacion, null);
     }
 
     /**
