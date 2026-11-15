@@ -1,6 +1,10 @@
 package uniquindio.edu.co.proyectofinal.servicios;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import uniquindio.edu.co.proyectofinal.modelo.Reserva;
+import uniquindio.edu.co.proyectofinal.modelo.EstadoReserva;
 
 import uniquindio.edu.co.proyectofinal.comparadores.ComparadorDormitorios;
 import uniquindio.edu.co.proyectofinal.estructuras.ColaPrioridad;
@@ -32,6 +36,48 @@ public class ServicioPreparacion {
      * Contador usado para conservar el orden de llegada.
      */
     private long siguienteOrden;
+    private ListaDoble<Reserva> reservas = new ListaDoble<>();
+
+    public void configurarReservas(ListaDoble<Reserva> reservas) {
+        if (reservas == null) throw new IllegalArgumentException("Reservas requeridas");
+        this.reservas = reservas;
+        reordenar();
+    }
+
+    private LocalTime llegadaHoy(Apartamento apartamento) {
+        LocalTime masTemprana = null;
+        for (Reserva reserva : reservas) {
+            EstadoReserva estado = reserva.getEstado();
+            if (reserva.getApartamento().getCodigo().equalsIgnoreCase(apartamento.getCodigo())
+                    && reserva.getEstancia().getFechaEntrada().equals(LocalDate.now())
+                    && (estado == EstadoReserva.PENDIENTE || estado == EstadoReserva.CONFIRMADA)) {
+                LocalTime hora = reserva.getHoraLlegadaEstimada();
+                if (hora == null) hora = LocalTime.MAX;
+                if (masTemprana == null || hora.isBefore(masTemprana)) masTemprana = hora;
+            }
+        }
+        return masTemprana;
+    }
+
+    private int compararTareas(TareaPreparacion primera, TareaPreparacion segunda) {
+        LocalTime h1 = llegadaHoy(primera.getApartamento());
+        LocalTime h2 = llegadaHoy(segunda.getApartamento());
+        if ((h1 != null) != (h2 != null)) return h1 != null ? -1 : 1;
+        if (h1 != null) {
+            int hora = h1.compareTo(h2);
+            if (hora != 0) return hora;
+        }
+        int orden = Long.compare(primera.getOrden(), segunda.getOrden());
+        return orden != 0 ? orden : primera.getApartamento().getCodigo()
+                .compareTo(segunda.getApartamento().getCodigo());
+    }
+
+    public void reordenar() {
+        ListaDoble<TareaPreparacion> tareas = new ListaDoble<>();
+        while (!colaPreparacion.estaVacia()) tareas.agregarFinal(colaPreparacion.desencolar());
+        for (TareaPreparacion tarea : tareas) colaPreparacion.encolar(tarea);
+    }
+
 
     /**
      * Crea el servicio sin tareas pendientes.
@@ -40,31 +86,7 @@ public class ServicioPreparacion {
 
         this.siguienteOrden = 1;
 
-        this.colaPreparacion = new ColaPrioridad<>(
-                (primera, segunda) -> {
-
-                    int comparacion = Integer.compare(
-                            segunda.getPrioridad(),
-                            primera.getPrioridad()
-                    );
-
-                    if (comparacion == 0) {
-                        comparacion = COMPARADOR_DORMITORIOS.compare(
-                                primera.getApartamento(),
-                                segunda.getApartamento()
-                        );
-                    }
-
-                    if (comparacion == 0) {
-                        comparacion = Long.compare(
-                                primera.getOrden(),
-                                segunda.getOrden()
-                        );
-                    }
-
-                    return comparacion;
-                }
-        );
+        this.colaPreparacion = new ColaPrioridad<>(this::compararTareas);
     }
 
     /**
@@ -198,6 +220,7 @@ public class ServicioPreparacion {
             );
         }
 
+        reordenar();
         TareaPreparacion tarea = colaPreparacion.desencolar();
         tarea.getApartamento().setEstado(EstadoApartamento.EN_PREPARACION);
 
@@ -284,6 +307,7 @@ public class ServicioPreparacion {
             return null;
         }
 
+        reordenar();
         return colaPreparacion.frente();
     }
 
@@ -312,6 +336,7 @@ public class ServicioPreparacion {
      */
     public ListaDoble<TareaPreparacion> listarPendientes() {
 
+        reordenar();
         ListaDoble<TareaPreparacion> ordenadas = new ListaDoble<>();
         ListaDoble<TareaPreparacion> temporal = new ListaDoble<>();
 
