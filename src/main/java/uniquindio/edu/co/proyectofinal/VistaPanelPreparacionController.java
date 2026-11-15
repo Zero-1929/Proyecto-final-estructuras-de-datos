@@ -1,6 +1,10 @@
 package uniquindio.edu.co.proyectofinal;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,6 +68,12 @@ public class VistaPanelPreparacionController {
     private ServicioRutas<String> rutas;
     private final Map<String,String> observacionesSesion = new HashMap<>();
     private boolean cargando;
+    @FXML private Button btnEjecutarRutaPreparacion;
+    private final List<String> paradasCalculadas = new ArrayList<>();
+    private boolean simulando;
+    private PauseTransition pausaSimulacion;
+    private int indiceSimulacion;
+
 
     private static void columna(TableColumn<Fila,String> c, Function<Fila,String> f) {
         c.setCellValueFactory(x->new ReadOnlyStringWrapper(f.apply(x.getValue())));
@@ -94,6 +104,8 @@ public class VistaPanelPreparacionController {
         btnIniciarPreparacion.setOnAction(e->iniciar());
         btnFinalizarPreparacion.setOnAction(e->finalizar());
         btnCalcularRutaPreparacion.setOnAction(e->calcularRuta());
+        btnEjecutarRutaPreparacion.setOnAction(e->ejecutarRuta());
+        btnEjecutarRutaPreparacion.setDisable(true);
         txtObservacionesPreparacion.focusedProperty().addListener((o,a,focused)->{
             if(!focused)guardarObservacionLocal();
         });
@@ -151,6 +163,27 @@ public class VistaPanelPreparacionController {
     private void actualizar() {
         if(sistema==null)return;
         ServicioPreparacion sp=sistema.getServicioPreparacion();
+        // Recuperar tareas faltantes cuando un check-out solo cambio el estado.
+        // Usar el servicio real mantiene la cola, su prioridad y evita duplicados.
+        try {
+            Set<String> enCola = new HashSet<>();
+            for (TareaPreparacion tarea : sp.listarPendientes()) {
+                enCola.add(tarea.getApartamento().getCodigo().toUpperCase(Locale.ROOT));
+            }
+            boolean recuperadas = false;
+            for (Apartamento apartamento : sistema.getServicioApartamento().listarApartamentos()) {
+                if (apartamento.getEstado() == EstadoApartamento.PENDIENTE_PREPARACION
+                        && !enCola.contains(apartamento.getCodigo().toUpperCase(Locale.ROOT))) {
+                    sp.solicitarPreparacion(apartamento);
+                    enCola.add(apartamento.getCodigo().toUpperCase(Locale.ROOT));
+                    recuperadas = true;
+                }
+            }
+            if (recuperadas) sistema.guardar();
+        } catch (Exception ex) {
+            error(ex);
+            return;
+        }
         sp.reordenar();
         var filas=FXCollections.<Fila>observableArrayList();
         guardarObservacionLocal();
@@ -217,6 +250,7 @@ public class VistaPanelPreparacionController {
                 .showAndWait().orElse(ButtonType.NO)==ButtonType.YES;
     }
     private void iniciar() {
+        if(simulando)return;
         try {
             TareaPreparacion siguiente=sistema.getServicioPreparacion().verSiguientePreparacion();
             if(siguiente==null){mensaje("Cola vacía","No hay preparaciones pendientes.");return;}
@@ -229,6 +263,7 @@ public class VistaPanelPreparacionController {
         }catch(Exception ex){error(ex);}
     }
     private void finalizar() {
+        if(simulando)return;
         try {
             Fila fila=tablaColaPreparacion.getSelectionModel().getSelectedItem();
             if(fila==null)throw new IllegalArgumentException("Selecciona un apartamento en preparación.");
@@ -241,42 +276,126 @@ public class VistaPanelPreparacionController {
         }catch(Exception ex){error(ex);}
     }
     private void calcularRuta() {
+        if(simulando)return;
+        paradasCalculadas.clear();
+        btnEjecutarRutaPreparacion.setDisable(true);
         listaParadasRutaPreparacion.getItems().clear();
         panelVistaRutaPreparacion.getChildren().clear();
         lblDistanciaRutaPreparacion.setText("—");
         if(sistema==null)return;
+        var pendientes=sistema.getServicioPreparacion().listarPendientes();
+        if(pendientes.estaVacia()) {
+            lblMensajeRutaPreparacion.setText("No hay apartamentos pendientes de preparación.");
+            return;
+        }
         if(rutas==null||rutas.mapaVacio()) {
-            lblMensajeRutaPreparacion.setText("No hay un grafo de pasillos conectado. Se muestra el orden de prioridad, no una distancia inventada.");
-            for(TareaPreparacion tarea:sistema.getServicioPreparacion().listarPendientes())
-                listaParadasRutaPreparacion.getItems().add(tarea.getApartamento().getCodigo());
-            panelVistaRutaPreparacion.getChildren().add(new Label("Conecta el grafo real para calcular la ruta."));
+            lblMensajeRutaPreparacion.setText("El mapa no tiene conexiones. Configura los pasillos en la vista Mapa.");
             return;
         }
         String origen=cmbOrigenRutaPreparacion.getValue();
-        if(origen==null||!rutas.existeUbicacion(origen)){
-            lblMensajeRutaPreparacion.setText("El punto de partida no existe en el grafo.");return;
+        if(origen==null||!rutas.existeUbicacion(origen)) {
+            lblMensajeRutaPreparacion.setText("El punto de partida no existe en el grafo. Registra 'Recepcion' en la vista Mapa o elige un apartamento existente.");
+            return;
         }
         double total=0;
         String actual=origen;
-        listaParadasRutaPreparacion.getItems().add("Inicio: "+origen);
-        for(TareaPreparacion tarea:sistema.getServicioPreparacion().listarPendientes()) {
+        List<String> lineas=new ArrayList<>();
+        lineas.add("INICIO: "+origen);
+        for(TareaPreparacion tarea:pendientes) {
             String destino=tarea.getApartamento().getCodigo();
-            if(!rutas.existeUbicacion(destino)){
-                lblMensajeRutaPreparacion.setText("Falta ubicación en el grafo: "+destino);return;
+            if(!rutas.existeUbicacion(destino)) {
+                lblMensajeRutaPreparacion.setText("Falta ubicación en el grafo: "+destino);
+                return;
             }
             ResultadoRuta<String> tramo=rutas.consultarRutaMasCorta(actual,destino);
-            if(!tramo.existeRuta()){
-                lblMensajeRutaPreparacion.setText("No hay camino entre "+actual+" y "+destino);return;
+            if(!tramo.existeRuta()) {
+                lblMensajeRutaPreparacion.setText("No existe camino entre "+actual+" y "+destino+". Conecta los pasillos en Mapa.");
+                return;
             }
             total+=tramo.getDistanciaTotal();
-            listaParadasRutaPreparacion.getItems().add(destino+" · tramo "+tramo.getDistanciaTotal());
+            paradasCalculadas.add(destino);
+            lineas.add("↓  "+String.format(Locale.ROOT,"%.1f m",tramo.getDistanciaTotal()));
+            lineas.add(destino);
             actual=destino;
         }
-        lblDistanciaRutaPreparacion.setText(String.format(Locale.ROOT,"%.2f (unidades del grafo)",total));
-        lblMensajeRutaPreparacion.setText("Ruta por prioridad; cada tramo usa Dijkstra.");
-        panelVistaRutaPreparacion.getChildren().add(new Label("Recorrido textual disponible en el orden de visita."));
+        listaParadasRutaPreparacion.getItems().addAll(lineas);
+        lblDistanciaRutaPreparacion.setText(String.format(Locale.ROOT,"%.2f m",total));
+        lblMensajeRutaPreparacion.setText("Ruta calculada respetando la prioridad de la cola; cada tramo usa Dijkstra. Puedes ejecutar una simulación de 3 segundos por apartamento.");
+        VBox vista=new VBox(7);
+        vista.setAlignment(Pos.CENTER);
+        for(String linea:lineas){
+            Label etiqueta=new Label(linea);
+            etiqueta.setStyle(linea.startsWith("↓")?"-fx-text-fill: #64748b;":"-fx-font-weight: bold; -fx-text-fill: #1d4f87;");
+            vista.getChildren().add(etiqueta);
+        }
+        panelVistaRutaPreparacion.getChildren().add(vista);
+        btnEjecutarRutaPreparacion.setDisable(paradasCalculadas.isEmpty());
+    }
+
+    private void ejecutarRuta() {
+        if(simulando||paradasCalculadas.isEmpty()||sistema==null)return;
+        if(!confirmar("Simulación de preparación", "¿Ejecutar la ruta calculada? Cada apartamento estará 3 segundos EN_PREPARACION y luego pasará a PREPARADO. Los cambios se guardarán."))return;
+        // La cola puede haber cambiado desde el cálculo. Exigir el mismo orden antes de empezar.
+        List<String> actuales=new ArrayList<>();
+        for(TareaPreparacion t:sistema.getServicioPreparacion().listarPendientes())actuales.add(t.getApartamento().getCodigo());
+        if(!actuales.equals(paradasCalculadas)) {
+            mensaje("Ruta desactualizada","La cola cambió. Calcula nuevamente la ruta antes de ejecutarla.");
+            btnEjecutarRutaPreparacion.setDisable(true);
+            return;
+        }
+        simulando=true;
+        indiceSimulacion=0;
+        btnEjecutarRutaPreparacion.setDisable(true);
+        btnCalcularRutaPreparacion.setDisable(true);
+        btnIniciarPreparacion.setDisable(true);
+        btnFinalizarPreparacion.setDisable(true);
+        simularSiguiente();
+    }
+
+    private void simularSiguiente() {
+        if(indiceSimulacion>=paradasCalculadas.size()) {
+            simulando=false;
+            btnCalcularRutaPreparacion.setDisable(false);
+            btnIniciarPreparacion.setDisable(false);
+            btnFinalizarPreparacion.setDisable(false);
+            lblMensajeRutaPreparacion.setText("Simulación completada. Todos los apartamentos de la ruta quedaron preparados.");
+            actualizar();
+            return;
+        }
+        String codigo=paradasCalculadas.get(indiceSimulacion);
+        try {
+            TareaPreparacion siguiente=sistema.getServicioPreparacion().verSiguientePreparacion();
+            if(siguiente==null||!codigo.equals(siguiente.getApartamento().getCodigo()))
+                throw new IllegalStateException("Cambió la prioridad de la cola. Simulación detenida; recalcula la ruta.");
+            Apartamento apartamento=sistema.getServicioPreparacion().iniciarSiguientePreparacion().getApartamento();
+            sistema.guardar();
+            actualizar();
+            lblMensajeRutaPreparacion.setText("Preparando "+codigo+" (3 segundos de demostración)...");
+            pausaSimulacion=new PauseTransition(Duration.seconds(3));
+            pausaSimulacion.setOnFinished(e->{
+                try {
+                    sistema.getServicioPreparacion().finalizarPreparacion(apartamento);
+                    sistema.guardar();
+                    indiceSimulacion++;
+                    actualizar();
+                    simularSiguiente();
+                }catch(Exception ex){detenerSimulacion();error(ex);}
+            });
+            pausaSimulacion.play();
+        }catch(Exception ex){detenerSimulacion();error(ex);}
+    }
+    private void detenerSimulacion() {
+        simulando=false;
+        if(pausaSimulacion!=null)pausaSimulacion.stop();
+        btnCalcularRutaPreparacion.setDisable(false);
+        btnIniciarPreparacion.setDisable(false);
+        btnFinalizarPreparacion.setDisable(false);
+        btnEjecutarRutaPreparacion.setDisable(true);
+        lblMensajeRutaPreparacion.setText("Simulación detenida. Revisa los estados y recalcula la ruta.");
+        actualizar();
     }
     private void navegar(String archivo) {
+        if(simulando){mensaje("Simulación activa","Espera a que termine la preparación antes de cambiar de pantalla.");return;}
         try {
             FXMLLoader loader=new FXMLLoader(getClass().getResource(archivo));
             Scene escena=new Scene(loader.load());
