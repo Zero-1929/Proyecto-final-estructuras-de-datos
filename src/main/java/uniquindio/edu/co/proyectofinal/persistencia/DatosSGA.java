@@ -153,8 +153,12 @@ public record DatosSGA(
             String documento,
             String telefono,
             String correo,
-            String rutaFoto
+            String rutaFoto,
+            String[] favoritos
     ) {
+        public HuespedDatos {
+            favoritos = favoritos == null ? new String[0] : favoritos;
+        }
     }
 
     /**
