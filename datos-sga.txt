@@ -158,7 +158,7 @@
   ],
   "temporadas": [
     {
-      "tipo": "ALTA",
+      "tipo": "BAJA",
       "fechaInicio": "2027-01-01",
       "fechaFin": "2027-02-28"
     },
@@ -173,12 +173,12 @@
       "fechaFin": "2027-06-30"
     },
     {
-      "tipo": "MEDIA",
+      "tipo": "BAJA",
       "fechaInicio": "2027-07-01",
       "fechaFin": "2027-08-31"
     },
     {
-      "tipo": "ALTA",
+      "tipo": "MEDIA",
       "fechaInicio": "2027-09-01",
       "fechaFin": "2027-10-31"
     }
@@ -334,7 +334,7 @@
       "fechaEntrada": "2027-10-05",
       "fechaSalida": "2027-10-08",
       "numeroPersonas": 2,
-      "fechaRecepcion": "2026-11-14T20:51:27.359866424",
+      "fechaRecepcion": "2026-11-14T20:58:05.575134696",
       "estado": "PENDIENTE",
       "motivoRechazo": null
     },
@@ -348,7 +348,7 @@
       "fechaEntrada": "2027-10-06",
       "fechaSalida": "2027-10-09",
       "numeroPersonas": 2,
-      "fechaRecepcion": "2026-11-14T20:51:27.360135021",
+      "fechaRecepcion": "2026-11-14T20:58:05.575419433",
       "estado": "PENDIENTE",
       "motivoRechazo": null
     },
@@ -362,7 +362,7 @@
       "fechaEntrada": "2027-10-07",
       "fechaSalida": "2027-10-10",
       "numeroPersonas": 2,
-      "fechaRecepcion": "2026-11-14T20:51:27.360165082",
+      "fechaRecepcion": "2026-11-14T20:58:05.575472969",
       "estado": "PENDIENTE",
       "motivoRechazo": null
     },
@@ -376,7 +376,7 @@
       "fechaEntrada": "2027-10-08",
       "fechaSalida": "2027-10-11",
       "numeroPersonas": 2,
-      "fechaRecepcion": "2026-11-14T20:51:27.360191212",
+      "fechaRecepcion": "2026-11-14T20:58:05.575502089",
       "estado": "PENDIENTE",
       "motivoRechazo": null
     },
@@ -390,7 +390,7 @@
       "fechaEntrada": "2027-10-09",
       "fechaSalida": "2027-10-12",
       "numeroPersonas": 2,
-      "fechaRecepcion": "2026-11-14T20:51:27.360218601",
+      "fechaRecepcion": "2026-11-14T20:58:05.575532342",
       "estado": "PENDIENTE",
       "motivoRechazo": null
     }
@@ -401,31 +401,31 @@
       "codigoApartamento": "B101",
       "prioridad": 5,
       "orden": 5,
-      "fechaSolicitud": "2026-11-14T20:51:27.360442331"
+      "fechaSolicitud": "2026-11-14T20:58:05.575792827"
     },
     {
       "codigoApartamento": "A202",
       "prioridad": 4,
       "orden": 4,
-      "fechaSolicitud": "2026-11-14T20:51:27.360436354"
+      "fechaSolicitud": "2026-11-14T20:58:05.575786779"
     },
     {
       "codigoApartamento": "A201",
       "prioridad": 3,
       "orden": 3,
-      "fechaSolicitud": "2026-11-14T20:51:27.360430123"
+      "fechaSolicitud": "2026-11-14T20:58:05.575780408"
     },
     {
       "codigoApartamento": "A102",
       "prioridad": 2,
       "orden": 2,
-      "fechaSolicitud": "2026-11-14T20:51:27.360416247"
+      "fechaSolicitud": "2026-11-14T20:58:05.575766594"
     },
     {
       "codigoApartamento": "A101",
       "prioridad": 1,
       "orden": 1,
-      "fechaSolicitud": "2026-11-14T20:51:27.360399860"
+      "fechaSolicitud": "2026-11-14T20:58:05.575749464"
     }
   ],
   "recepcionistas": [
