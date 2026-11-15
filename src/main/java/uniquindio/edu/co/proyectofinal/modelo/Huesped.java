@@ -1,6 +1,7 @@
 package uniquindio.edu.co.proyectofinal.modelo;
 
 import java.time.LocalDate;
+import uniquindio.edu.co.proyectofinal.estructuras.Conjunto;
 
 /**
  * Representa un huésped con perfil completo en el sistema.
@@ -12,6 +13,37 @@ public class Huesped extends PersonaIdentificada implements Comparable<Huesped> 
      * Ruta de la fotografía, puede ser nula.
      */
     private String rutaFoto;
+    /** Se guarda como códigos para evitar duplicar objetos Apartamento en JSON. */
+    private Conjunto<String> favoritos = new Conjunto<>();
+
+    public boolean agregarFavorito(String codigoApartamento) {
+        if (codigoApartamento == null || codigoApartamento.isBlank())
+            throw new IllegalArgumentException("Código obligatorio");
+        return favoritos().agregar(codigoApartamento.trim().toUpperCase(java.util.Locale.ROOT));
+    }
+
+    public boolean quitarFavorito(String codigoApartamento) {
+        if (codigoApartamento == null || codigoApartamento.isBlank())
+            throw new IllegalArgumentException("Código obligatorio");
+        return favoritos().eliminar(codigoApartamento.trim().toUpperCase(java.util.Locale.ROOT));
+    }
+
+    public boolean esFavorito(String codigoApartamento) {
+        if (codigoApartamento == null || codigoApartamento.isBlank()) return false;
+        return favoritos().contiene(codigoApartamento.trim().toUpperCase(java.util.Locale.ROOT));
+    }
+
+    public Conjunto<String> getFavoritos() {
+        Conjunto<String> copia = new Conjunto<>();
+        for (String codigo : favoritos()) copia.agregar(codigo);
+        return copia;
+    }
+
+    private Conjunto<String> favoritos() {
+        if (favoritos == null) favoritos = new Conjunto<>();
+        return favoritos;
+    }
+
 
     /**
      * Crea un huésped sin fotografía.
