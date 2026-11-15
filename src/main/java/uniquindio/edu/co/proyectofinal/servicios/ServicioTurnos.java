@@ -1,6 +1,7 @@
 package uniquindio.edu.co.proyectofinal.servicios;
 
 import uniquindio.edu.co.proyectofinal.estructuras.ListaCircular;
+import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
 import uniquindio.edu.co.proyectofinal.modelo.Empleado;
 
 /**
@@ -138,6 +139,75 @@ public class ServicioTurnos {
      */
     public void limpiarTurnos() {
         recepcionistas.limpiar();
+    }
+
+    /**
+     * Devuelve una copia de los recepcionistas en orden de turno.
+     *
+     * @return recepcionistas registrados
+     */
+    public ListaDoble<Empleado> listarRecepcionistas() {
+
+        ListaDoble<Empleado> copia = new ListaDoble<>();
+
+        for (Empleado empleado : recepcionistas) {
+            copia.agregarFinal(empleado);
+        }
+
+        return copia;
+    }
+
+    /**
+     * Restaura la rotacion de turnos desde los datos guardados.
+     *
+     * @param empleados recepcionistas en orden de turno
+     * @param documentoActual documento del recepcionista con el turno actual
+     * @throws IllegalArgumentException si la lista es nula, contiene un
+     *                                  empleado invalido o el documento actual
+     *                                  no pertenece a la rotacion
+     */
+    public void restaurarTurnos(
+            ListaDoble<Empleado> empleados,
+            String documentoActual
+    ) {
+
+        if (empleados == null) {
+            throw new IllegalArgumentException(
+                    "La lista de recepcionistas no puede ser nula."
+            );
+        }
+
+        recepcionistas.limpiar();
+
+        for (Empleado empleado : empleados) {
+            registrarRecepcionista(empleado);
+        }
+
+        if (recepcionistas.estaVacia()) {
+            if (documentoActual != null && !documentoActual.isBlank()) {
+                throw new IllegalArgumentException(
+                        "No hay recepcionistas para asignar el turno actual."
+                );
+            }
+            return;
+        }
+
+        if (documentoActual == null || documentoActual.isBlank()) {
+            return;
+        }
+
+        for (int i = 0; i < recepcionistas.getTamano(); i++) {
+            if (consultarTurnoActual().getDocumento().equals(
+                    documentoActual.trim()
+            )) {
+                return;
+            }
+            avanzarTurno();
+        }
+
+        throw new IllegalArgumentException(
+                "El recepcionista con turno actual no esta registrado."
+        );
     }
 
     /**

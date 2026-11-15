@@ -135,6 +135,57 @@ public class ServicioPreparacion {
     }
 
     /**
+     * Restaura una tarea de preparacion que estaba pendiente.
+     *
+     * Se usa al cargar los datos guardados. Conserva la prioridad, el orden
+     * y la fecha originales de la solicitud.
+     *
+     * @param apartamento apartamento que se va a preparar
+     * @param prioridad prioridad de la tarea
+     * @param orden orden original de llegada
+     * @param fechaSolicitud fecha y hora originales de la solicitud
+     * @throws IllegalArgumentException si algun dato es invalido o el
+     *                                  apartamento ya tiene una tarea pendiente
+     */
+    public void restaurarTarea(
+            Apartamento apartamento,
+            int prioridad,
+            long orden,
+            LocalDateTime fechaSolicitud
+    ) {
+
+        if (apartamento == null) {
+            throw new IllegalArgumentException(
+                    "El apartamento no puede ser nulo."
+            );
+        }
+
+        if (fechaSolicitud == null) {
+            throw new IllegalArgumentException(
+                    "La fecha de la solicitud no puede ser nula."
+            );
+        }
+
+        if (estaEnCola(apartamento)) {
+            throw new IllegalArgumentException(
+                    "El apartamento ya tiene una preparacion pendiente."
+            );
+        }
+
+        apartamento.setEstado(EstadoApartamento.PENDIENTE_PREPARACION);
+
+        TareaPreparacion tarea = new TareaPreparacion(
+                apartamento,
+                prioridad,
+                orden,
+                fechaSolicitud
+        );
+
+        colaPreparacion.encolar(tarea);
+        siguienteOrden = Math.max(siguienteOrden, orden + 1);
+    }
+
+    /**
      * Inicia la preparacion de la tarea de mayor prioridad.
      *
      * @return tarea que se comenzo a preparar

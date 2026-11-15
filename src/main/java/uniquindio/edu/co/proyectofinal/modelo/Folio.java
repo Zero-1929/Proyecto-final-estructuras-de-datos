@@ -73,6 +73,62 @@ public class Folio {
     }
 
     /**
+     * Devuelve una copia de las operaciones que pueden deshacerse.
+     *
+     * El recorrido se hace desde la cima hasta el fondo de la pila.
+     *
+     * @return copia de las operaciones deshacibles.
+     */
+    public ListaDoble<Movimiento> getOperacionesDeshacibles() {
+
+        ListaDoble<Movimiento> copia = new ListaDoble<>();
+
+        for (Movimiento movimiento : historialOperaciones) {
+            copia.agregarFinal(movimiento);
+        }
+
+        return copia;
+    }
+
+    /**
+     * Restaura los movimientos y la pila de operaciones deshacibles.
+     *
+     * Se usa al cargar un folio desde la persistencia. La lista de
+     * operaciones deshacibles debe venir desde la cima hasta el fondo.
+     *
+     * @param movimientos movimientos economicos del folio.
+     * @param operacionesDeshacibles operaciones que pueden deshacerse.
+     */
+    public void restaurarMovimientos(
+            ListaDoble<Movimiento> movimientos,
+            ListaDoble<Movimiento> operacionesDeshacibles
+    ) {
+
+        if (movimientos == null || operacionesDeshacibles == null) {
+            throw new IllegalArgumentException(
+                    "Los movimientos y las operaciones no pueden ser nulos."
+            );
+        }
+
+        this.movimientos.limpiar();
+        this.historialOperaciones.limpiar();
+
+        for (Movimiento movimiento : movimientos) {
+            this.movimientos.agregarFinal(movimiento);
+        }
+
+        Pila<Movimiento> temporal = new Pila<>();
+
+        for (Movimiento movimiento : operacionesDeshacibles) {
+            temporal.apilar(movimiento);
+        }
+
+        while (!temporal.estaVacia()) {
+            this.historialOperaciones.apilar(temporal.desapilar());
+        }
+    }
+
+    /**
      * Registra un movimiento en el folio y lo apila
      * en el historial de operaciones deshacibles.
      *

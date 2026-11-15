@@ -342,6 +342,79 @@ public class ServicioExterno {
     }
 
     /**
+     * Devuelve una copia de las solicitudes pendientes.
+     *
+     * @return solicitudes en la cola FIFO
+     */
+    public ListaDoble<SolicitudExterna> listarSolicitudesPendientes() {
+
+        ListaDoble<SolicitudExterna> copia = new ListaDoble<>();
+
+        for (SolicitudExterna solicitud : solicitudesPendientes) {
+            copia.agregarFinal(solicitud);
+        }
+
+        return copia;
+    }
+
+    /**
+     * Restaura una solicitud que ya fue procesada o rechazada.
+     *
+     * @param solicitud solicitud que se agrega al historial
+     */
+    public void restaurarSolicitudHistorial(SolicitudExterna solicitud) {
+
+        if (solicitud == null) {
+            throw new IllegalArgumentException(
+                    "La solicitud no puede ser nula."
+            );
+        }
+
+        if (!historial.contiene(solicitud)) {
+            historial.agregarFinal(solicitud);
+        }
+    }
+
+    /**
+     * Restaura los consecutivos usados por el canal externo.
+     *
+     * @param siguienteIdFolio siguiente identificador de folio
+     * @param siguienteNumeroReserva siguiente numero de reserva
+     */
+    public void restaurarContadores(
+            int siguienteIdFolio,
+            int siguienteNumeroReserva
+    ) {
+
+        if (siguienteIdFolio <= 0 || siguienteNumeroReserva <= 0) {
+            throw new IllegalArgumentException(
+                    "Los consecutivos deben ser mayores que cero."
+            );
+        }
+
+        this.siguienteIdFolio = siguienteIdFolio;
+        this.siguienteNumeroReserva = siguienteNumeroReserva;
+    }
+
+    /**
+     * Obtiene el siguiente identificador de folio del canal externo.
+     *
+     * @return siguiente identificador de folio
+     */
+    public int getSiguienteIdFolio() {
+        return siguienteIdFolio;
+    }
+
+    /**
+     * Obtiene el siguiente numero de reserva del canal externo.
+     *
+     * @return siguiente numero de reserva
+     */
+    public int getSiguienteNumeroReserva() {
+        return siguienteNumeroReserva;
+    }
+
+    /**
      * Devuelve una copia del historial de solicitudes.
      *
      * @return solicitudes procesadas o rechazadas
@@ -352,6 +425,38 @@ public class ServicioExterno {
 
         for (SolicitudExterna solicitud : historial) {
             copia.agregarFinal(solicitud);
+        }
+
+        return copia;
+    }
+
+    /**
+     * Devuelve una copia de los apartamentos conocidos por el canal externo.
+     *
+     * @return apartamentos registrados
+     */
+    public ListaDoble<Apartamento> listarApartamentos() {
+
+        ListaDoble<Apartamento> copia = new ListaDoble<>();
+
+        for (Apartamento apartamento : apartamentos) {
+            copia.agregarFinal(apartamento);
+        }
+
+        return copia;
+    }
+
+    /**
+     * Devuelve una copia de los huespedes conocidos por el canal externo.
+     *
+     * @return huespedes registrados
+     */
+    public ListaDoble<Huesped> listarHuespedes() {
+
+        ListaDoble<Huesped> copia = new ListaDoble<>();
+
+        for (Huesped huesped : huespedes) {
+            copia.agregarFinal(huesped);
         }
 
         return copia;
