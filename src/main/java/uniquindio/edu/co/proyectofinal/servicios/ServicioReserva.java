@@ -28,6 +28,9 @@ public class ServicioReserva {
 
     public ServicioDisponibilidad getDisponibilidad() { return disponibilidad; }
 
+    /** Registro compartido con el canal externo. */
+    public ListaDoble<Reserva> getRegistroCompartido() { return reservas; }
+
     /** Registra una reserva ya construida, validando código, apartamento y fechas. */
     public boolean registrarReserva(Reserva reserva, int numeroOcupantes) {
         if (reserva == null || numeroOcupantes <= 0)
