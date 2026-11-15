@@ -1,0 +1,444 @@
+{
+  "version": 1,
+  "apartamentos": [
+    {
+      "codigo": "A101",
+      "nombre": "Apartamento Sunrise",
+      "bloque": "A",
+      "piso": 1,
+      "numeroDormitorios": 2,
+      "capacidad": 4,
+      "caracteristicas": "WiFi, cocina, TV",
+      "estado": "PENDIENTE_PREPARACION",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "180000",
+      "tarifaMedia": "230000",
+      "tarifaAlta": "300000"
+    },
+    {
+      "codigo": "A102",
+      "nombre": "Apartamento Bosque",
+      "bloque": "A",
+      "piso": 1,
+      "numeroDormitorios": 3,
+      "capacidad": 6,
+      "caracteristicas": "WiFi, balcon, parqueadero",
+      "estado": "PENDIENTE_PREPARACION",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "200000",
+      "tarifaMedia": "250000",
+      "tarifaAlta": "320000"
+    },
+    {
+      "codigo": "A201",
+      "nombre": "Apartamento Mirador",
+      "bloque": "B",
+      "piso": 2,
+      "numeroDormitorios": 1,
+      "capacidad": 2,
+      "caracteristicas": "WiFi, estudio, TV",
+      "estado": "PENDIENTE_PREPARACION",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "220000",
+      "tarifaMedia": "270000",
+      "tarifaAlta": "340000"
+    },
+    {
+      "codigo": "A202",
+      "nombre": "Apartamento Jardin",
+      "bloque": "B",
+      "piso": 2,
+      "numeroDormitorios": 2,
+      "capacidad": 4,
+      "caracteristicas": "WiFi, terraza, cocina",
+      "estado": "PENDIENTE_PREPARACION",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "240000",
+      "tarifaMedia": "290000",
+      "tarifaAlta": "360000"
+    },
+    {
+      "codigo": "B101",
+      "nombre": "Apartamento Central",
+      "bloque": "C",
+      "piso": 1,
+      "numeroDormitorios": 3,
+      "capacidad": 6,
+      "caracteristicas": "WiFi, parqueadero, TV",
+      "estado": "PENDIENTE_PREPARACION",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "260000",
+      "tarifaMedia": "310000",
+      "tarifaAlta": "380000"
+    }
+  ],
+  "huespedes": [
+    {
+      "nombre": "Ana Torres",
+      "fechaNacimiento": "1990-01-15",
+      "documento": "1001001",
+      "telefono": "3105550001",
+      "correo": "ana.torres@example.com",
+      "rutaFoto": "fotos/ana-torres.jpg"
+    },
+    {
+      "nombre": "Carlos Perez",
+      "fechaNacimiento": "1988-04-22",
+      "documento": "1001002",
+      "telefono": "3105550002",
+      "correo": "carlos.perez@example.com",
+      "rutaFoto": null
+    },
+    {
+      "nombre": "Laura Gomez",
+      "fechaNacimiento": "1995-07-09",
+      "documento": "1001003",
+      "telefono": "3105550003",
+      "correo": "laura.gomez@example.com",
+      "rutaFoto": null
+    },
+    {
+      "nombre": "Diego Ramirez",
+      "fechaNacimiento": "1992-10-03",
+      "documento": "1001004",
+      "telefono": "3105550004",
+      "correo": "diego.ramirez@example.com",
+      "rutaFoto": null
+    },
+    {
+      "nombre": "Sofia Castro",
+      "fechaNacimiento": "1998-12-18",
+      "documento": "1001005",
+      "telefono": "3105550005",
+      "correo": "sofia.castro@example.com",
+      "rutaFoto": null
+    }
+  ],
+  "empleados": [
+    {
+      "nombre": "Valentina Rojas",
+      "fechaNacimiento": "1994-02-11",
+      "documento": "2002001",
+      "telefono": "3205550001",
+      "correo": "valentina.rojas@example.com",
+      "rol": "RECEPCIONISTA"
+    },
+    {
+      "nombre": "Andres Mejia",
+      "fechaNacimiento": "1991-06-25",
+      "documento": "2002002",
+      "telefono": "3205550002",
+      "correo": "andres.mejia@example.com",
+      "rol": "RECEPCIONISTA"
+    },
+    {
+      "nombre": "Camila Salazar",
+      "fechaNacimiento": "1996-09-14",
+      "documento": "2002003",
+      "telefono": "3205550003",
+      "correo": "camila.salazar@example.com",
+      "rol": "RECEPCIONISTA"
+    },
+    {
+      "nombre": "Jorge Cardona",
+      "fechaNacimiento": "1989-03-30",
+      "documento": "2002004",
+      "telefono": "3205550004",
+      "correo": "jorge.cardona@example.com",
+      "rol": "RECEPCIONISTA"
+    },
+    {
+      "nombre": "Natalia Londono",
+      "fechaNacimiento": "1997-11-07",
+      "documento": "2002005",
+      "telefono": "3205550005",
+      "correo": "natalia.londono@example.com",
+      "rol": "RECEPCIONISTA"
+    }
+  ],
+  "temporadas": [
+    {
+      "tipo": "ALTA",
+      "fechaInicio": "2027-01-01",
+      "fechaFin": "2027-02-28"
+    },
+    {
+      "tipo": "MEDIA",
+      "fechaInicio": "2027-03-01",
+      "fechaFin": "2027-04-30"
+    },
+    {
+      "tipo": "ALTA",
+      "fechaInicio": "2027-05-01",
+      "fechaFin": "2027-06-30"
+    },
+    {
+      "tipo": "MEDIA",
+      "fechaInicio": "2027-07-01",
+      "fechaFin": "2027-08-31"
+    },
+    {
+      "tipo": "ALTA",
+      "fechaInicio": "2027-09-01",
+      "fechaFin": "2027-10-31"
+    }
+  ],
+  "temporadaPorDefecto": "BAJA",
+  "reservas": [
+    {
+      "codigo": "RES-00001",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2027-01-10",
+      "fechaSalida": "2027-01-12",
+      "estado": "CONFIRMADA",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-12-01T09:30",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 1
+    },
+    {
+      "codigo": "RES-00002",
+      "documentoHuesped": "1001002",
+      "codigoApartamento": "A102",
+      "fechaEntrada": "2027-03-05",
+      "fechaSalida": "2027-03-08",
+      "estado": "CONFIRMADA",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-12-02T09:30",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 2
+    },
+    {
+      "codigo": "RES-00003",
+      "documentoHuesped": "1001003",
+      "codigoApartamento": "A201",
+      "fechaEntrada": "2027-05-15",
+      "fechaSalida": "2027-05-18",
+      "estado": "PENDIENTE",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-12-03T09:30",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 3
+    },
+    {
+      "codigo": "RES-00004",
+      "documentoHuesped": "1001004",
+      "codigoApartamento": "A202",
+      "fechaEntrada": "2027-07-20",
+      "fechaSalida": "2027-07-22",
+      "estado": "CANCELADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-12-04T09:30",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 4
+    },
+    {
+      "codigo": "RES-00005",
+      "documentoHuesped": "1001005",
+      "codigoApartamento": "B101",
+      "fechaEntrada": "2027-09-10",
+      "fechaSalida": "2027-09-12",
+      "estado": "NO_PRESENTADO",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-12-05T09:30",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 5
+    }
+  ],
+  "folios": [
+    {
+      "id": 1,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Cargo de alojamiento",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "450000",
+          "fecha": "2026-12-02T10:00"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "movimientos": [
+        {
+          "id": 2,
+          "descripcion": "Pago recibido",
+          "tipo": "PAGO",
+          "monto": "200000",
+          "fecha": "2026-12-03T11:00"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "movimientos": [
+        {
+          "id": 3,
+          "descripcion": "Abono inicial",
+          "tipo": "PAGO",
+          "monto": "100000",
+          "fecha": "2026-12-04T12:00"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3
+      ]
+    },
+    {
+      "id": 4,
+      "movimientos": [
+        {
+          "id": 4,
+          "descripcion": "Ajuste por cancelacion",
+          "tipo": "AJUSTE_CARGO",
+          "monto": "50000",
+          "fecha": "2026-12-05T13:00"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        4
+      ]
+    },
+    {
+      "id": 5,
+      "movimientos": [
+        {
+          "id": 5,
+          "descripcion": "Cargo adicional",
+          "tipo": "CARGO_ADICIONAL",
+          "monto": "75000",
+          "fecha": "2026-12-06T14:00"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        5
+      ]
+    }
+  ],
+  "solicitudesPendientes": [
+    {
+      "idSolicitud": "SOL-001",
+      "nombreSolicitante": "Ana Torres",
+      "documento": "1001001",
+      "telefono": "3105550001",
+      "correo": "ana.torres@example.com",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2027-10-05",
+      "fechaSalida": "2027-10-08",
+      "numeroPersonas": 2,
+      "fechaRecepcion": "2026-11-14T20:51:27.359866424",
+      "estado": "PENDIENTE",
+      "motivoRechazo": null
+    },
+    {
+      "idSolicitud": "SOL-002",
+      "nombreSolicitante": "Carlos Perez",
+      "documento": "1001002",
+      "telefono": "3105550002",
+      "correo": "carlos.perez@example.com",
+      "codigoApartamento": "A102",
+      "fechaEntrada": "2027-10-06",
+      "fechaSalida": "2027-10-09",
+      "numeroPersonas": 2,
+      "fechaRecepcion": "2026-11-14T20:51:27.360135021",
+      "estado": "PENDIENTE",
+      "motivoRechazo": null
+    },
+    {
+      "idSolicitud": "SOL-003",
+      "nombreSolicitante": "Laura Gomez",
+      "documento": "1001003",
+      "telefono": "3105550003",
+      "correo": "laura.gomez@example.com",
+      "codigoApartamento": "A201",
+      "fechaEntrada": "2027-10-07",
+      "fechaSalida": "2027-10-10",
+      "numeroPersonas": 2,
+      "fechaRecepcion": "2026-11-14T20:51:27.360165082",
+      "estado": "PENDIENTE",
+      "motivoRechazo": null
+    },
+    {
+      "idSolicitud": "SOL-004",
+      "nombreSolicitante": "Diego Ramirez",
+      "documento": "1001004",
+      "telefono": "3105550004",
+      "correo": "diego.ramirez@example.com",
+      "codigoApartamento": "A202",
+      "fechaEntrada": "2027-10-08",
+      "fechaSalida": "2027-10-11",
+      "numeroPersonas": 2,
+      "fechaRecepcion": "2026-11-14T20:51:27.360191212",
+      "estado": "PENDIENTE",
+      "motivoRechazo": null
+    },
+    {
+      "idSolicitud": "SOL-005",
+      "nombreSolicitante": "Sofia Castro",
+      "documento": "1001005",
+      "telefono": "3105550005",
+      "correo": "sofia.castro@example.com",
+      "codigoApartamento": "B101",
+      "fechaEntrada": "2027-10-09",
+      "fechaSalida": "2027-10-12",
+      "numeroPersonas": 2,
+      "fechaRecepcion": "2026-11-14T20:51:27.360218601",
+      "estado": "PENDIENTE",
+      "motivoRechazo": null
+    }
+  ],
+  "solicitudesHistorial": [],
+  "tareasPreparacion": [
+    {
+      "codigoApartamento": "B101",
+      "prioridad": 5,
+      "orden": 5,
+      "fechaSolicitud": "2026-11-14T20:51:27.360442331"
+    },
+    {
+      "codigoApartamento": "A202",
+      "prioridad": 4,
+      "orden": 4,
+      "fechaSolicitud": "2026-11-14T20:51:27.360436354"
+    },
+    {
+      "codigoApartamento": "A201",
+      "prioridad": 3,
+      "orden": 3,
+      "fechaSolicitud": "2026-11-14T20:51:27.360430123"
+    },
+    {
+      "codigoApartamento": "A102",
+      "prioridad": 2,
+      "orden": 2,
+      "fechaSolicitud": "2026-11-14T20:51:27.360416247"
+    },
+    {
+      "codigoApartamento": "A101",
+      "prioridad": 1,
+      "orden": 1,
+      "fechaSolicitud": "2026-11-14T20:51:27.360399860"
+    }
+  ],
+  "recepcionistas": [
+    "2002001",
+    "2002002",
+    "2002003",
+    "2002004",
+    "2002005"
+  ],
+  "recepcionistaActual": "2002003",
+  "siguienteGrupo": 1,
+  "siguienteReserva": 6,
+  "siguienteFolio": 6,
+  "siguienteIdFolioExterno": 1,
+  "siguienteNumeroReservaExterno": 1
+}
