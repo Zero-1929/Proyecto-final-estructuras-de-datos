@@ -88,6 +88,7 @@ public class SistemaSGA {
         this.servicioCotizacion = servicioCotizacion;
         this.servicioReserva = servicioReserva;
         this.servicioPreparacion = servicioPreparacion;
+        this.servicioPreparacion.configurarReservas(servicioReserva.getRegistroCompartido());
         this.servicioTurnos = servicioTurnos;
         this.servicioExterno = servicioExterno;
         this.generadorIdentificadores = generadorIdentificadores;
@@ -111,7 +112,7 @@ public class SistemaSGA {
         );
         ServicioPreparacion preparacion = new ServicioPreparacion();
         ServicioTurnos turnos = new ServicioTurnos();
-        ServicioExterno externo = new ServicioExterno();
+        ServicioExterno externo = new ServicioExterno(reservas, apartamentos, huespedes);
         GeneradorIdentificadores generador =
                 new GeneradorIdentificadores(1, 1, 1);
 
