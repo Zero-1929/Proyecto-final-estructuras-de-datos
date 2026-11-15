@@ -263,6 +263,12 @@ public final class GestorPersistencia {
                     dato.rutaFoto()
             );
 
+            for (String codigoFavorito : dato.favoritos()) {
+                if (codigoFavorito != null && !codigoFavorito.isBlank()) {
+                    huesped.agregarFavorito(codigoFavorito);
+                }
+            }
+
             if (!servicioHuesped.registrarHuesped(huesped)) {
                 throw new IOException(
                         "Huesped duplicado: " + dato.documento()
@@ -416,11 +422,7 @@ public final class GestorPersistencia {
 
             aplicarEstado(reserva, dato.estado());
 
-            if (dato.canalReserva() == CanalReserva.PLATAFORMA_EXTERNA) {
-                reservasExternas.agregarFinal(reserva);
-            } else {
-                reservas.agregarFinal(reserva);
-            }
+            reservas.agregarFinal(reserva);
         }
 
         ServicioReserva servicioReserva = new ServicioReserva(
@@ -429,20 +431,8 @@ public final class GestorPersistencia {
                 reservas
         );
 
-        ServicioExterno servicioExterno = new ServicioExterno();
-
-        for (Apartamento apartamento
-                : servicioApartamento.listarApartamentos()) {
-            servicioExterno.registrarApartamento(apartamento);
-        }
-
-        for (Huesped huesped : servicioHuesped.listarHuespedes()) {
-            servicioExterno.registrarHuesped(huesped);
-        }
-
-        for (Reserva reserva : reservasExternas) {
-            servicioExterno.registrarReserva(reserva);
-        }
+        ServicioExterno servicioExterno = new ServicioExterno(
+                servicioReserva, servicioApartamento, servicioHuesped);
 
         for (DatosSGA.SolicitudDatos dato
                 : datos.solicitudesPendientes()) {
@@ -697,8 +687,18 @@ public final class GestorPersistencia {
                 huesped.getDocumento(),
                 huesped.getTelefono(),
                 huesped.getCorreo(),
-                huesped.getRutaFoto()
+                huesped.getRutaFoto(),
+                codigosFavoritos(huesped)
         );
+    }
+
+    private static String[] codigosFavoritos(Huesped huesped) {
+        int cantidad = 0;
+        for (String codigo : huesped.getFavoritos()) cantidad++;
+        String[] codigos = new String[cantidad];
+        int indice = 0;
+        for (String codigo : huesped.getFavoritos()) codigos[indice++] = codigo;
+        return codigos;
     }
 
     private static DatosSGA.EmpleadoDatos aDatos(Empleado empleado) {
