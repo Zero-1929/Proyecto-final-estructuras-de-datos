@@ -1,0 +1,12 @@
+# MAPA SGA v1: N=servicio, E=conexion; distancias en metros
+N	UmVjZXBjaW9u
+N	UGFzaWxsbyBB
+N	UGFzaWxsbyBC
+E	UmVjZXBjaW9u	UGFzaWxsbyBB	8.0
+E	UmVjZXBjaW9u	UGFzaWxsbyBC	12.0
+E	UGFzaWxsbyBB	QTEwMQ	5.0
+E	UGFzaWxsbyBB	QTEwMg	9.0
+E	UGFzaWxsbyBB	QTIwMQ	13.0
+E	UGFzaWxsbyBB	QTIwMg	17.0
+E	UGFzaWxsbyBC	QjEwMQ	6.0
+E	UGFzaWxsbyBB	UGFzaWxsbyBC	10.0
