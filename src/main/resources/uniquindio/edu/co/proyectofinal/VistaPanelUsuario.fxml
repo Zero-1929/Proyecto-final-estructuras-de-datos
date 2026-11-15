@@ -283,7 +283,7 @@
                 </HBox>
 
                 <!-- PESTAÑAS DEL PANEL -->
-                <TabPane tabClosingPolicy="UNAVAILABLE"
+                <TabPane fx:id="tabsUsuario" tabClosingPolicy="UNAVAILABLE"
                          VBox.vgrow="ALWAYS">
 
                     <tabs>
@@ -454,7 +454,7 @@
                         <!-- PESTAÑA 2: MIS FOLIOS             -->
                         <!-- ================================= -->
 
-                        <Tab text="Mis folios">
+                        <Tab fx:id="tabFoliosUsuario" text="Mis folios">
 
                             <ScrollPane fitToWidth="true"
                                         hbarPolicy="NEVER">
@@ -598,6 +598,9 @@
                                                               -fx-text-fill: #172B48;"/>
 
                                                 <Region HBox.hgrow="ALWAYS"/>
+
+                                                <Button fx:id="btnAgregarFavorito"
+                                                        text="Agregar apartamento"/>
 
                                                 <Button fx:id="btnActualizarFavoritos"
                                                         text="Actualizar"

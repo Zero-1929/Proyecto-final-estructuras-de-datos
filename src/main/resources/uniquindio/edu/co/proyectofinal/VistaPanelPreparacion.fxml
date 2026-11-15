@@ -242,6 +242,9 @@
                                 <Button fx:id="btnCalcularRutaPreparacion"
                                         text="Calcular ruta sugerida"
                                         style="-fx-background-color: #2463A6; -fx-text-fill: white;"/>
+                                <Button fx:id="btnEjecutarRutaPreparacion"
+                                        text="Ejecutar simulación (3 s/apto)"
+                                        style="-fx-background-color: #147D64; -fx-text-fill: white;"/>
                             </HBox>
 
                             <Label text="Recorrido propuesto desde un punto de servicio hasta los apartamentos pendientes. El cálculo utilizará el grafo de pasillos y las prioridades de preparación."

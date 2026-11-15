@@ -380,6 +380,7 @@
 
                                                 <Button fx:id="btnVerFolio"
                                                         text="Ver folio"/>
+                                                <Button fx:id="btnRegistrarPago" text="Registrar pago"/>
                                             </HBox>
                                         </VBox>
                                     </VBox>
@@ -546,6 +547,9 @@
                                                     </VBox>
                                                 </children>
                                             </GridPane>
+
+                                            <CheckBox fx:id="chkTitularSeHospeda" selected="true"
+                                                      text="¿El titular también se hospedará?"/>
 
                                             <Separator/>
 
