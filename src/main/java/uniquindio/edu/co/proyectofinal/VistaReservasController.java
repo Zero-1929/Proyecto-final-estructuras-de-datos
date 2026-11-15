@@ -8,7 +8,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.*;
 import java.util.*;
 import java.util.function.Function;
@@ -19,38 +22,41 @@ import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
 /** Vista de reservas; todas las operaciones utilizan la instancia compartida de SistemaSGA. */
 public class VistaReservasController {
     @FXML private Label lblTotalReservas,lblPendientes,lblConfirmadas,lblEnCurso,
-      lblDetalleTitular,lblDetalleApartamento,lblDetalleOcupantes,lblDetalleNoches,lblDetalleFolio,
-      lblTotalCotizacion,lblAnticipo,lblCantidadCola,lblResultadoExterno;
+            lblDetalleTitular,lblDetalleApartamento,lblDetalleOcupantes,lblDetalleNoches,lblDetalleFolio,
+            lblTotalCotizacion,lblAnticipo,lblCantidadCola,lblResultadoExterno;
     @FXML private TextField txtBuscarReserva,txtDocumentoTitular,txtApartamentoSeleccionado,
-      txtHoraLlegada,txtNombreOcupante;
+            txtHoraLlegada,txtNombreOcupante;
     @FXML private ComboBox<String> cmbEstadoReserva,cmbCanalReserva,cmbOrdenDisponibilidad,cmbNuevoCanal;
     @FXML private DatePicker dpFiltroEntrada,dpBusquedaEntrada,dpBusquedaSalida,dpNuevaEntrada,
-      dpNuevaSalida,dpNacimientoOcupante;
+            dpNuevaSalida,dpNacimientoOcupante;
     @FXML private Spinner<Integer> spnCantidadPersonas;
+    @FXML private CheckBox chkTitularSeHospeda;
     @FXML private TableView<Reserva> tablaReservas;
     @FXML private TableColumn<Reserva,String> colReservaCodigo,colReservaTitular,colReservaApartamento,
-      colReservaEntrada,colReservaSalida,colReservaCanal,colReservaEstado;
+            colReservaEntrada,colReservaSalida,colReservaCanal,colReservaEstado;
     @FXML private TableView<Apartamento> tablaDisponibilidad;
     @FXML private TableColumn<Apartamento,String> colDisponibleCodigo,colDisponibleNombre,
-      colDisponibleBloque,colDisponibleCapacidad,colDisponibleDormitorios,colDisponiblePrecio,colDisponibleEstado;
+            colDisponibleBloque,colDisponibleCapacidad,colDisponibleDormitorios,colDisponiblePrecio,colDisponibleEstado;
     @FXML private TableView<Ocupante> tablaOcupantesNuevaReserva;
     @FXML private TableColumn<Ocupante,String> colOcupanteNombre,colOcupanteNacimiento,colOcupantePago;
     @FXML private TableView<SolicitudExterna> tablaColaExterna,tablaConflictos;
     @FXML private TableColumn<SolicitudExterna,String> colColaOrden,colColaSolicitud,colColaRecibida,
-      colColaTitular,colColaApartamento,colColaEntrada,colColaSalida,colColaEstado,
-      colConflictoSolicitud,colConflictoApartamento,colConflictoFechas,colConflictoReserva,colConflictoMotivo;
+            colColaTitular,colColaApartamento,colColaEntrada,colColaSalida,colColaEstado,
+            colConflictoSolicitud,colConflictoApartamento,colConflictoFechas,colConflictoReserva,colConflictoMotivo;
     @FXML private Button btnLimpiarFiltros,btnVerDetalle,btnConfirmarReserva,btnCancelarReserva,
-      btnCheckIn,btnCheckOut,btnVerFolio,btnBuscarDisponibilidad,btnSeleccionarApartamento,
-      btnAgregarOcupante,btnQuitarOcupante,btnCotizar,btnCrearReserva,btnActualizarCola,
-      btnProcesarSiguiente,btnActualizarConflictos,btnMenuInicio,btnMenuReservas,
-      btnMenuCalendario,btnMenuUsuario,btnMenuPreparacion,btnMenuMapa,btnMenuEstadisticas,
-      btnMenuCargaDatos;
+            btnCheckIn,btnCheckOut,btnVerFolio,btnRegistrarPago,btnBuscarDisponibilidad,btnSeleccionarApartamento,
+            btnAgregarOcupante,btnQuitarOcupante,btnCotizar,btnCrearReserva,btnActualizarCola,
+            btnProcesarSiguiente,btnActualizarConflictos,btnMenuInicio,btnMenuReservas,
+            btnMenuCalendario,btnMenuUsuario,btnMenuPreparacion,btnMenuMapa,btnMenuEstadisticas,
+            btnMenuCargaDatos;
 
     private SistemaSGA sistema;
     private final javafx.collections.ObservableList<Ocupante> ocupantes = FXCollections.observableArrayList();
     private BigDecimal ultimaCotizacion;
     private Apartamento apartamentoElegido;
     private Estancia estanciaCotizada;
+    private String documentoTitularCotizado;
+    private boolean titularIncluidoCotizado;
 
     @FXML private void initialize() {
         cmbEstadoReserva.getItems().add("Todos");
@@ -117,6 +123,7 @@ public class VistaReservasController {
         btnCheckIn.setOnAction(e->operarReserva("Check-in"));
         btnCheckOut.setOnAction(e->operarReserva("Check-out"));
         btnVerFolio.setOnAction(e->verFolio());
+        btnRegistrarPago.setOnAction(e->registrarPago());
         btnBuscarDisponibilidad.setOnAction(e->buscarDisponibilidad());
         btnSeleccionarApartamento.setOnAction(e->seleccionarApartamento());
         btnAgregarOcupante.setOnAction(e->agregarOcupante());
@@ -140,6 +147,8 @@ public class VistaReservasController {
         dpNuevaEntrada.valueProperty().addListener((o,a,b)->invalidarCotizacion());
         dpNuevaSalida.valueProperty().addListener((o,a,b)->invalidarCotizacion());
         cmbNuevoCanal.valueProperty().addListener((o,a,b)->invalidarCotizacion());
+        txtDocumentoTitular.textProperty().addListener((o,a,b)->invalidarCotizacion());
+        chkTitularSeHospeda.selectedProperty().addListener((o,a,b)->invalidarCotizacion());
         actualizarTodo();
     }
     private static <T> void columna(TableColumn<T,String> col,Function<T,String> f) {
@@ -196,29 +205,185 @@ public class VistaReservasController {
             if(!confirmar("Confirmar operación",operacion+" reserva "+r.getCodigo()+"?"))return;
             switch(operacion) {
                 case "Confirmar"->{
-                    TextInputDialog dialog=new TextInputDialog("0");
-                    dialog.setTitle("Confirmación de reserva");
-                    dialog.setHeaderText("Total cotizado de "+r.getCodigo());
-                    dialog.setContentText("Valor total COP (para WEB debe existir anticipo pagado):");
-                    var resultado=dialog.showAndWait();
-                    if(resultado.isEmpty())return;
-                    sistema.getServicioReserva().confirmarReserva(r.getCodigo(),new BigDecimal(resultado.get()));
+                    if (!asegurarCargoAlojamiento(r)) return;
+                    BigDecimal total = r.getFolio().calcularTotalCargos();
+                    sistema.getServicioReserva().confirmarReserva(r.getCodigo(), total);
                 }
                 case "Cancelar"->sistema.getServicioReserva().cancelarReserva(r.getCodigo());
                 case "Check-in"->sistema.getServicioReserva().realizarCheckIn(r.getCodigo());
-                case "Check-out"->sistema.getServicioReserva().realizarCheckOut(r.getCodigo());
+                case "Check-out"->{
+                    if (r.getFolio().calcularSaldo().signum() > 0)
+                        throw new IllegalStateException("Hay un saldo pendiente de $ " + dinero(r.getFolio().calcularSaldo())
+                                + ". Registra el pago antes de finalizar la estancia.");
+                    sistema.getServicioReserva().realizarCheckOut(r.getCodigo());
+                }
             }
             guardar();actualizarTodo();informar("Operación completada",operacion+" realizado.");
         }catch(Exception ex){error(ex);}
     }
+    private static String dinero(BigDecimal valor) {
+        return valor.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    }
+
+    private static int siguienteMovimientoId(Folio folio) {
+        int maximo = 0;
+        for (Movimiento movimiento : folio.getMovimientos())
+            maximo = Math.max(maximo, movimiento.getId());
+        if (maximo == Integer.MAX_VALUE) throw new IllegalStateException("No quedan identificadores de movimiento.");
+        return maximo + 1;
+    }
+
+    /**
+     * Los datos históricos y algunas reservas externas no guardan ocupantes ni edades.
+     * Por ello no se inventa un precio: se solicita el número de personas que pagan.
+     * Nunca duplica un cargo ya registrado ni modifica directamente el TXT.
+     */
+    private boolean asegurarCargoAlojamiento(Reserva reserva) throws IOException {
+        Folio folio = reserva.getFolio();
+        if (folio.calcularTotalCargos().signum() > 0) return true;
+        if (reserva.getEstado() == EstadoReserva.CANCELADA
+                || reserva.getEstado() == EstadoReserva.NO_PRESENTADO)
+            throw new IllegalStateException("No se puede regularizar una reserva cancelada o no presentada.");
+
+        TextInputDialog dialogo = new TextInputDialog("1");
+        dialogo.setTitle("Regularizar alojamiento - " + reserva.getCodigo());
+        dialogo.setHeaderText("Esta reserva no tiene cargo de alojamiento registrado");
+        dialogo.setContentText("No se conservó el detalle de ocupantes de esta reserva."
+                + "\nIndica cuántas personas pagan (menores de 6 años no pagan):");
+        Optional<String> respuesta = dialogo.showAndWait();
+        if (respuesta.isEmpty()) return false;
+        int personas;
+        try {
+            personas = Integer.parseInt(respuesta.get().trim());
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Introduce un número entero de personas que pagan.");
+        }
+        if (personas < 1 || personas > reserva.getApartamento().getCapacidad())
+            throw new IllegalArgumentException("Las personas que pagan deben estar entre 1 y la capacidad del apartamento.");
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (LocalDate noche : reserva.getEstancia()) {
+            TipoTemporada temporada = sistema.getServicioCotizacion().obtenerTemporada(noche);
+            BigDecimal tarifa = reserva.getApartamento().obtenerTarifa(temporada);
+            total = total.add(tarifa.multiply(BigDecimal.valueOf(personas)));
+        }
+        if (total.signum() <= 0)
+            throw new IllegalStateException("La tarifa calculada es cero. Revisa el apartamento y las temporadas.");
+        if (!confirmar("Registrar cargo de alojamiento",
+                "Reserva: " + reserva.getCodigo()
+                        + "\nPersonas que pagan: " + personas
+                        + "\nNoches: " + reserva.calcularNumeroNoches()
+                        + "\nCargo a registrar: $ " + dinero(total)
+                        + "\n\nEste cargo se añadirá al folio y se guardará. ¿Continuar?")) return false;
+        folio.agregarMovimiento(new Movimiento(siguienteMovimientoId(folio),
+                "Cargo de alojamiento regularizado - " + reserva.getCodigo(),
+                TipoMovimiento.CARGO_ALOJAMIENTO, total, LocalDateTime.now()));
+        guardar();
+        actualizarTodo();
+        return true;
+    }
+
+    private void registrarPago() {
+        try {
+            Reserva r = seleccionada();
+            if (r.getEstado() == EstadoReserva.CANCELADA || r.getEstado() == EstadoReserva.NO_PRESENTADO)
+                throw new IllegalStateException("No se pueden registrar pagos para una reserva cancelada o no presentada.");
+            if (!asegurarCargoAlojamiento(r)) return;
+            Folio folio = r.getFolio();
+            BigDecimal total = folio.calcularTotalCargos();
+            BigDecimal saldo = folio.calcularSaldo();
+            if (saldo.signum() <= 0)
+                throw new IllegalStateException("Esta reserva ya está pagada. Saldo pendiente: $ " + dinero(saldo));
+
+            BigDecimal anticipoRequerido = sistema.getServicioCotizacion().calcularAnticipo(total);
+            BigDecimal pagado = folio.calcularTotalPagos();
+            BigDecimal anticipoFaltante = anticipoRequerido.subtract(pagado).max(BigDecimal.ZERO).min(saldo);
+            boolean esWeb = r.getCanalReserva() == CanalReserva.WEB;
+
+            ButtonType botonAnticipo = new ButtonType("Cobrar anticipo 30 %", ButtonBar.ButtonData.OTHER);
+            ButtonType botonSaldo = new ButtonType("Cobrar saldo completo", ButtonBar.ButtonData.OTHER);
+            ButtonType botonAbono = new ButtonType("Otro abono", ButtonBar.ButtonData.OTHER);
+            Alert opciones = new Alert(Alert.AlertType.CONFIRMATION);
+            opciones.setTitle("Cobros de reserva " + r.getCodigo());
+            opciones.setHeaderText("Selecciona qué deseas cobrar");
+            opciones.setContentText("Total alojamiento: $ " + dinero(total)
+                    + "\nPagado: $ " + dinero(pagado)
+                    + "\nSaldo pendiente: $ " + dinero(saldo)
+                    + (esWeb ? "\nAnticipo WEB obligatorio para confirmar (30 %): $ " + dinero(anticipoRequerido)
+                    : "\nEn RECEPCIÓN el anticipo no es obligatorio."));
+            opciones.getButtonTypes().clear();
+            if (esWeb && anticipoFaltante.signum() > 0) opciones.getButtonTypes().add(botonAnticipo);
+            opciones.getButtonTypes().addAll(botonSaldo, botonAbono, ButtonType.CANCEL);
+            Optional<ButtonType> eleccion = opciones.showAndWait();
+            if (eleccion.isEmpty() || eleccion.get() == ButtonType.CANCEL) return;
+
+            BigDecimal monto;
+            String concepto;
+            if (eleccion.get() == botonAnticipo) {
+                monto = anticipoFaltante;
+                concepto = "Pago de anticipo WEB (30 %) - " + r.getCodigo();
+            } else if (eleccion.get() == botonSaldo) {
+                monto = saldo;
+                concepto = pagado.signum() > 0
+                        ? "Pago de saldo restante - " + r.getCodigo()
+                        : "Pago completo de alojamiento - " + r.getCodigo();
+            } else {
+                TextInputDialog dialog = new TextInputDialog(dinero(saldo));
+                dialog.setTitle("Otro abono - " + r.getCodigo());
+                dialog.setHeaderText("Saldo pendiente: $ " + dinero(saldo));
+                dialog.setContentText("Valor del abono (COP):");
+                Optional<String> respuesta = dialog.showAndWait();
+                if (respuesta.isEmpty()) return;
+                monto = new BigDecimal(respuesta.get().trim().replace(",", "."));
+                concepto = "Abono a alojamiento - " + r.getCodigo();
+            }
+            if (monto.signum() <= 0 || monto.compareTo(saldo) > 0)
+                throw new IllegalArgumentException("El cobro debe ser mayor que cero y no superar el saldo pendiente.");
+            if (!confirmar("Confirmar cobro", "Registrar cobro de $ " + dinero(monto)
+                    + "\nConcepto: " + concepto + "?")) return;
+            folio.agregarMovimiento(new Movimiento(siguienteMovimientoId(folio),
+                    concepto, TipoMovimiento.PAGO, monto, LocalDateTime.now()));
+            guardar();
+            verFolio();
+        } catch (Exception ex) { error(ex); }
+    }
+
     private void verFolio() {
         try {
             Reserva r=seleccionada();
-            informar("Folio "+r.getFolio().getId(),"Cargos: "+r.getFolio().calcularTotalCargos()
-              +"\nPagos: "+r.getFolio().calcularTotalPagos()+"\nSaldo: "+r.getFolio().calcularSaldo()
-              +"\nMovimientos: "+r.getFolio().cantidadMovimientos());
+            Folio f = r.getFolio();
+            StringBuilder detalle = new StringBuilder("Cargos: $ " + dinero(f.calcularTotalCargos())
+                    + "\nPagos: $ " + dinero(f.calcularTotalPagos())
+                    + "\nSaldo pendiente: $ " + dinero(f.calcularSaldo())
+                    + "\nMovimientos: " + f.cantidadMovimientos() + "\n");
+            for (Movimiento m : f.getMovimientos())
+                detalle.append("\n").append(m.getFecha()).append(" | ").append(m.getTipo())
+                        .append(" | $ ").append(dinero(m.getMonto())).append(" | ").append(m.getDescripcion());
+            informar("Folio " + f.getId(), detalle.toString());
         }catch(Exception ex){error(ex);}
     }
+
+    private Huesped titular() {
+        String documento = txtDocumentoTitular.getText().strip();
+        Huesped h = sistema.getServicioHuesped().buscarPorDocumento(documento);
+        if (h == null) throw new IllegalArgumentException("El titular debe estar registrado en Huéspedes.");
+        return h;
+    }
+
+    private ListaDoble<Ocupante> ocupantesParaCotizar(Huesped h) {
+        ListaDoble<Ocupante> lista = new ListaDoble<>();
+        if (chkTitularSeHospeda.isSelected())
+            lista.agregarFinal(new Ocupante(h.getNombre(), h.getFechaNacimiento(), h));
+        for (Ocupante o : ocupantes) {
+            if (o.getNombre().equalsIgnoreCase(h.getNombre())
+                    && o.getFechaNacimiento().equals(h.getFechaNacimiento()))
+                throw new IllegalArgumentException("El titular ya figura como acompañante. No lo agregues dos veces.");
+            lista.agregarFinal(o);
+        }
+        if (lista.estaVacia()) throw new IllegalArgumentException("Debe hospedarse al menos una persona.");
+        return lista;
+    }
+
     private Estancia fechas(DatePicker entrada,DatePicker salida) {
         return new Estancia(Objects.requireNonNull(entrada.getValue(),"Fecha de entrada requerida"),
                 Objects.requireNonNull(salida.getValue(),"Fecha de salida requerida"));
@@ -257,54 +422,67 @@ public class VistaReservasController {
         }catch(Exception ex){error(ex);}
     }
     private void invalidarCotizacion() {
-        ultimaCotizacion=null;estanciaCotizada=null;
+        ultimaCotizacion=null;estanciaCotizada=null;documentoTitularCotizado=null;
         if(lblTotalCotizacion!=null)lblTotalCotizacion.setText("—");
         if(lblAnticipo!=null)lblAnticipo.setText("—");
     }
     private void cotizar() {
         try {
-            if(apartamentoElegido==null)throw new IllegalArgumentException("Selecciona un apartamento.");
-            if(ocupantes.isEmpty())throw new IllegalArgumentException("Agrega los ocupantes.");
-            Estancia estancia=fechas(dpNuevaEntrada,dpNuevaSalida);
-            ListaDoble<Ocupante> lista=new ListaDoble<>();
-            for(Ocupante o:ocupantes)lista.agregarFinal(o);
-            if(!sistema.getServicioReserva().getDisponibilidad().estaDisponible(
-                    apartamentoElegido.getCodigo(),estancia,ocupantes.size()))
-                throw new IllegalStateException("El apartamento no está disponible para estas fechas.");
-            ultimaCotizacion=sistema.getServicioCotizacion().calcularTotal(apartamentoElegido,estancia,lista);
-            estanciaCotizada=estancia;
-            lblTotalCotizacion.setText("$ "+ultimaCotizacion.toPlainString());
-            lblAnticipo.setText("$ "+sistema.getServicioCotizacion().calcularAnticipo(ultimaCotizacion));
-        }catch(Exception ex){error(ex);}
+            if (apartamentoElegido == null) throw new IllegalArgumentException("Selecciona un apartamento.");
+            Huesped h = titular();
+            Estancia estancia = fechas(dpNuevaEntrada, dpNuevaSalida);
+            ListaDoble<Ocupante> lista = ocupantesParaCotizar(h);
+            if (!sistema.getServicioReserva().getDisponibilidad().estaDisponible(
+                    apartamentoElegido.getCodigo(), estancia, lista.tamano()))
+                throw new IllegalStateException("El apartamento no está disponible o supera su capacidad.");
+            ultimaCotizacion = sistema.getServicioCotizacion().calcularTotal(apartamentoElegido, estancia, lista);
+            if (ultimaCotizacion.signum() <= 0)
+                throw new IllegalStateException("La cotización es $0 porque ninguno de los ocupantes paga. Revisa las edades y el titular.");
+            estanciaCotizada = estancia;
+            documentoTitularCotizado = h.getDocumento();
+            titularIncluidoCotizado = chkTitularSeHospeda.isSelected();
+            lblTotalCotizacion.setText("$ " + dinero(ultimaCotizacion));
+            lblAnticipo.setText("$ " + dinero(sistema.getServicioCotizacion().calcularAnticipo(ultimaCotizacion)));
+        } catch (Exception ex) { invalidarCotizacion(); error(ex); }
     }
+
     private void crearReserva() {
         try {
-            if(ultimaCotizacion==null||estanciaCotizada==null)
+            if (ultimaCotizacion == null || estanciaCotizada == null)
                 throw new IllegalStateException("Primero debes cotizar.");
-            if(apartamentoElegido==null)throw new IllegalArgumentException("Selecciona apartamento.");
-            if(ocupantes.isEmpty())throw new IllegalStateException("No hay ocupantes.");
-            if(!estanciaCotizada.getFechaEntrada().equals(dpNuevaEntrada.getValue())
-                    ||!estanciaCotizada.getFechaSalida().equals(dpNuevaSalida.getValue()))
+            if (apartamentoElegido == null) throw new IllegalArgumentException("Selecciona apartamento.");
+            if (!estanciaCotizada.getFechaEntrada().equals(dpNuevaEntrada.getValue())
+                    || !estanciaCotizada.getFechaSalida().equals(dpNuevaSalida.getValue()))
                 throw new IllegalStateException("Cambiaste fechas; vuelve a cotizar.");
-            Huesped h=sistema.getServicioHuesped().buscarPorDocumento(txtDocumentoTitular.getText().strip());
-            if(h==null)throw new IllegalArgumentException("El titular debe estar registrado en Huéspedes.");
-            CanalReserva canal=CanalReserva.valueOf(cmbNuevoCanal.getValue());
-            if(canal==CanalReserva.PLATAFORMA_EXTERNA)
+            Huesped h = titular();
+            if (!h.getDocumento().equals(documentoTitularCotizado)
+                    || chkTitularSeHospeda.isSelected() != titularIncluidoCotizado)
+                throw new IllegalStateException("Cambiaste el titular; vuelve a cotizar.");
+            ListaDoble<Ocupante> lista = ocupantesParaCotizar(h);
+            BigDecimal totalActual = sistema.getServicioCotizacion().calcularTotal(apartamentoElegido, estanciaCotizada, lista);
+            if (totalActual.compareTo(ultimaCotizacion) != 0)
+                throw new IllegalStateException("La cotización cambió; vuelve a cotizar.");
+            CanalReserva canal = CanalReserva.valueOf(cmbNuevoCanal.getValue());
+            if (canal == CanalReserva.PLATAFORMA_EXTERNA)
                 throw new IllegalArgumentException("Para plataformas externas utiliza la pestaña Canal externo.");
-            String codigo="R-"+UUID.randomUUID().toString().substring(0,8).toUpperCase();
-            int folioId=(int)(System.currentTimeMillis()%1_000_000_000);
-            Reserva r=new Reserva(codigo,h,apartamentoElegido,estanciaCotizada,canal,new Folio(folioId));
-            if(!txtHoraLlegada.getText().isBlank())
+            String codigo = "R-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+            int folioId = (int)(System.currentTimeMillis() % 1_000_000_000);
+            Reserva r = new Reserva(codigo, h, apartamentoElegido, estanciaCotizada, canal, new Folio(folioId));
+            if (!txtHoraLlegada.getText().isBlank())
                 r.setHoraLlegadaEstimada(LocalTime.parse(txtHoraLlegada.getText().strip()));
-            if(!sistema.getServicioReserva().registrarReserva(r,ocupantes.size()))
+            if (!sistema.getServicioReserva().registrarReserva(r, lista.tamano()))
                 throw new IllegalStateException("Reserva duplicada o fechas ocupadas.");
+            r.getFolio().agregarMovimiento(new Movimiento(siguienteMovimientoId(r.getFolio()),
+                    "Alojamiento " + r.calcularNumeroNoches() + " noche(s) · " + lista.tamano() + " ocupante(s)",
+                    TipoMovimiento.CARGO_ALOJAMIENTO, totalActual, LocalDateTime.now()));
             guardar();
-            informar("Reserva registrada",codigo+" (PENDIENTE)\nTotal cotizado: $ "+ultimaCotizacion
-              +"\nAnticipo WEB requerido: $ "+sistema.getServicioCotizacion().calcularAnticipo(ultimaCotizacion)
-              +"\nLos pagos se registran en el módulo de folios.");
-            ocupantes.clear();invalidarCotizacion();actualizarReservas();
-        }catch(Exception ex){error(ex);}
+            informar("Reserva registrada", codigo + " (PENDIENTE)\nCargo de alojamiento: $ " + dinero(totalActual)
+                    + "\nAnticipo WEB requerido: $ " + dinero(sistema.getServicioCotizacion().calcularAnticipo(totalActual))
+                    + "\nSelecciona la reserva y pulsa 'Registrar pago' para abonar o liquidar.");
+            ocupantes.clear(); invalidarCotizacion(); actualizarReservas();
+        } catch (Exception ex) { error(ex); }
     }
+
     private void actualizarExterno() {
         if(sistema==null)return;
         var cola=FXCollections.<SolicitudExterna>observableArrayList();
