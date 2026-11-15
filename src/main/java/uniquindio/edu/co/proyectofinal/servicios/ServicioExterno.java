@@ -49,6 +49,9 @@ public class ServicioExterno {
      * Reservas registradas en el sistema.
      */
     private final ListaDoble<Reserva> reservas;
+    private final ServicioReserva servicioReserva;
+    private final ServicioApartamento servicioApartamento;
+    private final ServicioHuesped servicioHuesped;
 
     /**
      * Huespedes registrados en el sistema.
@@ -79,7 +82,7 @@ public class ServicioExterno {
      * Crea el servicio con la fecha de nacimiento provisional por defecto.
      */
     public ServicioExterno() {
-        this(FECHA_NACIMIENTO_PROVISIONAL);
+        this(FECHA_NACIMIENTO_PROVISIONAL, null, null, null);
     }
 
     /**
@@ -88,6 +91,20 @@ public class ServicioExterno {
      * @param fechaNacimientoProvisional fecha usada para nuevos huespedes
      */
     public ServicioExterno(LocalDate fechaNacimientoProvisional) {
+        this(fechaNacimientoProvisional, null, null, null);
+    }
+
+    /** Constructor integrado: utiliza las reservas y entidades del sistema. */
+    public ServicioExterno(ServicioReserva servicioReserva,
+                           ServicioApartamento servicioApartamento,
+                           ServicioHuesped servicioHuesped) {
+        this(FECHA_NACIMIENTO_PROVISIONAL, servicioReserva, servicioApartamento, servicioHuesped);
+    }
+
+    private ServicioExterno(LocalDate fechaNacimientoProvisional,
+                            ServicioReserva servicioReserva,
+                            ServicioApartamento servicioApartamento,
+                            ServicioHuesped servicioHuesped) {
 
         if (fechaNacimientoProvisional == null) {
             throw new IllegalArgumentException(
@@ -98,7 +115,11 @@ public class ServicioExterno {
         this.solicitudesPendientes = new Cola<>();
         this.historial = new ListaDoble<>();
         this.apartamentos = new ListaDoble<>();
-        this.reservas = new ListaDoble<>();
+        this.servicioReserva = servicioReserva;
+        this.servicioApartamento = servicioApartamento;
+        this.servicioHuesped = servicioHuesped;
+        this.reservas = servicioReserva == null
+                ? new ListaDoble<>() : servicioReserva.getRegistroCompartido();
         this.huespedes = new ListaDoble<>();
         this.comparadorReservas = new ComparadorReservas();
         this.fechaNacimientoProvisional = fechaNacimientoProvisional;
@@ -126,6 +147,10 @@ public class ServicioExterno {
             );
         }
 
+        if (servicioApartamento != null) {
+            if (!servicioApartamento.registrarApartamento(apartamento))
+                throw new IllegalArgumentException("El apartamento ya existe.");
+        }
         apartamentos.agregarFinal(apartamento);
     }
 
@@ -149,6 +174,8 @@ public class ServicioExterno {
             );
         }
 
+        if (servicioHuesped != null && !servicioHuesped.registrarHuesped(huesped))
+            throw new IllegalArgumentException("El huésped ya existe.");
         huespedes.agregarFinal(huesped);
     }
 
@@ -172,7 +199,12 @@ public class ServicioExterno {
             );
         }
 
-        reservas.agregarFinal(reserva);
+        if (servicioReserva != null) {
+            if (!servicioReserva.registrarReserva(reserva, 1))
+                throw new IllegalArgumentException("La reserva no se puede registrar.");
+        } else {
+            reservas.agregarFinal(reserva);
+        }
     }
 
     /**
@@ -250,13 +282,22 @@ public class ServicioExterno {
 
         if (titular == null) {
             titular = crearHuespedProvisional(solicitud);
+            if (servicioHuesped != null && !servicioHuesped.registrarHuesped(titular)) {
+                rechazar(solicitud, "No se pudo registrar el huésped.");
+                return null;
+            }
             huespedes.agregarFinal(titular);
         }
 
         Folio folio = new Folio(siguienteIdFolio++);
 
+        String codigoReserva;
+        do {
+            codigoReserva = generarCodigoReserva();
+        } while (buscarReserva(codigoReserva) != null);
+
         Reserva reserva = new Reserva(
-                generarCodigoReserva(),
+                codigoReserva,
                 titular,
                 apartamento,
                 estancia,
@@ -264,7 +305,14 @@ public class ServicioExterno {
                 folio
         );
 
-        reservas.agregarFinal(reserva);
+        if (servicioReserva != null) {
+            if (!servicioReserva.registrarReserva(reserva, solicitud.getNumeroPersonas())) {
+                rechazar(solicitud, "El apartamento dejó de estar disponible.");
+                return null;
+            }
+        } else {
+            reservas.agregarFinal(reserva);
+        }
         solicitud.marcarProcesada();
         historial.agregarFinal(solicitud);
 
@@ -439,7 +487,7 @@ public class ServicioExterno {
 
         ListaDoble<Apartamento> copia = new ListaDoble<>();
 
-        for (Apartamento apartamento : apartamentos) {
+        for (Apartamento apartamento : (servicioApartamento == null ? apartamentos : servicioApartamento.listarApartamentos())) {
             copia.agregarFinal(apartamento);
         }
 
@@ -455,7 +503,7 @@ public class ServicioExterno {
 
         ListaDoble<Huesped> copia = new ListaDoble<>();
 
-        for (Huesped huesped : huespedes) {
+        for (Huesped huesped : (servicioHuesped == null ? huespedes : servicioHuesped.listarHuespedes())) {
             copia.agregarFinal(huesped);
         }
 
@@ -519,7 +567,7 @@ public class ServicioExterno {
 
         String codigoBuscado = codigo.trim();
 
-        for (Apartamento apartamento : apartamentos) {
+        for (Apartamento apartamento : (servicioApartamento == null ? apartamentos : servicioApartamento.listarApartamentos())) {
             if (apartamento.getCodigo().equals(codigoBuscado)) {
                 return apartamento;
             }
@@ -542,7 +590,7 @@ public class ServicioExterno {
 
         String documentoBuscado = documento.trim();
 
-        for (Huesped huesped : huespedes) {
+        for (Huesped huesped : (servicioHuesped == null ? huespedes : servicioHuesped.listarHuespedes())) {
             if (huesped.getDocumento().equals(documentoBuscado)) {
                 return huesped;
             }
@@ -611,7 +659,8 @@ public class ServicioExterno {
     private boolean esReservaActiva(EstadoReserva estado) {
         return estado == EstadoReserva.PENDIENTE
                 || estado == EstadoReserva.CONFIRMADA
-                || estado == EstadoReserva.EN_CURSO;
+                || estado == EstadoReserva.EN_CURSO
+                || estado == EstadoReserva.FINALIZADA;
     }
 
     /**
