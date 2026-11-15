@@ -65,6 +65,9 @@ public class VistaPanelUsuarioController {
     @FXML private TableColumn<Movimiento,String> colMovimientoTipo;
     @FXML private TableColumn<Movimiento,String> colMovimientoValor;
     @FXML private Label lblSaldoFolioSeleccionado;
+    @FXML private TabPane tabsUsuario;
+    @FXML private Tab tabFoliosUsuario;
+    @FXML private Button btnAgregarFavorito;
     @FXML private Button btnActualizarFavoritos;
     @FXML private TableView<Apartamento> tablaFavoritosUsuario;
     @FXML private TableColumn<Apartamento,String> colFavoritoCodigo;
@@ -141,6 +144,7 @@ public class VistaPanelUsuarioController {
         btnVerMovimientosFolio.setOnAction(e->mostrarFolio(tablaFoliosUsuario.getSelectionModel().getSelectedItem()));
         btnActualizarFolios.setOnAction(e->actualizar());
         btnActualizarFavoritos.setOnAction(e->actualizar());
+        btnAgregarFavorito.setOnAction(e->agregarFavorito());
         btnVerApartamentoFavorito.setOnAction(e->detalleFavorito(tablaFavoritosUsuario.getSelectionModel().getSelectedItem()));
         btnQuitarFavorito.setOnAction(e->quitarFavorito());
         btnBuscarHistorial.setOnAction(e->actualizar());
@@ -246,11 +250,50 @@ public class VistaPanelUsuarioController {
         for(Movimiento m:r.getFolio().getMovimientos())movimientos.add(m);
         tablaMovimientosFolioUsuario.setItems(movimientos);
         lblSaldoFolioSeleccionado.setText(dinero(r.getFolio().calcularSaldo()));
+        tablaFoliosUsuario.getSelectionModel().select(r);
+        tablaFoliosUsuario.scrollTo(r);
+        tabsUsuario.getSelectionModel().select(tabFoliosUsuario);
     }
     private void detalleFavorito(Apartamento a) {
         lblFavoritoApartamento.setText(a==null?"—":a.getCodigo()+" · "+a.getNombre());
         lblFavoritoCapacidad.setText(a==null?"—":""+a.getCapacidad());
         lblFavoritoCaracteristicas.setText(a==null?"—":a.getCaracteristicas());
+    }
+    private void agregarFavorito() {
+        if(sistema==null||huesped==null){aviso("Selecciona un huésped","Primero selecciona un perfil.");return;}
+        var opciones=FXCollections.<Apartamento>observableArrayList();
+        for(Apartamento a:sistema.getServicioApartamento().listarApartamentos())
+            opciones.add(a);
+        if(opciones.isEmpty()){aviso("Sin apartamentos","No hay apartamentos registrados.");return;}
+        var etiquetas=FXCollections.<String>observableArrayList();
+        for(Apartamento apartamento:opciones)
+            etiquetas.add(apartamento.getCodigo()+" - "+apartamento.getNombre());
+        ChoiceDialog<String> dialogo=new ChoiceDialog<>(etiquetas.get(0),etiquetas);
+        dialogo.setTitle("Agregar a favoritos");
+        dialogo.setHeaderText("Selecciona el apartamento que quieres guardar");
+        dialogo.setContentText("Apartamento:");
+        dialogo.showAndWait().ifPresent(seleccion->{
+            Apartamento a=null;
+            for(int i=0;i<etiquetas.size();i++){
+                if(etiquetas.get(i).equals(seleccion)){
+                    a=opciones.get(i);
+                    break;
+                }
+            }
+            if(a==null)return;
+            try {
+                boolean agregado=perfiles.agregarFavorito(huesped.getDocumento(),a.getCodigo());
+                if(!agregado){aviso("Ya es favorito",a.getCodigo()+" ya está en tu lista.");return;}
+                sistema.guardar();
+                actualizar();
+                for(Apartamento favorito:tablaFavoritosUsuario.getItems())
+                    if(favorito.getCodigo().equalsIgnoreCase(a.getCodigo())) {
+                        tablaFavoritosUsuario.getSelectionModel().select(favorito);
+                        tablaFavoritosUsuario.scrollTo(favorito);
+                        break;
+                    }
+            }catch(Exception ex){aviso("Error al guardar",ex.toString());}
+        });
     }
     private void quitarFavorito() {
         if(huesped==null)return;
