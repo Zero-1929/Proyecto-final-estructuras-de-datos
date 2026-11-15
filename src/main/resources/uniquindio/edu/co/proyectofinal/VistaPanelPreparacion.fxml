@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.proyectofinal.VistaPanelPreparacionController"
+            prefWidth="1440" prefHeight="900"
+            style="-fx-background-color: #F3F6FB;">
+
+    <!-- MENÚ LATERAL -->
+    <left>
+        <VBox prefWidth="245" spacing="8"
+              style="-fx-background-color: #14243D;">
+            <padding>
+                <Insets top="28" right="15" bottom="22" left="15"/>
+            </padding>
+
+            <Label text="APARTA-SUITES UQ"
+                   style="-fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold;"/>
+            <Label text="Sistema de Gestión de Alojamiento"
+                   wrapText="true"
+                   style="-fx-text-fill: #9FB1CB; -fx-font-size: 11px;"/>
+            <Separator style="-fx-padding: 12 0 8 0;"/>
+            <Label text="MENÚ PRINCIPAL"
+                   style="-fx-text-fill: #8195B1; -fx-font-size: 11px; -fx-padding: 8 10;"/>
+
+            <Button fx:id="btnMenuInicio" text="Inicio"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuReservas" text="Panel de reservas"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuCalendario" text="Calendario de ocupación"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuUsuario" text="Panel de usuario"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuPreparacion" text="Panel de preparación"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: #25466E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuMapa" text="Mapa interactivo"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuEstadisticas" text="Estadísticas"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuCargaDatos" text="Carga de datos"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <VBox spacing="5"
+                  style="-fx-background-color: #1D3555; -fx-background-radius: 10; -fx-padding: 14;">
+                <Label text="APARTA-SUITES UQ"
+                       style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                <Label text="Salento, Quindío"
+                       style="-fx-text-fill: #9FB1CB; -fx-font-size: 12px;"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <center>
+        <VBox>
+            <!-- BARRA SUPERIOR -->
+            <HBox prefHeight="65" alignment="CENTER_LEFT" spacing="12"
+                  style="-fx-background-color: white; -fx-border-color: #E6EBF2; -fx-border-width: 0 0 1 0;">
+                <padding>
+                    <Insets left="28" right="28"/>
+                </padding>
+                <Label text="Panel de preparación"
+                       style="-fx-text-fill: #697B91;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Aparta-Suites UQ"
+                       style="-fx-text-fill: #273D58; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER"
+                        VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox spacing="18"
+                          style="-fx-padding: 24; -fx-background-color: #F3F6FB;">
+
+                        <!-- ENCABEZADO -->
+                        <VBox spacing="5">
+                            <Label text="Gestión de preparación"
+                                   style="-fx-font-size: 27px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            <Label text="Atiende la cola según su prioridad y consulta la ruta sugerida para recorrer los apartamentos pendientes."
+                                   wrapText="true"
+                                   style="-fx-text-fill: #718197;"/>
+                        </VBox>
+
+                        <!-- TARJETAS DE RESUMEN -->
+                        <HBox spacing="12">
+                            <VBox spacing="7" HBox.hgrow="ALWAYS"
+                                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                                <Label text="PENDIENTES"
+                                       style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblTotalPendientes" text="—"
+                                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #C9981B;"/>
+                            </VBox>
+                            <VBox spacing="7" HBox.hgrow="ALWAYS"
+                                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                                <Label text="EN PREPARACIÓN"
+                                       style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblTotalEnPreparacion" text="—"
+                                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #C9981B;"/>
+                            </VBox>
+                            <VBox spacing="7" HBox.hgrow="ALWAYS"
+                                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                                <Label text="PREPARADOS"
+                                       style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblTotalPreparados" text="—"
+                                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #23965D;"/>
+                            </VBox>
+                            <VBox spacing="7" HBox.hgrow="ALWAYS"
+                                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                                <Label text="SIGUIENTE PRIORIDAD"
+                                       style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblSiguienteApartamento" text="—"
+                                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            </VBox>
+                        </HBox>
+
+                        <!-- COLA DE PREPARACIÓN -->
+                        <VBox spacing="13"
+                              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20;">
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <Label text="Cola de preparación por prioridad"
+                                       style="-fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnActualizarColaPreparacion"
+                                        text="Actualizar cola"
+                                        style="-fx-background-color: #EAF1F9; -fx-text-fill: #315A83;"/>
+                            </HBox>
+
+                            <Label text="La primera fila corresponde al apartamento que debe atenderse primero, según la prioridad calculada por el sistema."
+                                   wrapText="true"
+                                   style="-fx-text-fill: #718197;"/>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <TextField fx:id="txtBuscarApartamentoPreparacion"
+                                           promptText="Buscar código o apartamento"
+                                           prefWidth="235"/>
+                                <ComboBox fx:id="cmbFiltrarBloquePreparacion"
+                                          promptText="Todos los bloques"
+                                          prefWidth="175"/>
+                                <ComboBox fx:id="cmbFiltrarEstadoPreparacion"
+                                          promptText="Estado de preparación"
+                                          prefWidth="205"/>
+                                <Button fx:id="btnLimpiarFiltrosPreparacion"
+                                        text="Limpiar filtros"/>
+                            </HBox>
+
+                            <TableView fx:id="tablaColaPreparacion"
+                                       prefHeight="270">
+                                <columns>
+                                    <TableColumn fx:id="colPreparacionPrioridad"
+                                                 text="Prioridad" prefWidth="90"/>
+                                    <TableColumn fx:id="colPreparacionApartamento"
+                                                 text="Apartamento" prefWidth="130"/>
+                                    <TableColumn fx:id="colPreparacionUbicacion"
+                                                 text="Bloque / Piso" prefWidth="130"/>
+                                    <TableColumn fx:id="colPreparacionEstado"
+                                                 text="Estado" prefWidth="170"/>
+                                    <TableColumn fx:id="colPreparacionSalida"
+                                                 text="Última salida" prefWidth="130"/>
+                                    <TableColumn fx:id="colPreparacionProximaEntrada"
+                                                 text="Próxima entrada" prefWidth="140"/>
+                                    <TableColumn fx:id="colPreparacionMotivo"
+                                                 text="Motivo / Observación" prefWidth="220"/>
+                                </columns>
+                            </TableView>
+
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Button fx:id="btnIniciarPreparacion"
+                                        text="Iniciar preparación"
+                                        style="-fx-background-color: #2463A6; -fx-text-fill: white;"/>
+                                <Button fx:id="btnFinalizarPreparacion"
+                                        text="Marcar como preparado"
+                                        style="-fx-background-color: #23965D; -fx-text-fill: white;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="lblMensajeColaPreparacion"
+                                       text="Selecciona un apartamento de la cola."
+                                       style="-fx-text-fill: #718197;"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- DETALLE DEL APARTAMENTO -->
+                        <VBox spacing="13"
+                              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20;">
+                            <Label text="Detalle del apartamento seleccionado"
+                                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+
+                            <GridPane hgap="20" vgap="12">
+                                <children>
+                                    <Label text="Apartamento:"
+                                           GridPane.rowIndex="0"/>
+                                    <Label fx:id="lblDetalleApartamentoPreparacion"
+                                           text="—"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                    <Label text="Estado:"
+                                           GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                                    <Label fx:id="lblDetalleEstadoPreparacion"
+                                           text="—"
+                                           GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+                                    <Label text="Prioridad:"
+                                           GridPane.rowIndex="1"/>
+                                    <Label fx:id="lblDetallePrioridadPreparacion"
+                                           text="—"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                    <Label text="Próxima entrada:"
+                                           GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                    <Label fx:id="lblDetalleProximaEntradaPreparacion"
+                                           text="—"
+                                           GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                                </children>
+                            </GridPane>
+
+                            <Label text="Observaciones"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            <TextArea fx:id="txtObservacionesPreparacion"
+                                      promptText="Observaciones del apartamento seleccionado"
+                                      prefRowCount="2"
+                                      wrapText="true"
+                                      editable="false"/>
+                        </VBox>
+
+                        <!-- RUTA SUGERIDA -->
+                        <VBox spacing="13"
+                              style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20;">
+
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <Label text="Ruta sugerida de preparación"
+                                       style="-fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnCalcularRutaPreparacion"
+                                        text="Calcular ruta sugerida"
+                                        style="-fx-background-color: #2463A6; -fx-text-fill: white;"/>
+                            </HBox>
+
+                            <Label text="Recorrido propuesto desde un punto de servicio hasta los apartamentos pendientes. El cálculo utilizará el grafo de pasillos y las prioridades de preparación."
+                                   wrapText="true"
+                                   style="-fx-text-fill: #718197;"/>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <Label text="Punto de partida:"/>
+                                <ComboBox fx:id="cmbOrigenRutaPreparacion"
+                                          promptText="Seleccionar punto de servicio"
+                                          prefWidth="255"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label text="Distancia estimada:"/>
+                                <Label fx:id="lblDistanciaRutaPreparacion"
+                                       text="—"
+                                       style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            </HBox>
+
+                            <SplitPane dividerPositions="0.44" prefHeight="290">
+                                <items>
+                                    <VBox spacing="10"
+                                          style="-fx-padding: 12; -fx-background-color: #F8FAFD;">
+                                        <Label text="Orden de visita"
+                                               style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                        <ListView fx:id="listaParadasRutaPreparacion"
+                                                  VBox.vgrow="ALWAYS"/>
+                                    </VBox>
+
+                                    <VBox spacing="10"
+                                          style="-fx-padding: 12; -fx-background-color: #F8FAFD;">
+                                        <Label text="Vista previa del recorrido"
+                                               style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                        <StackPane fx:id="panelVistaRutaPreparacion"
+                                                   minHeight="210"
+                                                   VBox.vgrow="ALWAYS"
+                                                   style="-fx-background-color: #EDF2F8; -fx-background-radius: 8; -fx-border-color: #DCE4EF; -fx-border-radius: 8;">
+                                            <Label text="La ruta se dibujará aquí al calcularla."
+                                                   wrapText="true"
+                                                   style="-fx-text-fill: #718197;"/>
+                                        </StackPane>
+                                    </VBox>
+                                </items>
+                            </SplitPane>
+
+                            <Label fx:id="lblMensajeRutaPreparacion"
+                                   text="Aún no se ha calculado una ruta."
+                                   style="-fx-text-fill: #718197;"/>
+                        </VBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

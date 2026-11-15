@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+ fx:controller="uniquindio.edu.co.proyectofinal.VistaMapaInteractivoController" prefWidth="1440" prefHeight="900" style="-fx-background-color: #F3F6FB;">
+    <left>
+        <VBox prefWidth="245" spacing="8" style="-fx-background-color: #14243D;">
+            <padding><Insets top="28" right="15" bottom="22" left="15"/></padding>
+            <Label text="APARTA-SUITES UQ" style="-fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold;"/>
+            <Label text="Sistema de Gestión de Alojamiento" wrapText="true" style="-fx-text-fill: #9FB1CB; -fx-font-size: 11px;"/>
+            <Separator style="-fx-padding: 12 0 8 0;"/>
+            <Label text="MENÚ PRINCIPAL" style="-fx-text-fill: #8195B1; -fx-font-size: 11px; -fx-padding: 8 10;"/>
+            <Button fx:id="btnMenuInicio" text="Inicio" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuReservas" text="Panel de reservas" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuCalendario" text="Calendario de ocupación" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuUsuario" text="Panel de usuario" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuPreparacion" text="Panel de preparación" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuMapa" text="Mapa interactivo" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: #25466E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuEstadisticas" text="Estadísticas" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Button fx:id="btnMenuCargaDatos" text="Carga de datos" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <VBox spacing="5" style="-fx-background-color: #1D3555; -fx-background-radius: 10; -fx-padding: 14;">
+                <Label text="APARTA-SUITES UQ" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                <Label text="Salento, Quindío" style="-fx-text-fill: #9FB1CB; -fx-font-size: 12px;"/>
+            </VBox>
+        </VBox>
+    </left>
+    <center>
+        <VBox>
+            <HBox prefHeight="65" alignment="CENTER_LEFT" spacing="12" style="-fx-background-color: white; -fx-border-color: #E6EBF2; -fx-border-width: 0 0 1 0;">
+                <padding><Insets left="28" right="28"/></padding>
+                <Label text="Mapa interactivo" style="-fx-text-fill: #697B91;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Aparta-Suites UQ" style="-fx-text-fill: #273D58; -fx-font-weight: bold;"/>
+            </HBox>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                <content>
+                    <VBox spacing="17" style="-fx-padding: 24; -fx-background-color: #F3F6FB;">
+                        <VBox spacing="5">
+                            <Label text="Grafo del edificio" style="-fx-font-size: 27px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            <Label text="Explora apartamentos, puntos de servicio y pasillos. Consulta los estados y visualiza el camino más corto." wrapText="true" style="-fx-text-fill: #718197;"/>
+                        </VBox>
+                        <HBox spacing="12">
+                            <VBox spacing="7" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+                                <Label text="APARTAMENTOS" style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblTotalNodosApartamento" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            </VBox>
+                            <VBox spacing="7" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+                                <Label text="PUNTOS DE SERVICIO" style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblTotalPuntosServicio" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            </VBox>
+                            <VBox spacing="7" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+                                <Label text="PASILLOS / ARISTAS" style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblTotalAristas" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            </VBox>
+                            <VBox spacing="7" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+                                <Label text="DISTANCIA DE LA RUTA" style="-fx-text-fill: #718197;"/>
+                                <Label fx:id="lblDistanciaDijkstra" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #2463A6;"/>
+                            </VBox>
+                        </HBox>
+                        <VBox spacing="13" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <Label text="Exploración del edificio" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnNuevoPuntoServicio" text="+ Punto de servicio" style="-fx-background-color: #E8F3EB; -fx-text-fill: #226F45;"/>
+                                <Button fx:id="btnConectarNodos" text="+ Conectar pasillo" style="-fx-background-color: #E8F3EB; -fx-text-fill: #226F45;"/>
+                                <Button fx:id="btnEliminarConexion" text="Quitar conexión" style="-fx-background-color: #FCEDEC; -fx-text-fill: #A33C32;"/>
+                                <Button fx:id="btnActualizarMapa" text="Actualizar mapa" style="-fx-background-color: #EAF1F9; -fx-text-fill: #315A83;"/>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <VBox spacing="5">
+                                    <Label text="Bloque"/>
+                                    <ComboBox fx:id="cmbBloqueMapa" promptText="Todos los bloques" prefWidth="175"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Piso"/>
+                                    <ComboBox fx:id="cmbPisoMapa" promptText="Todos los pisos" prefWidth="160"/>
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label text="Buscar nodo"/>
+                                    <TextField fx:id="txtBuscarNodoMapa" promptText="Código o nombre" prefWidth="220"/>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnRestablecerVistaMapa" text="Restablecer vista" style="-fx-background-color: #EAF1F9; -fx-text-fill: #315A83;"/>
+                            </HBox>
+                            <FlowPane hgap="16" vgap="9">
+                                <Label text="● Preparado" style="-fx-text-fill: #23965D; -fx-font-weight: bold;"/>
+                                <Label text="● Ocupado" style="-fx-text-fill: #2463A6; -fx-font-weight: bold;"/>
+                                <Label text="● Pendiente / En preparación" style="-fx-text-fill: #C9981B; -fx-font-weight: bold;"/>
+                                <Label text="● Fuera de servicio" style="-fx-text-fill: #D44B4B; -fx-font-weight: bold;"/>
+                                <Label text="◆ Punto de servicio" style="-fx-text-fill: #7655A3; -fx-font-weight: bold;"/>
+                                <Label text="━ Pasillo" style="-fx-text-fill: #8394AA; -fx-font-weight: bold;"/>
+                                <Label text="━ Ruta calculada" style="-fx-text-fill: #E47721; -fx-font-weight: bold;"/>
+                            </FlowPane>
+                            <SplitPane dividerPositions="0.72" prefHeight="445">
+                                <items>
+                                    <VBox spacing="8" style="-fx-background-color: #F8FAFD; -fx-padding: 12;">
+                                        <HBox alignment="CENTER_LEFT">
+                                            <Label text="Plano del grafo" style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                            <Region HBox.hgrow="ALWAYS"/>
+                                            <Label text="Nodos y pasillos" style="-fx-text-fill: #718197; -fx-font-size: 12px;"/>
+                                        </HBox>
+                                        <ScrollPane fx:id="scrollPlanoGrafo" pannable="true" fitToWidth="false" fitToHeight="false" VBox.vgrow="ALWAYS">
+                                            <content>
+                                                <Pane fx:id="panelGrafoEdificio" prefWidth="900" prefHeight="600" minWidth="900" minHeight="600" style="-fx-background-color: #EDF2F8; -fx-border-color: #DCE4EF;">
+                                                    <children>
+                                                        <Label fx:id="lblMapaVacio" text="El grafo se dibujará aquí cuando se carguen los apartamentos, puntos de servicio y pasillos." wrapText="true" layoutX="185" layoutY="235" prefWidth="530" alignment="CENTER" style="-fx-text-fill: #718197; -fx-font-size: 15px;"/>
+                                                    </children>
+                                                </Pane>
+                                            </content>
+                                        </ScrollPane>
+                                    </VBox>
+                                    <VBox spacing="12" style="-fx-background-color: #F8FAFD; -fx-padding: 14;">
+                                        <Label text="Nodo seleccionado" style="-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                        <Label fx:id="lblMapaNodoNombre" text="Ningún nodo seleccionado" wrapText="true" style="-fx-font-weight: bold; -fx-text-fill: #315A83;"/>
+                                        <GridPane hgap="12" vgap="12">
+                                            <children>
+                                                <Label text="Tipo:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                                <Label fx:id="lblMapaNodoTipo" text="—" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                                <Label text="Código:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                                <Label fx:id="lblMapaNodoCodigo" text="—" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                                <Label text="Ubicación:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                                <Label fx:id="lblMapaNodoUbicacion" text="—" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                                <Label text="Estado:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                                <Label fx:id="lblMapaNodoEstado" text="—" wrapText="true" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                            </children>
+                                        </GridPane>
+                                        <Separator/>
+                                        <Label text="Conexiones directas" style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                        <ListView fx:id="listaConexionesNodo" prefHeight="190" VBox.vgrow="ALWAYS"/>
+                                        <Label text="Selecciona un nodo del grafo para consultar sus datos y pasillos adyacentes." wrapText="true" style="-fx-text-fill: #718197; -fx-font-size: 12px;"/>
+                                    </VBox>
+                                </items>
+                            </SplitPane>
+                        </VBox>
+                        <VBox spacing="14" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 20;">
+                            <Label text="Calculadora de rutas — Dijkstra" style="-fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                            <Label text="Selecciona un nodo de origen y otro de destino. La ruta más corta se destacará sobre el grafo del edificio." wrapText="true" style="-fx-text-fill: #718197;"/>
+                            <HBox spacing="12" alignment="BOTTOM_LEFT">
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Origen"/>
+                                    <ComboBox fx:id="cmbOrigenDijkstra" promptText="Seleccionar nodo de origen" maxWidth="Infinity"/>
+                                </VBox>
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Destino"/>
+                                    <ComboBox fx:id="cmbDestinoDijkstra" promptText="Seleccionar nodo de destino" maxWidth="Infinity"/>
+                                </VBox>
+                                <Button fx:id="btnCalcularDijkstra" text="Calcular ruta" style="-fx-background-color: #2463A6; -fx-text-fill: white;"/>
+                                <Button fx:id="btnLimpiarRutaMapa" text="Limpiar ruta" style="-fx-background-color: #EAF1F9; -fx-text-fill: #315A83;"/>
+                            </HBox>
+                            <HBox spacing="18" alignment="CENTER_LEFT">
+                                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                    <Label text="Secuencia de nodos del camino más corto" style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                    <ListView fx:id="listaCaminoDijkstra" prefHeight="140"/>
+                                </VBox>
+                                <VBox spacing="8" prefWidth="245">
+                                    <Label text="Resultado" style="-fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                                    <Label text="Distancia total:"/>
+                                    <Label fx:id="lblResultadoDistanciaRuta" text="—" style="-fx-font-size: 21px; -fx-font-weight: bold; -fx-text-fill: #2463A6;"/>
+                                    <Label text="Nodos del recorrido:"/>
+                                    <Label fx:id="lblCantidadNodosRuta" text="—" style="-fx-font-weight: bold;"/>
+                                </VBox>
+                            </HBox>
+                            <Label fx:id="lblMensajeDijkstra" text="Selecciona el origen y el destino para calcular un recorrido." wrapText="true" style="-fx-text-fill: #718197;"/>
+                        </VBox>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

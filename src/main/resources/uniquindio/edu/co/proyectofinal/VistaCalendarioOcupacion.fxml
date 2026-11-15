@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.proyectofinal.VistaCalendarioOcupacionController"
+            prefWidth="1440"
+            prefHeight="900"
+            style="-fx-background-color: #F3F6FB;">
+
+    <!-- MENÚ LATERAL -->
+    <left>
+        <VBox prefWidth="245"
+              spacing="8"
+              style="-fx-background-color: #14243D;">
+
+            <padding>
+                <Insets top="28" right="15" bottom="22" left="15"/>
+            </padding>
+
+            <Label text="APARTA-SUITES UQ"
+                   style="-fx-text-fill: white;
+                          -fx-font-size: 21px;
+                          -fx-font-weight: bold;"/>
+
+            <Label text="Sistema de Gestión de Alojamiento"
+                   wrapText="true"
+                   style="-fx-text-fill: #9FB1CB;
+                          -fx-font-size: 11px;"/>
+
+            <Separator style="-fx-padding: 12 0 8 0;"/>
+
+            <Label text="MENÚ PRINCIPAL"
+                   style="-fx-text-fill: #8195B1;
+                          -fx-font-size: 11px;
+                          -fx-padding: 8 10;"/>
+
+            <Button fx:id="btnMenuInicio"
+                    text="Inicio"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuReservas"
+                    text="Panel de reservas"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuCalendario"
+                    text="Calendario de ocupación"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: #25466E;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 9;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuUsuario"
+                    text="Panel de usuario"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuPreparacion"
+                    text="Panel de preparación"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuMapa"
+                    text="Mapa interactivo"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuEstadisticas"
+                    text="Estadísticas"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuCargaDatos"
+                    text="Carga de datos"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox spacing="5"
+                  style="-fx-background-color: #1D3555;
+                         -fx-background-radius: 10;
+                         -fx-padding: 14;">
+
+                <Label text="APARTA-SUITES UQ"
+                       style="-fx-text-fill: white;
+                              -fx-font-weight: bold;"/>
+
+                <Label text="Salento, Quindío"
+                       style="-fx-text-fill: #9FB1CB;
+                              -fx-font-size: 12px;"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <center>
+        <VBox>
+
+            <!-- BARRA SUPERIOR -->
+            <HBox prefHeight="65"
+                  alignment="CENTER_LEFT"
+                  spacing="12"
+                  style="-fx-background-color: white;
+                         -fx-border-color: #E6EBF2;
+                         -fx-border-width: 0 0 1 0;">
+
+                <padding>
+                    <Insets left="28" right="28"/>
+                </padding>
+
+                <Label text="Calendario de ocupación"
+                       style="-fx-text-fill: #697B91;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Aparta-Suites UQ"
+                       style="-fx-text-fill: #273D58;
+                              -fx-font-weight: bold;"/>
+            </HBox>
+
+            <VBox spacing="18"
+                  style="-fx-padding: 24;"
+                  VBox.vgrow="ALWAYS">
+
+                <!-- ENCABEZADO -->
+                <VBox spacing="6">
+
+                    <Label text="Calendario de ocupación"
+                           style="-fx-font-size: 27px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #172B48;"/>
+
+                    <Label text="Visualiza las noches libres, ocupadas y bloqueadas de cada apartamento."
+                           style="-fx-text-fill: #718197;"/>
+                </VBox>
+
+                <!-- FILTROS Y NAVEGACIÓN -->
+                <VBox spacing="15"
+                      style="-fx-background-color: white;
+                             -fx-background-radius: 12;
+                             -fx-padding: 20;">
+
+                    <HBox alignment="CENTER_LEFT"
+                          spacing="12">
+
+                        <Label text="Seleccionar período"
+                               style="-fx-font-size: 17px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #172B48;"/>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button fx:id="btnMesAnterior"
+                                text="&#x25C0;"
+                                prefWidth="42"
+                                style="-fx-background-color: #EAF1F9;
+                                       -fx-text-fill: #315A83;"/>
+
+                        <Label fx:id="lblMesActual"
+                               text="Mes / Año"
+                               minWidth="145"
+                               alignment="CENTER"
+                               style="-fx-font-size: 16px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #172B48;"/>
+
+                        <Button fx:id="btnMesSiguiente"
+                                text="&#x25B6;"
+                                prefWidth="42"
+                                style="-fx-background-color: #EAF1F9;
+                                       -fx-text-fill: #315A83;"/>
+
+                        <Button fx:id="btnIrMesActual"
+                                text="Ir al mes actual"
+                                style="-fx-background-color: #EAF1F9;
+                                       -fx-text-fill: #315A83;"/>
+                    </HBox>
+
+                    <HBox spacing="12"
+                          alignment="CENTER_LEFT">
+
+                        <VBox spacing="5">
+                            <Label text="Bloque"/>
+                            <ComboBox fx:id="cmbBloqueCalendario"
+                                      promptText="Todos los bloques"
+                                      prefWidth="180"/>
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label text="Estado de noche"/>
+                            <ComboBox fx:id="cmbEstadoNoche"
+                                      prefWidth="180"
+                                      value="Todos">
+
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Todos"/>
+                                        <String fx:value="Libre"/>
+                                        <String fx:value="Ocupada"/>
+                                        <String fx:value="Bloqueada"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label text="Buscar apartamento"/>
+                            <TextField fx:id="txtBuscarApartamentoCalendario"
+                                       promptText="Código o nombre"
+                                       prefWidth="220"/>
+                        </VBox>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button fx:id="btnActualizarCalendario"
+                                text="Actualizar calendario"
+                                style="-fx-background-color: #2463A6;
+                                       -fx-text-fill: white;"/>
+                    </HBox>
+
+                </VBox>
+
+                <!-- RESUMEN DE OCUPACIÓN -->
+                <HBox spacing="12">
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 16;">
+
+                        <Label text="APARTAMENTOS"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblTotalApartamentosCalendario"
+                               text="—"
+                               style="-fx-font-size: 25px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #172B48;"/>
+                    </VBox>
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 16;">
+
+                        <Label text="NOCHES LIBRES"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblNochesLibres"
+                               text="—"
+                               style="-fx-font-size: 25px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #23965D;"/>
+                    </VBox>
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 16;">
+
+                        <Label text="NOCHES OCUPADAS"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblNochesOcupadas"
+                               text="—"
+                               style="-fx-font-size: 25px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #2463A6;"/>
+                    </VBox>
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 16;">
+
+                        <Label text="NOCHES BLOQUEADAS"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblNochesBloqueadas"
+                               text="—"
+                               style="-fx-font-size: 25px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #C9981B;"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- CALENDARIO -->
+                <VBox spacing="14"
+                      VBox.vgrow="ALWAYS"
+                      style="-fx-background-color: white;
+                             -fx-background-radius: 12;
+                             -fx-padding: 20;">
+
+                    <HBox alignment="CENTER_LEFT"
+                          spacing="12">
+
+                        <Label text="Ocupación mensual por apartamento"
+                               style="-fx-font-size: 18px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #172B48;"/>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Label text="Una columna por noche"
+                               style="-fx-text-fill: #718197;
+                                      -fx-font-size: 12px;"/>
+                    </HBox>
+
+                    <!-- LEYENDA -->
+                    <FlowPane hgap="20"
+                              vgap="10">
+
+                        <Label text="● Libre"
+                               style="-fx-text-fill: #23965D;
+                                      -fx-font-weight: bold;"/>
+
+                        <Label text="● Ocupada"
+                               style="-fx-text-fill: #2463A6;
+                                      -fx-font-weight: bold;"/>
+
+                        <Label text="● Bloqueada"
+                               style="-fx-text-fill: #C9981B;
+                                      -fx-font-weight: bold;"/>
+
+                        <Label text="● Fuera de servicio"
+                               style="-fx-text-fill: #D44B4B;
+                                      -fx-font-weight: bold;"/>
+                    </FlowPane>
+
+                    <Separator/>
+
+                    <!-- CUADRÍCULA DESPLAZABLE -->
+                    <ScrollPane fx:id="scrollCalendario"
+                                fitToHeight="false"
+                                fitToWidth="false"
+                                pannable="true"
+                                hbarPolicy="AS_NEEDED"
+                                vbarPolicy="AS_NEEDED"
+                                VBox.vgrow="ALWAYS">
+
+                        <content>
+                            <VBox spacing="0"
+                                  minWidth="1100">
+
+                                <!--
+                                    El controlador generará aquí:
+                                    1. La cabecera con los días del mes.
+                                    2. Una fila por apartamento.
+                                    3. Una celda por noche.
+
+                                    Cada celda se coloreará según
+                                    su estado de ocupación.
+                                -->
+
+                                <GridPane fx:id="gridCalendario"
+                                          hgap="1"
+                                          vgap="1"
+                                          style="-fx-background-color: #DCE4EF;
+                                                 -fx-padding: 1;">
+
+                                    <!-- CABECERA DE EJEMPLO VISUAL -->
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="165"
+                                                           prefWidth="165"/>
+                                    </columnConstraints>
+
+                                    <children>
+
+                                        <Label text="Apartamento / Noche"
+                                               minWidth="165"
+                                               minHeight="45"
+                                               alignment="CENTER"
+                                               style="-fx-background-color: #25466E;
+                                                      -fx-text-fill: white;
+                                                      -fx-font-weight: bold;"
+                                               GridPane.rowIndex="0"
+                                               GridPane.columnIndex="0"/>
+
+                                    </children>
+
+                                </GridPane>
+
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+
+                </VBox>
+
+                <!-- DETALLE DE CELDA SELECCIONADA -->
+                <VBox spacing="12"
+                      style="-fx-background-color: white;
+                             -fx-background-radius: 12;
+                             -fx-padding: 18;">
+
+                    <Label text="Detalle de la noche seleccionada"
+                           style="-fx-font-size: 17px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #172B48;"/>
+
+                    <GridPane hgap="20"
+                              vgap="12">
+
+                        <children>
+
+                            <Label text="Apartamento:"
+                                   GridPane.rowIndex="0"/>
+
+                            <Label fx:id="lblDetalleApartamentoCalendario"
+                                   text="—"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0"/>
+
+                            <Label text="Fecha:"
+                                   GridPane.columnIndex="2"
+                                   GridPane.rowIndex="0"/>
+
+                            <Label fx:id="lblDetalleFechaCalendario"
+                                   text="—"
+                                   GridPane.columnIndex="3"
+                                   GridPane.rowIndex="0"/>
+
+                            <Label text="Estado de la noche:"
+                                   GridPane.rowIndex="1"/>
+
+                            <Label fx:id="lblDetalleEstadoCalendario"
+                                   text="—"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="1"/>
+
+                            <Label text="Código de reserva:"
+                                   GridPane.columnIndex="2"
+                                   GridPane.rowIndex="1"/>
+
+                            <Label fx:id="lblDetalleReservaCalendario"
+                                   text="—"
+                                   GridPane.columnIndex="3"
+                                   GridPane.rowIndex="1"/>
+
+                        </children>
+                    </GridPane>
+
+                </VBox>
+
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

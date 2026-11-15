@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.proyectofinal.VistaPanelUsuarioController"
+            prefWidth="1440"
+            prefHeight="900"
+            style="-fx-background-color: #F3F6FB;">
+
+    <!-- ====================================== -->
+    <!-- MENÚ LATERAL                          -->
+    <!-- ====================================== -->
+
+    <left>
+        <VBox prefWidth="245"
+              spacing="8"
+              style="-fx-background-color: #14243D;">
+
+            <padding>
+                <Insets top="28" right="15" bottom="22" left="15"/>
+            </padding>
+
+            <Label text="APARTA-SUITES UQ"
+                   style="-fx-text-fill: white;
+                          -fx-font-size: 21px;
+                          -fx-font-weight: bold;"/>
+
+            <Label text="Sistema de Gestión de Alojamiento"
+                   wrapText="true"
+                   style="-fx-text-fill: #9FB1CB;
+                          -fx-font-size: 11px;"/>
+
+            <Separator style="-fx-padding: 12 0 8 0;"/>
+
+            <Label text="MENÚ PRINCIPAL"
+                   style="-fx-text-fill: #8195B1;
+                          -fx-font-size: 11px;
+                          -fx-padding: 8 10;"/>
+
+            <Button fx:id="btnMenuInicio"
+                    text="Inicio"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuReservas"
+                    text="Panel de reservas"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuCalendario"
+                    text="Calendario de ocupación"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuUsuario"
+                    text="Panel de usuario"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: #25466E;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 9;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuPreparacion"
+                    text="Panel de preparación"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuMapa"
+                    text="Mapa interactivo"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuEstadisticas"
+                    text="Estadísticas"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Button fx:id="btnMenuCargaDatos"
+                    text="Carga de datos"
+                    maxWidth="Infinity"
+                    alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #C9D5E6;
+                           -fx-padding: 13 14;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox spacing="5"
+                  style="-fx-background-color: #1D3555;
+                         -fx-background-radius: 10;
+                         -fx-padding: 14;">
+
+                <Label text="APARTA-SUITES UQ"
+                       style="-fx-text-fill: white;
+                              -fx-font-weight: bold;"/>
+
+                <Label text="Salento, Quindío"
+                       style="-fx-text-fill: #9FB1CB;
+                              -fx-font-size: 12px;"/>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ====================================== -->
+    <!-- CONTENIDO PRINCIPAL                   -->
+    <!-- ====================================== -->
+
+    <center>
+        <VBox>
+
+            <!-- BARRA SUPERIOR -->
+            <HBox prefHeight="65"
+                  alignment="CENTER_LEFT"
+                  spacing="12"
+                  style="-fx-background-color: white;
+                         -fx-border-color: #E6EBF2;
+                         -fx-border-width: 0 0 1 0;">
+
+                <padding>
+                    <Insets left="28" right="28"/>
+                </padding>
+
+                <Label text="Panel de usuario"
+                       style="-fx-text-fill: #697B91;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label text="Aparta-Suites UQ"
+                       style="-fx-text-fill: #273D58;
+                              -fx-font-weight: bold;"/>
+            </HBox>
+
+            <VBox spacing="16"
+                  style="-fx-padding: 24;"
+                  VBox.vgrow="ALWAYS">
+
+                <!-- ENCABEZADO -->
+                <VBox spacing="5">
+
+                    <Label text="Mi espacio"
+                           style="-fx-font-size: 27px;
+                                  -fx-font-weight: bold;
+                                  -fx-text-fill: #172B48;"/>
+
+                    <Label text="Consulta tus reservas, saldos, apartamentos favoritos e historial."
+                           style="-fx-text-fill: #718197;"/>
+                </VBox>
+
+                <!-- PERFIL DEL HUÉSPED -->
+                <HBox spacing="18"
+                      alignment="CENTER_LEFT"
+                      style="-fx-background-color: white;
+                             -fx-background-radius: 12;
+                             -fx-padding: 20;">
+
+                    <StackPane minWidth="68"
+                               minHeight="68"
+                               maxWidth="68"
+                               maxHeight="68"
+                               style="-fx-background-color: #EAF1F9;
+                                      -fx-background-radius: 35;">
+
+                        <Label text="U"
+                               style="-fx-text-fill: #2463A6;
+                                      -fx-font-size: 30px;
+                                      -fx-font-weight: bold;"/>
+                    </StackPane>
+
+                    <VBox spacing="6"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label fx:id="lblNombreUsuario"
+                               text="Nombre del huésped"
+                               style="-fx-font-size: 19px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #172B48;"/>
+
+                        <Label fx:id="lblDocumentoUsuario"
+                               text="Documento: —"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblCorreoUsuario"
+                               text="Correo electrónico: —"
+                               style="-fx-text-fill: #718197;"/>
+                    </VBox>
+
+                    <Button fx:id="btnActualizarPerfil"
+                            text="Actualizar información"
+                            style="-fx-background-color: #EAF1F9;
+                                   -fx-text-fill: #315A83;"/>
+                </HBox>
+
+                <!-- TARJETAS RESUMEN -->
+                <HBox spacing="12">
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 18;">
+
+                        <Label text="MIS RESERVAS"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblTotalReservasUsuario"
+                               text="—"
+                               style="-fx-font-size: 26px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #172B48;"/>
+                    </VBox>
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 18;">
+
+                        <Label text="PRÓXIMAS ESTANCIAS"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblProximasEstancias"
+                               text="—"
+                               style="-fx-font-size: 26px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #2463A6;"/>
+                    </VBox>
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 18;">
+
+                        <Label text="SALDO PENDIENTE"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblSaldoPendienteUsuario"
+                               text="—"
+                               style="-fx-font-size: 26px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #C9981B;"/>
+                    </VBox>
+
+                    <VBox spacing="7"
+                          HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 12;
+                                 -fx-padding: 18;">
+
+                        <Label text="FAVORITOS"
+                               style="-fx-text-fill: #718197;"/>
+
+                        <Label fx:id="lblTotalFavoritos"
+                               text="—"
+                               style="-fx-font-size: 26px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: #D44B4B;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- PESTAÑAS DEL PANEL -->
+                <TabPane tabClosingPolicy="UNAVAILABLE"
+                         VBox.vgrow="ALWAYS">
+
+                    <tabs>
+
+                        <!-- ================================= -->
+                        <!-- PESTAÑA 1: MIS RESERVAS           -->
+                        <!-- ================================= -->
+
+                        <Tab text="Mis reservas">
+
+                            <ScrollPane fitToWidth="true"
+                                        hbarPolicy="NEVER">
+
+                                <content>
+                                    <VBox spacing="16"
+                                          style="-fx-background-color: #F3F6FB;
+                                                 -fx-padding: 18;">
+
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <HBox alignment="CENTER_LEFT">
+
+                                                <Label text="Mis reservas"
+                                                       style="-fx-font-size: 18px;
+                                                              -fx-font-weight: bold;
+                                                              -fx-text-fill: #172B48;"/>
+
+                                                <Region HBox.hgrow="ALWAYS"/>
+
+                                                <Button fx:id="btnActualizarReservasUsuario"
+                                                        text="Actualizar"
+                                                        style="-fx-background-color: #EAF1F9;
+                                                               -fx-text-fill: #315A83;"/>
+                                            </HBox>
+
+                                            <HBox spacing="12">
+
+                                                <TextField fx:id="txtBuscarReservaUsuario"
+                                                           promptText="Buscar por código"
+                                                           prefWidth="220"/>
+
+                                                <ComboBox fx:id="cmbEstadoReservaUsuario"
+                                                          promptText="Estado"
+                                                          prefWidth="180"/>
+
+                                                <Button fx:id="btnLimpiarFiltrosUsuario"
+                                                        text="Limpiar filtros"/>
+                                            </HBox>
+
+                                            <TableView fx:id="tablaReservasUsuario"
+                                                       prefHeight="300">
+
+                                                <columns>
+
+                                                    <TableColumn fx:id="colUsuarioCodigoReserva"
+                                                                 text="Código"
+                                                                 prefWidth="100"/>
+
+                                                    <TableColumn fx:id="colUsuarioApartamento"
+                                                                 text="Apartamento"
+                                                                 prefWidth="160"/>
+
+                                                    <TableColumn fx:id="colUsuarioEntrada"
+                                                                 text="Entrada"
+                                                                 prefWidth="120"/>
+
+                                                    <TableColumn fx:id="colUsuarioSalida"
+                                                                 text="Salida"
+                                                                 prefWidth="120"/>
+
+                                                    <TableColumn fx:id="colUsuarioNoches"
+                                                                 text="Noches"
+                                                                 prefWidth="90"/>
+
+                                                    <TableColumn fx:id="colUsuarioEstadoReserva"
+                                                                 text="Estado"
+                                                                 prefWidth="150"/>
+
+                                                </columns>
+                                            </TableView>
+
+                                            <HBox spacing="10">
+
+                                                <Button fx:id="btnVerDetalleReservaUsuario"
+                                                        text="Ver detalles"
+                                                        style="-fx-background-color: #EAF1F9;
+                                                               -fx-text-fill: #315A83;"/>
+
+                                                <Button fx:id="btnConsultarFolioUsuario"
+                                                        text="Consultar folio"
+                                                        style="-fx-background-color: #2463A6;
+                                                               -fx-text-fill: white;"/>
+                                            </HBox>
+                                        </VBox>
+
+                                        <!-- DETALLE DE RESERVA -->
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <Label text="Detalle de la reserva seleccionada"
+                                                   style="-fx-font-size: 17px;
+                                                          -fx-font-weight: bold;
+                                                          -fx-text-fill: #172B48;"/>
+
+                                            <GridPane hgap="20"
+                                                      vgap="12">
+
+                                                <children>
+
+                                                    <Label text="Código:"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label fx:id="lblUsuarioDetalleCodigo"
+                                                           text="—"
+                                                           GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label text="Apartamento:"
+                                                           GridPane.columnIndex="2"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label fx:id="lblUsuarioDetalleApartamento"
+                                                           text="—"
+                                                           GridPane.columnIndex="3"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label text="Entrada:"
+                                                           GridPane.rowIndex="1"/>
+
+                                                    <Label fx:id="lblUsuarioDetalleEntrada"
+                                                           text="—"
+                                                           GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="1"/>
+
+                                                    <Label text="Salida:"
+                                                           GridPane.columnIndex="2"
+                                                           GridPane.rowIndex="1"/>
+
+                                                    <Label fx:id="lblUsuarioDetalleSalida"
+                                                           text="—"
+                                                           GridPane.columnIndex="3"
+                                                           GridPane.rowIndex="1"/>
+
+                                                    <Label text="Estado:"
+                                                           GridPane.rowIndex="2"/>
+
+                                                    <Label fx:id="lblUsuarioDetalleEstado"
+                                                           text="—"
+                                                           GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="2"/>
+
+                                                </children>
+                                            </GridPane>
+
+                                        </VBox>
+
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </Tab>
+
+                        <!-- ================================= -->
+                        <!-- PESTAÑA 2: MIS FOLIOS             -->
+                        <!-- ================================= -->
+
+                        <Tab text="Mis folios">
+
+                            <ScrollPane fitToWidth="true"
+                                        hbarPolicy="NEVER">
+
+                                <content>
+                                    <VBox spacing="16"
+                                          style="-fx-background-color: #F3F6FB;
+                                                 -fx-padding: 18;">
+
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <Label text="Estado de mis folios"
+                                                   style="-fx-font-size: 18px;
+                                                          -fx-font-weight: bold;
+                                                          -fx-text-fill: #172B48;"/>
+
+                                            <Label text="Consulta los valores cobrados, los pagos realizados y el saldo de cada reserva."
+                                                   style="-fx-text-fill: #718197;"/>
+
+                                            <TableView fx:id="tablaFoliosUsuario"
+                                                       prefHeight="290">
+
+                                                <columns>
+
+                                                    <TableColumn fx:id="colFolioCodigo"
+                                                                 text="Folio"
+                                                                 prefWidth="115"/>
+
+                                                    <TableColumn fx:id="colFolioReserva"
+                                                                 text="Reserva"
+                                                                 prefWidth="115"/>
+
+                                                    <TableColumn fx:id="colFolioTotal"
+                                                                 text="Total"
+                                                                 prefWidth="145"/>
+
+                                                    <TableColumn fx:id="colFolioPagado"
+                                                                 text="Pagado"
+                                                                 prefWidth="145"/>
+
+                                                    <TableColumn fx:id="colFolioSaldo"
+                                                                 text="Saldo pendiente"
+                                                                 prefWidth="155"/>
+
+                                                </columns>
+                                            </TableView>
+
+                                            <HBox spacing="10">
+
+                                                <Button fx:id="btnVerMovimientosFolio"
+                                                        text="Ver movimientos"
+                                                        style="-fx-background-color: #2463A6;
+                                                               -fx-text-fill: white;"/>
+
+                                                <Button fx:id="btnActualizarFolios"
+                                                        text="Actualizar folios"/>
+                                            </HBox>
+                                        </VBox>
+
+                                        <!-- MOVIMIENTOS DEL FOLIO -->
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <Label text="Movimientos del folio seleccionado"
+                                                   style="-fx-font-size: 17px;
+                                                          -fx-font-weight: bold;
+                                                          -fx-text-fill: #172B48;"/>
+
+                                            <TableView fx:id="tablaMovimientosFolioUsuario"
+                                                       prefHeight="210">
+
+                                                <columns>
+
+                                                    <TableColumn fx:id="colMovimientoFecha"
+                                                                 text="Fecha"
+                                                                 prefWidth="160"/>
+
+                                                    <TableColumn fx:id="colMovimientoConcepto"
+                                                                 text="Concepto"
+                                                                 prefWidth="270"/>
+
+                                                    <TableColumn fx:id="colMovimientoTipo"
+                                                                 text="Tipo"
+                                                                 prefWidth="140"/>
+
+                                                    <TableColumn fx:id="colMovimientoValor"
+                                                                 text="Valor"
+                                                                 prefWidth="155"/>
+
+                                                </columns>
+                                            </TableView>
+
+                                            <HBox alignment="CENTER_LEFT"
+                                                  spacing="12">
+
+                                                <Label text="Saldo actual:"/>
+
+                                                <Label fx:id="lblSaldoFolioSeleccionado"
+                                                       text="—"
+                                                       style="-fx-font-size: 20px;
+                                                              -fx-font-weight: bold;
+                                                              -fx-text-fill: #172B48;"/>
+                                            </HBox>
+
+                                        </VBox>
+
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </Tab>
+
+                        <!-- ================================= -->
+                        <!-- PESTAÑA 3: FAVORITOS              -->
+                        <!-- ================================= -->
+
+                        <Tab text="Mis favoritos">
+
+                            <ScrollPane fitToWidth="true"
+                                        hbarPolicy="NEVER">
+
+                                <content>
+                                    <VBox spacing="16"
+                                          style="-fx-background-color: #F3F6FB;
+                                                 -fx-padding: 18;">
+
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <HBox alignment="CENTER_LEFT">
+
+                                                <Label text="Mis apartamentos favoritos"
+                                                       style="-fx-font-size: 18px;
+                                                              -fx-font-weight: bold;
+                                                              -fx-text-fill: #172B48;"/>
+
+                                                <Region HBox.hgrow="ALWAYS"/>
+
+                                                <Button fx:id="btnActualizarFavoritos"
+                                                        text="Actualizar"
+                                                        style="-fx-background-color: #EAF1F9;
+                                                               -fx-text-fill: #315A83;"/>
+                                            </HBox>
+
+                                            <Label text="Apartamentos que has guardado para consultar posteriormente."
+                                                   style="-fx-text-fill: #718197;"/>
+
+                                            <TableView fx:id="tablaFavoritosUsuario"
+                                                       prefHeight="300">
+
+                                                <columns>
+
+                                                    <TableColumn fx:id="colFavoritoCodigo"
+                                                                 text="Código"
+                                                                 prefWidth="120"/>
+
+                                                    <TableColumn fx:id="colFavoritoNombre"
+                                                                 text="Apartamento"
+                                                                 prefWidth="200"/>
+
+                                                    <TableColumn fx:id="colFavoritoBloque"
+                                                                 text="Bloque"
+                                                                 prefWidth="120"/>
+
+                                                    <TableColumn fx:id="colFavoritoCapacidad"
+                                                                 text="Capacidad"
+                                                                 prefWidth="120"/>
+
+                                                    <TableColumn fx:id="colFavoritoDormitorios"
+                                                                 text="Dormitorios"
+                                                                 prefWidth="130"/>
+
+                                                </columns>
+                                            </TableView>
+
+                                            <HBox spacing="10">
+
+                                                <Button fx:id="btnVerApartamentoFavorito"
+                                                        text="Ver apartamento"
+                                                        style="-fx-background-color: #2463A6;
+                                                               -fx-text-fill: white;"/>
+
+                                                <Button fx:id="btnQuitarFavorito"
+                                                        text="Quitar de favoritos"
+                                                        style="-fx-background-color: #FFF0F0;
+                                                               -fx-text-fill: #B84C4C;"/>
+                                            </HBox>
+                                        </VBox>
+
+                                        <!-- DETALLE FAVORITO -->
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <Label text="Detalle del apartamento favorito"
+                                                   style="-fx-font-size: 17px;
+                                                          -fx-font-weight: bold;
+                                                          -fx-text-fill: #172B48;"/>
+
+                                            <GridPane hgap="20"
+                                                      vgap="12">
+
+                                                <children>
+
+                                                    <Label text="Apartamento:"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label fx:id="lblFavoritoApartamento"
+                                                           text="—"
+                                                           GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label text="Capacidad:"
+                                                           GridPane.columnIndex="2"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label fx:id="lblFavoritoCapacidad"
+                                                           text="—"
+                                                           GridPane.columnIndex="3"
+                                                           GridPane.rowIndex="0"/>
+
+                                                    <Label text="Características:"
+                                                           GridPane.rowIndex="1"/>
+
+                                                    <Label fx:id="lblFavoritoCaracteristicas"
+                                                           text="—"
+                                                           wrapText="true"
+                                                           GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="1"
+                                                           GridPane.columnSpan="3"/>
+
+                                                </children>
+                                            </GridPane>
+
+                                        </VBox>
+
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </Tab>
+
+                        <!-- ================================= -->
+                        <!-- PESTAÑA 4: HISTORIAL              -->
+                        <!-- ================================= -->
+
+                        <Tab text="Mi historial">
+
+                            <ScrollPane fitToWidth="true"
+                                        hbarPolicy="NEVER">
+
+                                <content>
+                                    <VBox spacing="16"
+                                          style="-fx-background-color: #F3F6FB;
+                                                 -fx-padding: 18;">
+
+                                        <VBox spacing="12"
+                                              style="-fx-background-color: white;
+                                                     -fx-background-radius: 12;
+                                                     -fx-padding: 18;">
+
+                                            <Label text="Historial de reservas"
+                                                   style="-fx-font-size: 18px;
+                                                          -fx-font-weight: bold;
+                                                          -fx-text-fill: #172B48;"/>
+
+                                            <Label text="Consulta tus estancias anteriores y las reservas finalizadas, canceladas o no presentadas."
+                                                   style="-fx-text-fill: #718197;"/>
+
+                                            <HBox spacing="12">
+
+                                                <ComboBox fx:id="cmbEstadoHistorial"
+                                                          promptText="Filtrar por estado"
+                                                          prefWidth="190"/>
+
+                                                <DatePicker fx:id="dpDesdeHistorial"
+                                                            promptText="Desde"
+                                                            prefWidth="170"/>
+
+                                                <DatePicker fx:id="dpHastaHistorial"
+                                                            promptText="Hasta"
+                                                            prefWidth="170"/>
+
+                                                <Button fx:id="btnBuscarHistorial"
+                                                        text="Buscar"
+                                                        style="-fx-background-color: #2463A6;
+                                                               -fx-text-fill: white;"/>
+                                            </HBox>
+
+                                            <TableView fx:id="tablaHistorialUsuario"
+                                                       prefHeight="320">
+
+                                                <columns>
+
+                                                    <TableColumn fx:id="colHistorialCodigo"
+                                                                 text="Reserva"
+                                                                 prefWidth="110"/>
+
+                                                    <TableColumn fx:id="colHistorialApartamento"
+                                                                 text="Apartamento"
+                                                                 prefWidth="165"/>
+
+                                                    <TableColumn fx:id="colHistorialEntrada"
+                                                                 text="Entrada"
+                                                                 prefWidth="125"/>
+
+                                                    <TableColumn fx:id="colHistorialSalida"
+                                                                 text="Salida"
+                                                                 prefWidth="125"/>
+
+                                                    <TableColumn fx:id="colHistorialCanal"
+                                                                 text="Canal"
+                                                                 prefWidth="120"/>
+
+                                                    <TableColumn fx:id="colHistorialEstado"
+                                                                 text="Estado"
+                                                                 prefWidth="150"/>
+
+                                                </columns>
+                                            </TableView>
+
+                                            <HBox spacing="10">
+
+                                                <Button fx:id="btnVerDetalleHistorial"
+                                                        text="Ver detalle"
+                                                        style="-fx-background-color: #EAF1F9;
+                                                               -fx-text-fill: #315A83;"/>
+
+                                                <Button fx:id="btnVerFolioHistorial"
+                                                        text="Consultar folio"/>
+                                            </HBox>
+
+                                        </VBox>
+
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </Tab>
+
+                    </tabs>
+                </TabPane>
+
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>
+
