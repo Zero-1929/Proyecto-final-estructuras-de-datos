@@ -95,6 +95,26 @@ public class VistaGestionAdministrativaController {
         tabla.getSelectionModel().selectedItemProperty().addListener((o,an,a)->{
             if(a!=null){codigo.setText(a.getCodigo());nombre.setText(a.getNombre());bloque.setText(a.getBloque());piso.setText(""+a.getPiso());dorm.setText(""+a.getNumeroDormitorios());cap.setText(""+a.getCapacidad());car.setText(a.getCaracteristicas());}
         });
+        TextField codigoBusqueda = campo("Buscar código ABB");
+        Label resultadoBusqueda = new Label("Ingrese un código y pulse Buscar ABB.");
+        Button buscarABB = new Button("Buscar por código (ABB)");
+        buscarABB.setOnAction(evento -> {
+            try {
+                long inicioNs = System.nanoTime();
+                Apartamento encontrado = sistema.getServicioApartamento().buscarPorCodigo(codigoBusqueda.getText());
+                double ms = (System.nanoTime() - inicioNs) / 1_000_000.0;
+                if (encontrado == null) {
+                    tabla.getSelectionModel().clearSelection();
+                    resultadoBusqueda.setText(String.format(java.util.Locale.ROOT,
+                            "No encontrado · ABB · %.3f ms", ms));
+                } else {
+                    tabla.getSelectionModel().select(encontrado);
+                    tabla.scrollTo(encontrado);
+                    resultadoBusqueda.setText(String.format(java.util.Locale.ROOT,
+                            "Encontrado: %s · ABB · %.3f ms", encontrado.getCodigo(), ms));
+                }
+            } catch (Exception ex) { error(ex); }
+        });
         Runnable refrescar=()->tabla.getItems().setAll(iterar(sistema.getServicioApartamento().listarApartamentos()));
         Button registrar=boton("Registrar",()->{
             Apartamento a=new Apartamento(codigo.getText(),nombre.getText(),bloque.getText(),Integer.parseInt(piso.getText()),Integer.parseInt(dorm.getText()),Integer.parseInt(cap.getText()),car.getText());
@@ -112,7 +132,8 @@ public class VistaGestionAdministrativaController {
         },refrescar);
         refrescar.run();
         Label aviso=new Label("Nota: para nuevos apartamentos, configure también su conexión en el mapa y sus tarifas.");
-        return panel("Apartamentos (índice ABB por código)",tabla,new HBox(8,codigo,nombre,bloque,piso,dorm,cap,car),new HBox(8,registrar,modificar,eliminar),aviso);
+        return panel("Apartamentos (índice ABB por código)",tabla,new HBox(8,codigo,nombre,bloque,piso,dorm,cap,car),new HBox(8,registrar,modificar,eliminar),
+                new HBox(8,codigoBusqueda,buscarABB,resultadoBusqueda),aviso);
     }
 
     private Tab tabHuespedes() {
@@ -123,6 +144,26 @@ public class VistaGestionAdministrativaController {
         DatePicker nacimiento=new DatePicker();nacimiento.setPromptText("Nacimiento");
         tabla.getSelectionModel().selectedItemProperty().addListener((o,an,h)->{
             if(h!=null){doc.setText(h.getDocumento());nombre.setText(h.getNombre());telefono.setText(h.getTelefono());correo.setText(h.getCorreo());nacimiento.setValue(h.getFechaNacimiento());}
+        });
+        TextField documentoBusqueda = campo("Buscar documento ABB");
+        Label resultadoBusqueda = new Label("Ingrese un documento y pulse Buscar ABB.");
+        Button buscarABB = new Button("Buscar por documento (ABB)");
+        buscarABB.setOnAction(evento -> {
+            try {
+                long inicioNs = System.nanoTime();
+                Huesped encontrado = sistema.getServicioHuesped().buscarPorDocumento(documentoBusqueda.getText());
+                double ms = (System.nanoTime() - inicioNs) / 1_000_000.0;
+                if (encontrado == null) {
+                    tabla.getSelectionModel().clearSelection();
+                    resultadoBusqueda.setText(String.format(java.util.Locale.ROOT,
+                            "No encontrado · ABB · %.3f ms", ms));
+                } else {
+                    tabla.getSelectionModel().select(encontrado);
+                    tabla.scrollTo(encontrado);
+                    resultadoBusqueda.setText(String.format(java.util.Locale.ROOT,
+                            "Encontrado: %s · ABB · %.3f ms", encontrado.getDocumento(), ms));
+                }
+            } catch (Exception ex) { error(ex); }
         });
         Runnable refrescar=()->tabla.getItems().setAll(iterar(sistema.getServicioHuesped().listarHuespedes()));
         Button registrar=boton("Registrar",()->{
@@ -140,7 +181,8 @@ public class VistaGestionAdministrativaController {
             sistema.getServicioHuesped().eliminarHuesped(h.getDocumento());
         },refrescar);
         refrescar.run();
-        return panel("Huéspedes (ABB por documento)",tabla,new HBox(8,doc,nombre,nacimiento,telefono,correo),new HBox(8,registrar,modificar,eliminar));
+        return panel("Huéspedes (ABB por documento)",tabla,new HBox(8,doc,nombre,nacimiento,telefono,correo),new HBox(8,registrar,modificar,eliminar),
+                new HBox(8,documentoBusqueda,buscarABB,resultadoBusqueda));
     }
 
 

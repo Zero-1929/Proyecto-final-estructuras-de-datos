@@ -70,13 +70,11 @@ public class ServicioHuesped {
     public Huesped buscarPorDocumento(String documento) {
         String documentoValidado = validarDocumento(documento);
 
-        for (Huesped huesped : huespedes) {
-            if (huesped.getDocumento().equals(documentoValidado)) {
-                return huesped;
-            }
-        }
-
-        return null;
+        // La comparación natural de Huesped usa exclusivamente el documento.
+        // Esta clave temporal permite buscar por ramas del ABB, sin recorrerlo entero.
+        Huesped clave = new Huesped("Consulta", java.time.LocalDate.of(2000, 1, 1),
+                documentoValidado, "N/A", "N/A");
+        return huespedes.buscar(clave);
     }
 
     /**
