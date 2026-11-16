@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.util.*;
 import uniquindio.edu.co.proyectofinal.logica.SistemaSGA;
@@ -96,6 +97,8 @@ public class VistaMapaInteractivoController {
             b.setOnAction(e->alerta("Módulo pendiente: "+b.getText()));
     }
     public void setSistema(SistemaSGA sistema) {
+        SesionActual.exigirPersonal();
+        SesionActual.ocultarSoloAdministrador(btnMenuEstadisticas, btnMenuCargaDatos);
         if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
             try {
                 javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));
@@ -120,13 +123,38 @@ public class VistaMapaInteractivoController {
         for(Apartamento a:sistema.getServicioApartamento().listarApartamentos())apartamentos.put(a.getCodigo(),a);
         List<String> nodos=new ArrayList<>();
         for(String nodo:rutas.obtenerMapa())nodos.add(nodo);
-        int i=0;
+        // Plano por bloques: columnas para A/B/C y una franja inferior para servicios.
+        Map<String,List<String>> porBloque = new LinkedHashMap<>();
+        List<String> servicios = new ArrayList<>();
         for(String nodo:nodos) {
             Apartamento a=apartamentos.get(nodo);
             tipos.put(nodo,a==null?"Punto de servicio":"Apartamento");
             ubicaciones.put(nodo,a==null?"Punto de servicio":a.getBloque()+" · piso "+a.getPiso());
-            posiciones.put(nodo,new double[]{105+(i%6)*140,90+(i/6)*125});i++;
+            if(a==null) servicios.add(nodo);
+            else porBloque.computeIfAbsent(a.getBloque(), k->new ArrayList<>()).add(nodo);
         }
+        List<String> bloques=new ArrayList<>(porBloque.keySet());
+        Collections.sort(bloques);
+        int columnas=Math.max(3,bloques.size());
+        for(int b=0;b<bloques.size();b++) {
+            List<String> grupo=porBloque.get(bloques.get(b));
+            grupo.sort(Comparator.comparingInt((String codigo)->apartamentos.get(codigo).getPiso())
+                .thenComparing(Comparator.naturalOrder()));
+            for(int i=0;i<grupo.size();i++) {
+                int columna=i%2, fila=i/2;
+                posiciones.put(grupo.get(i),new double[]{145+b*430+columna*170,135+fila*125});
+            }
+        }
+        int filasMax=1;
+        for(List<String> grupo:porBloque.values()) filasMax=Math.max(filasMax,(grupo.size()+1)/2);
+        double yServicios=190+filasMax*125;
+        servicios.sort(
+                Comparator.comparingInt(
+                        (String n) -> n.toLowerCase(Locale.ROOT).contains("recep") ? 0 : 1
+                ).thenComparing(Comparator.naturalOrder())
+        );
+        for(int i=0;i<servicios.size();i++)
+            posiciones.put(servicios.get(i),new double[]{145+(i%7)*185,yServicios+(i/7)*115});
         for(int x=0;x<nodos.size();x++)for(int y=x+1;y<nodos.size();y++)
             if(rutas.estanConectadas(nodos.get(x),nodos.get(y)))
                 aristas.add(nodos.get(x)+"|"+nodos.get(y));
@@ -163,9 +191,26 @@ public class VistaMapaInteractivoController {
     private void dibujar() {
         if(cambiando||rutas==null)return;
         panelGrafoEdificio.getChildren().clear();
-        int n=posiciones.size();
-        panelGrafoEdificio.setPrefSize(Math.max(900,140*Math.min(n,6)+120),
-                Math.max(490,125*((n+5)/6)+130));
+        double ancho=1350, alto=640;
+        for(double[] p:posiciones.values()) {ancho=Math.max(ancho,p[0]+110);alto=Math.max(alto,p[1]+105);}
+        panelGrafoEdificio.setPrefSize(ancho,alto);
+        // Fondos de bloque, sin alterar las conexiones ni los pesos reales del grafo.
+        Set<String> bloquesDibujados=new LinkedHashSet<>();
+        for(Apartamento a:apartamentos.values()) bloquesDibujados.add(a.getBloque());
+        List<String> ordenBloques=new ArrayList<>(bloquesDibujados);
+        Collections.sort(ordenBloques);
+        for(int b=0;b<ordenBloques.size();b++) {
+            Rectangle fondo=new Rectangle(55+b*430,58,390,Math.max(270,alto-285));
+            fondo.setArcWidth(18);fondo.setArcHeight(18);
+            fondo.setFill(Color.web(b%2==0?"#E1ECF7":"#E7EEF8"));
+            fondo.setStroke(Color.web("#CBD8E7"));
+            fondo.setMouseTransparent(true);
+            Label titulo=new Label("BLOQUE "+ordenBloques.get(b));
+            titulo.setLayoutX(75+b*430);titulo.setLayoutY(72);
+            titulo.setStyle("-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #28496E;");
+            titulo.setMouseTransparent(true);
+            panelGrafoEdificio.getChildren().addAll(fondo,titulo);
+        }
         for(String arista:aristas) {
             String[] extremos=arista.split("\\|");
             if(!visible(extremos[0])||!visible(extremos[1]))continue;
@@ -176,20 +221,22 @@ public class VistaMapaInteractivoController {
                 ||(camino.get(i).equals(extremos[1])&&camino.get(i+1).equals(extremos[0])))ruta=true;
             Line linea=new Line(a[0],a[1],b[0],b[1]);
             linea.setStroke(ruta?Color.web("#168B70"):Color.web("#9AA9B9"));
-            linea.setStrokeWidth(ruta?5:2);
+            linea.setStrokeWidth(ruta?5:1.5);
+            linea.setOpacity(ruta?1:0.48);
+            linea.setMouseTransparent(true);
             panelGrafoEdificio.getChildren().add(linea);
         }
         for(var entrada:posiciones.entrySet()){
             String nodo=entrada.getKey();if(!visible(nodo))continue;
             double[] p=entrada.getValue();
-            Circle c=new Circle(p[0],p[1],17);
+            Circle c=new Circle(p[0],p[1],21);
             c.setFill(nodo.equals(seleccionado)?Color.web("#E7A23B"):
                 camino.contains(nodo)?Color.web("#168B70"):
                 apartamentos.containsKey(nodo)?Color.web("#3B6B9D"):Color.web("#7955A6"));
             c.setStroke(Color.WHITE);c.setStrokeWidth(2);
             c.setOnMouseClicked(e->seleccionar(nodo));
-            Label l=new Label(nodo);l.setLayoutX(p[0]-32);l.setLayoutY(p[1]+20);
-            l.setMinWidth(64);l.setStyle("-fx-alignment:center;-fx-font-weight:bold;");
+            Label l=new Label(nodo);l.setLayoutX(p[0]-65);l.setLayoutY(p[1]+26);
+            l.setMinWidth(130);l.setStyle("-fx-alignment:center;-fx-font-weight:bold;");
             l.setOnMouseClicked(e->seleccionar(nodo));
             panelGrafoEdificio.getChildren().addAll(c,l);
         }

@@ -68,8 +68,8 @@ public class VistaEstadisticasController {
         conectar(btnMenuUsuario,"VistaPanelUsuario.fxml");
         conectar(btnMenuPreparacion,"VistaPanelPreparacion.fxml");
         conectar(btnMenuMapa,"VistaMapaInteractivo.fxml");
-        btnMenuCargaDatos.setOnAction(e->new Alert(Alert.AlertType.INFORMATION,
-                "La carga de datos se gestiona desde los módulos existentes.").showAndWait());
+        btnMenuCargaDatos.setText("Gestión administrativa");
+        conectar(btnMenuCargaDatos,"VistaGestionAdministrativa.fxml");
     }
     @SafeVarargs private final void configurar(TableView<List<String>> tabla,TableColumn<List<String>,String>... columnas) {
         for(int i=0;i<columnas.length;i++) {
@@ -79,6 +79,8 @@ public class VistaEstadisticasController {
         tabla.setPlaceholder(new Label("Sin registros para los filtros seleccionados"));
     }
     public void setSistema(SistemaSGA sistema) {
+        SesionActual.exigirAdministrador();
+        SesionActual.ocultarSoloAdministrador(btnMenuEstadisticas, btnMenuCargaDatos);
         this.sistema=Objects.requireNonNull(sistema);
         TreeSet<String> bloques=new TreeSet<>();
         for(Apartamento a:sistema.getServicioApartamento().listarApartamentos()) bloques.add(a.getBloque());
@@ -93,7 +95,8 @@ public class VistaEstadisticasController {
             FXMLLoader loader=new FXMLLoader(getClass().getResource(vista));
             Scene scene=new Scene(loader.load());
             Object c=loader.getController();
-            if(c instanceof VentanaPrincipalController x)x.setSistema(sistema);
+            if(c instanceof VistaGestionAdministrativaController x)x.setSistema(sistema);
+            else if(c instanceof VentanaPrincipalController x)x.setSistema(sistema);
             else if(c instanceof VistaReservasController x)x.setSistema(sistema);
             else if(c instanceof VistaCalendarioOcupacionController x)x.setSistema(sistema);
             else if(c instanceof VistaPanelUsuarioController x)x.setSistema(sistema);

@@ -108,11 +108,20 @@ public class ServicioReserva {
     public void realizarCheckOut(String codigo) {
         Reserva reserva = exigirReserva(codigo);
         if (reserva.getEstado() != EstadoReserva.EN_CURSO)
-            throw new IllegalStateException("La reserva debe estar en curso.");
+            throw new IllegalStateException("Para hacer check-out primero debes realizar el check-in. "
+                + "La reserva debe estar EN_CURSO; estado actual: " + reserva.getEstado());
         Apartamento apartamento = exigirApartamento(reserva);
         if (servicioPreparacion == null)
             throw new IllegalStateException("El servicio de preparacion no esta configurado.");
+        // Una salida anticipada es válida una vez realizado el check-in.
+        // Liberar las noches futuras que ya no serán ocupadas.
+        LocalDate hoy = LocalDate.now();
+        LocalDate salidaEfectiva = hoy.isAfter(reserva.getEstancia().getFechaEntrada())
+                ? hoy : reserva.getEstancia().getFechaEntrada().plusDays(1);
+        if (salidaEfectiva.isBefore(reserva.getEstancia().getFechaSalida()))
+            reserva.getEstancia().setFechaSalida(salidaEfectiva);
         reserva.finalizar();
+        disponibilidad.invalidarIndice();
         apartamento.setEstado(EstadoApartamento.PENDIENTE_PREPARACION);
         // La tarea debe existir en la cola antes de guardar el sistema.
         servicioPreparacion.sincronizarPendientes(apartamentos.listarApartamentos());

@@ -56,6 +56,12 @@ public class VistaCalendarioOcupacionController {
         actualizar();
     }
     public void setSistema(SistemaSGA sistema) {
+        
+        SesionActual.ocultar(btnMenuInicio, btnMenuReservas, btnMenuPreparacion, btnMenuMapa, btnMenuEstadisticas, btnMenuCargaDatos);
+        SesionActual.ocultarSoloAdministrador(btnMenuEstadisticas, btnMenuCargaDatos);
+        if (!SesionActual.esHuesped()) {
+            for (javafx.scene.control.Button b : new javafx.scene.control.Button[]{btnMenuInicio, btnMenuReservas, btnMenuPreparacion, btnMenuMapa}) { b.setVisible(true); b.setManaged(true); }
+        }
         if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
             try {
                 javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));
@@ -205,6 +211,6 @@ public class VistaCalendarioOcupacionController {
         lblDetalleApartamentoCalendario.setText(a.getCodigo()+" · "+a.getNombre());
         lblDetalleFechaCalendario.setText(fecha.toString());
         lblDetalleEstadoCalendario.setText(nombre(n.tipo()));
-        lblDetalleReservaCalendario.setText(n.reserva()==null?"—":n.reserva().getCodigo());
+        lblDetalleReservaCalendario.setText(SesionActual.esHuesped()?"Información privada":n.reserva()==null?"—":n.reserva().getCodigo());
     }
 }

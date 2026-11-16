@@ -120,6 +120,8 @@ public class VistaPanelPreparacionController {
         actualizar();
     }
     public void setSistema(SistemaSGA sistema) {
+        SesionActual.exigirPersonal();
+        SesionActual.ocultarSoloAdministrador(btnMenuEstadisticas, btnMenuCargaDatos);
         if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
             try {
                 javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));

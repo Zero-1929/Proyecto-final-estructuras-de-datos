@@ -12,6 +12,7 @@ import java.util.Locale;
 
 /** Controlador del tablero principal, conectado a los apartamentos reales del SGA. */
 public class VentanaPrincipalController {
+    @FXML private Button btnCambiarRol;
     @FXML private Label lblTotalApartamentos, lblPreparados, lblOcupados,
             lblEnPreparacion, lblFueraServicio, lblDetalleCodigo, lblDetalleBloque,
             lblDetallePiso, lblDetalleCapacidad, lblDetalleEstado, lblMotivoFueraServicio;
@@ -56,6 +57,17 @@ public class VentanaPrincipalController {
 
     /** La aplicación inyecta la instancia compartida, no crea otro sistema. */
     public void setSistema(SistemaSGA sistema) {
+        btnCambiarRol.setOnAction(e -> {
+            try {
+                sistema.guardar();
+                SesionActual.cerrar();
+                new SeleccionPerfil(sistema,(javafx.stage.Stage)btnCambiarRol.getScene().getWindow()).mostrar();
+            } catch (Exception ex) {
+                new Alert(Alert.AlertType.ERROR,"No se pudo cambiar de rol: "+ex.getMessage()).showAndWait();
+            }
+        });
+        SesionActual.exigirPersonal();
+        SesionActual.ocultarSoloAdministrador(btnMenuEstadisticas, btnMenuCargaDatos);
         if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
             try {
                 javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));
@@ -64,7 +76,19 @@ public class VentanaPrincipalController {
                 ((javafx.stage.Stage) btnMenuEstadisticas.getScene().getWindow()).setScene(statsScene);
             } catch (Exception ex) {
                 new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR,
-                    "No se pudo abrir Estadísticas: " + ex.getMessage()).showAndWait();
+                        "No se pudo abrir Estadísticas: " + ex.getMessage()).showAndWait();
+            }
+        });
+
+        btnMenuCargaDatos.setText("Gestión administrativa");
+        btnMenuCargaDatos.setOnAction(event -> {
+            try {
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaGestionAdministrativa.fxml"));
+                javafx.scene.Scene scene = new javafx.scene.Scene(loader.load());
+                ((VistaGestionAdministrativaController) loader.getController()).setSistema(this.sistema);
+                ((javafx.stage.Stage) btnMenuCargaDatos.getScene().getWindow()).setScene(scene);
+            } catch (Exception ex) {
+                new Alert(Alert.AlertType.ERROR, "No se pudo abrir Gestión administrativa: " + ex.getMessage()).showAndWait();
             }
         });
 

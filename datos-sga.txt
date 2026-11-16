@@ -9,7 +9,7 @@
       "numeroDormitorios": 2,
       "capacidad": 4,
       "caracteristicas": "WiFi, cocina, TV",
-      "estado": "PENDIENTE_PREPARACION",
+      "estado": "PREPARADO",
       "motivoFueraServicio": null,
       "tarifaBaja": "180000",
       "tarifaMedia": "230000",
@@ -23,7 +23,7 @@
       "numeroDormitorios": 3,
       "capacidad": 6,
       "caracteristicas": "WiFi, balcon, parqueadero",
-      "estado": "PENDIENTE_PREPARACION",
+      "estado": "PREPARADO",
       "motivoFueraServicio": null,
       "tarifaBaja": "200000",
       "tarifaMedia": "250000",
@@ -37,7 +37,7 @@
       "numeroDormitorios": 1,
       "capacidad": 2,
       "caracteristicas": "WiFi, estudio, TV",
-      "estado": "PENDIENTE_PREPARACION",
+      "estado": "PREPARADO",
       "motivoFueraServicio": null,
       "tarifaBaja": "220000",
       "tarifaMedia": "270000",
@@ -51,7 +51,7 @@
       "numeroDormitorios": 2,
       "capacidad": 4,
       "caracteristicas": "WiFi, terraza, cocina",
-      "estado": "PENDIENTE_PREPARACION",
+      "estado": "PREPARADO",
       "motivoFueraServicio": null,
       "tarifaBaja": "240000",
       "tarifaMedia": "290000",
@@ -65,11 +65,165 @@
       "numeroDormitorios": 3,
       "capacidad": 6,
       "caracteristicas": "WiFi, parqueadero, TV",
-      "estado": "PENDIENTE_PREPARACION",
+      "estado": "PREPARADO",
       "motivoFueraServicio": null,
       "tarifaBaja": "260000",
       "tarifaMedia": "310000",
       "tarifaAlta": "380000"
+    },
+    {
+      "codigo": "A103",
+      "nombre": "Apartamento Brisa",
+      "bloque": "A",
+      "piso": 1,
+      "numeroDormitorios": 1,
+      "capacidad": 2,
+      "caracteristicas": "WiFi, cocina, TV",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "175000",
+      "tarifaMedia": "225000",
+      "tarifaAlta": "295000"
+    },
+    {
+      "codigo": "A104",
+      "nombre": "Apartamento Roble",
+      "bloque": "A",
+      "piso": 1,
+      "numeroDormitorios": 2,
+      "capacidad": 4,
+      "caracteristicas": "WiFi, balcon, cocina",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "195000",
+      "tarifaMedia": "245000",
+      "tarifaAlta": "315000"
+    },
+    {
+      "codigo": "A203",
+      "nombre": "Apartamento Horizonte",
+      "bloque": "A",
+      "piso": 2,
+      "numeroDormitorios": 2,
+      "capacidad": 5,
+      "caracteristicas": "WiFi, terraza, TV",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "225000",
+      "tarifaMedia": "275000",
+      "tarifaAlta": "355000"
+    },
+    {
+      "codigo": "A204",
+      "nombre": "Apartamento Cedro",
+      "bloque": "A",
+      "piso": 2,
+      "numeroDormitorios": 3,
+      "capacidad": 6,
+      "caracteristicas": "WiFi, cocina, parqueadero",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "250000",
+      "tarifaMedia": "305000",
+      "tarifaAlta": "390000"
+    },
+    {
+      "codigo": "B102",
+      "nombre": "Apartamento Laguna",
+      "bloque": "B",
+      "piso": 1,
+      "numeroDormitorios": 1,
+      "capacidad": 2,
+      "caracteristicas": "WiFi, estudio, TV",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "185000",
+      "tarifaMedia": "235000",
+      "tarifaAlta": "300000"
+    },
+    {
+      "codigo": "B103",
+      "nombre": "Apartamento Aurora",
+      "bloque": "B",
+      "piso": 1,
+      "numeroDormitorios": 2,
+      "capacidad": 4,
+      "caracteristicas": "WiFi, cocina, balcon",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "205000",
+      "tarifaMedia": "260000",
+      "tarifaAlta": "330000"
+    },
+    {
+      "codigo": "B201",
+      "nombre": "Apartamento Montana",
+      "bloque": "B",
+      "piso": 2,
+      "numeroDormitorios": 2,
+      "capacidad": 5,
+      "caracteristicas": "WiFi, cocina, terraza",
+      "estado": "PENDIENTE_PREPARACION",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "230000",
+      "tarifaMedia": "285000",
+      "tarifaAlta": "365000"
+    },
+    {
+      "codigo": "B202",
+      "nombre": "Apartamento Palma",
+      "bloque": "B",
+      "piso": 2,
+      "numeroDormitorios": 3,
+      "capacidad": 7,
+      "caracteristicas": "WiFi, cocina, parqueadero",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "270000",
+      "tarifaMedia": "325000",
+      "tarifaAlta": "410000"
+    },
+    {
+      "codigo": "C101",
+      "nombre": "Apartamento Rio",
+      "bloque": "C",
+      "piso": 1,
+      "numeroDormitorios": 1,
+      "capacidad": 3,
+      "caracteristicas": "WiFi, cocina, TV",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "190000",
+      "tarifaMedia": "240000",
+      "tarifaAlta": "310000"
+    },
+    {
+      "codigo": "C201",
+      "nombre": "Apartamento Cumbre",
+      "bloque": "C",
+      "piso": 2,
+      "numeroDormitorios": 3,
+      "capacidad": 6,
+      "caracteristicas": "WiFi, terraza, parqueadero",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "265000",
+      "tarifaMedia": "320000",
+      "tarifaAlta": "405000"
+    },
+    {
+      "codigo": "C102",
+      "nombre": "x",
+      "bloque": "C",
+      "piso": 1,
+      "numeroDormitorios": 4,
+      "capacidad": 8,
+      "caracteristicas": "m",
+      "estado": "PREPARADO",
+      "motivoFueraServicio": null,
+      "tarifaBaja": "100000",
+      "tarifaMedia": "200000",
+      "tarifaAlta": "500000"
     }
   ],
   "huespedes": [
@@ -79,7 +233,10 @@
       "documento": "1001001",
       "telefono": "3105550001",
       "correo": "ana.torres@example.com",
-      "rutaFoto": "fotos/ana-torres.jpg"
+      "rutaFoto": "fotos/ana-torres.jpg",
+      "favoritos": [
+        "A202"
+      ]
     },
     {
       "nombre": "Carlos Perez",
@@ -87,7 +244,8 @@
       "documento": "1001002",
       "telefono": "3105550002",
       "correo": "carlos.perez@example.com",
-      "rutaFoto": null
+      "rutaFoto": null,
+      "favoritos": []
     },
     {
       "nombre": "Laura Gomez",
@@ -95,7 +253,8 @@
       "documento": "1001003",
       "telefono": "3105550003",
       "correo": "laura.gomez@example.com",
-      "rutaFoto": null
+      "rutaFoto": null,
+      "favoritos": []
     },
     {
       "nombre": "Diego Ramirez",
@@ -103,7 +262,8 @@
       "documento": "1001004",
       "telefono": "3105550004",
       "correo": "diego.ramirez@example.com",
-      "rutaFoto": null
+      "rutaFoto": null,
+      "favoritos": []
     },
     {
       "nombre": "Sofia Castro",
@@ -111,10 +271,19 @@
       "documento": "1001005",
       "telefono": "3105550005",
       "correo": "sofia.castro@example.com",
-      "rutaFoto": null
+      "rutaFoto": null,
+      "favoritos": []
     }
   ],
   "empleados": [
+    {
+      "nombre": "carlos enrique",
+      "fechaNacimiento": "1997-11-13",
+      "documento": "101010",
+      "telefono": "3211222333",
+      "correo": "dghghfggfgf",
+      "rol": "ADMINISTRADOR"
+    },
     {
       "nombre": "Valentina Rojas",
       "fechaNacimiento": "1994-02-11",
@@ -143,7 +312,7 @@
       "nombre": "Jorge Cardona",
       "fechaNacimiento": "1989-03-30",
       "documento": "2002004",
-      "telefono": "3205550004",
+      "telefono": "3205550000",
       "correo": "jorge.cardona@example.com",
       "rol": "RECEPCIONISTA"
     },
@@ -154,6 +323,14 @@
       "telefono": "3205550005",
       "correo": "natalia.londono@example.com",
       "rol": "RECEPCIONISTA"
+    },
+    {
+      "nombre": "n",
+      "fechaNacimiento": "2026-11-05",
+      "documento": "99",
+      "telefono": "9",
+      "correo": "j",
+      "rol": "ADMINISTRADOR"
     }
   ],
   "temporadas": [
@@ -181,6 +358,11 @@
       "tipo": "MEDIA",
       "fechaInicio": "2027-09-01",
       "fechaFin": "2027-10-31"
+    },
+    {
+      "tipo": "ALTA",
+      "fechaInicio": "2026-11-25",
+      "fechaFin": "2026-12-31"
     }
   ],
   "temporadaPorDefecto": "BAJA",
@@ -215,7 +397,7 @@
       "codigoApartamento": "A201",
       "fechaEntrada": "2027-05-15",
       "fechaSalida": "2027-05-18",
-      "estado": "PENDIENTE",
+      "estado": "CANCELADA",
       "canalReserva": "WEB",
       "fechaCreacion": "2026-12-03T09:30",
       "horaLlegadaEstimada": "15:00",
@@ -244,6 +426,246 @@
       "fechaCreacion": "2026-12-05T09:30",
       "horaLlegadaEstimada": "15:00",
       "folioId": 5
+    },
+    {
+      "codigo": "R-7ED14618",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A202",
+      "fechaEntrada": "2026-11-15",
+      "fechaSalida": "2026-11-16",
+      "estado": "FINALIZADA",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-11-15T14:41:01.460080200",
+      "horaLlegadaEstimada": "14:43",
+      "folioId": 771661460
+    },
+    {
+      "codigo": "R-AF34326F",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "B101",
+      "fechaEntrada": "2026-11-15",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-15T15:34:33.090119900",
+      "horaLlegadaEstimada": "15:35",
+      "folioId": 774873090
+    },
+    {
+      "codigo": "EXT-0001",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2027-10-05",
+      "fechaSalida": "2027-10-08",
+      "estado": "CONFIRMADA",
+      "canalReserva": "PLATAFORMA_EXTERNA",
+      "fechaCreacion": "2026-11-15T15:37:09.753413200",
+      "horaLlegadaEstimada": null,
+      "folioId": 1
+    },
+    {
+      "codigo": "R-E00F23B0",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A102",
+      "fechaEntrada": "2026-11-15",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-15T20:35:12.473780700",
+      "horaLlegadaEstimada": "20:40",
+      "folioId": 792912473
+    },
+    {
+      "codigo": "R-E1E072B8",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A201",
+      "fechaEntrada": "2026-11-15",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-15T20:52:28.883860100",
+      "horaLlegadaEstimada": "20:52",
+      "folioId": 793948883
+    },
+    {
+      "codigo": "R-E787D85A",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2026-11-15",
+      "fechaSalida": "2026-11-16",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-15T23:37:04.688980200",
+      "horaLlegadaEstimada": null,
+      "folioId": 803826483
+    },
+    {
+      "codigo": "R-8C38DC9F",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "B101",
+      "fechaEntrada": "2026-11-18",
+      "fechaSalida": "2026-11-20",
+      "estado": "CONFIRMADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-15T23:58:05.601387600",
+      "horaLlegadaEstimada": null,
+      "folioId": 805087396
+    },
+    {
+      "codigo": "R-4263CC45",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A202",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-11-16T00:00:10.201743500",
+      "horaLlegadaEstimada": "12:00",
+      "folioId": 805210201
+    },
+    {
+      "codigo": "R-EA0D9EF3",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T00:09:58.786244500",
+      "horaLlegadaEstimada": "12:00",
+      "folioId": 805798786
+    },
+    {
+      "codigo": "R-7B138FDF",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "C101",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T00:11:05.142801800",
+      "horaLlegadaEstimada": null,
+      "folioId": 805866937
+    },
+    {
+      "codigo": "R-6FAAE0E7",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "B201",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T00:19:37.396995600",
+      "horaLlegadaEstimada": null,
+      "folioId": 806379191
+    },
+    {
+      "codigo": "R-198CD7DB",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A104",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-18",
+      "estado": "CANCELADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T00:30:44.916831700",
+      "horaLlegadaEstimada": null,
+      "folioId": 807046710
+    },
+    {
+      "codigo": "R-FC19498E",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A103",
+      "fechaEntrada": "2026-11-28",
+      "fechaSalida": "2026-11-30",
+      "estado": "CANCELADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T00:54:24.246542100",
+      "horaLlegadaEstimada": null,
+      "folioId": 808466041
+    },
+    {
+      "codigo": "R-003DD97A",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "B102",
+      "fechaEntrada": "2026-11-20",
+      "fechaSalida": "2026-11-22",
+      "estado": "CANCELADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T01:00:59.411940400",
+      "horaLlegadaEstimada": null,
+      "folioId": 808861206
+    },
+    {
+      "codigo": "R-D71C6D00",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A201",
+      "fechaEntrada": "2026-11-28",
+      "fechaSalida": "2026-11-30",
+      "estado": "PENDIENTE",
+      "canalReserva": "TELEFONO",
+      "fechaCreacion": "2026-11-16T01:28:39.738550700",
+      "horaLlegadaEstimada": "12:00",
+      "folioId": 810519738
+    },
+    {
+      "codigo": "EXT-0002",
+      "documentoHuesped": "1001002",
+      "codigoApartamento": "A102",
+      "fechaEntrada": "2027-10-06",
+      "fechaSalida": "2027-10-09",
+      "estado": "PENDIENTE",
+      "canalReserva": "PLATAFORMA_EXTERNA",
+      "fechaCreacion": "2026-11-16T01:30:32.587347100",
+      "horaLlegadaEstimada": null,
+      "folioId": 2
+    },
+    {
+      "codigo": "EXT-0003",
+      "documentoHuesped": "1001003",
+      "codigoApartamento": "A201",
+      "fechaEntrada": "2027-10-07",
+      "fechaSalida": "2027-10-10",
+      "estado": "PENDIENTE",
+      "canalReserva": "PLATAFORMA_EXTERNA",
+      "fechaCreacion": "2026-11-16T01:36:35.852151200",
+      "horaLlegadaEstimada": null,
+      "folioId": 3
+    },
+    {
+      "codigo": "EXT-0004",
+      "documentoHuesped": "1001004",
+      "codigoApartamento": "A202",
+      "fechaEntrada": "2027-10-08",
+      "fechaSalida": "2027-10-11",
+      "estado": "PENDIENTE",
+      "canalReserva": "PLATAFORMA_EXTERNA",
+      "fechaCreacion": "2026-11-16T01:36:37.628488",
+      "horaLlegadaEstimada": null,
+      "folioId": 4
+    },
+    {
+      "codigo": "EXT-0005",
+      "documentoHuesped": "1001005",
+      "codigoApartamento": "B101",
+      "fechaEntrada": "2027-10-09",
+      "fechaSalida": "2027-10-12",
+      "estado": "PENDIENTE",
+      "canalReserva": "PLATAFORMA_EXTERNA",
+      "fechaCreacion": "2026-11-16T01:36:39.214267800",
+      "horaLlegadaEstimada": null,
+      "folioId": 5
+    },
+    {
+      "codigo": "EXT-0006",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2026-11-19",
+      "fechaSalida": "2026-11-22",
+      "estado": "CANCELADA",
+      "canalReserva": "PLATAFORMA_EXTERNA",
+      "fechaCreacion": "2026-11-16T01:36:41.423412800",
+      "horaLlegadaEstimada": null,
+      "folioId": 6
     }
   ],
   "folios": [
@@ -256,9 +678,17 @@
           "tipo": "CARGO_ALOJAMIENTO",
           "monto": "450000",
           "fecha": "2026-12-02T10:00"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de reserva RES-00001",
+          "tipo": "PAGO",
+          "monto": "450000.00",
+          "fecha": "2026-11-15T14:43:27.175231100"
         }
       ],
       "idsOperacionesDeshacibles": [
+        2,
         1
       ]
     },
@@ -271,9 +701,25 @@
           "tipo": "PAGO",
           "monto": "200000",
           "fecha": "2026-12-03T11:00"
+        },
+        {
+          "id": 3,
+          "descripcion": "Cargo de alojamiento regularizado - RES-00002",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "2250000",
+          "fecha": "2026-11-15T15:47:45.318894700"
+        },
+        {
+          "id": 4,
+          "descripcion": "Pago de saldo restante - RES-00002",
+          "tipo": "PAGO",
+          "monto": "2050000",
+          "fecha": "2026-11-15T15:47:53.997714500"
         }
       ],
       "idsOperacionesDeshacibles": [
+        4,
+        3,
         2
       ]
     },
@@ -286,9 +732,33 @@
           "tipo": "PAGO",
           "monto": "100000",
           "fecha": "2026-12-04T12:00"
+        },
+        {
+          "id": 4,
+          "descripcion": "Cargo de alojamiento regularizado - RES-00003",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1020000",
+          "fecha": "2026-11-15T15:48:11.226949100"
+        },
+        {
+          "id": 5,
+          "descripcion": "Pago de anticipo WEB (30 %) - RES-00003",
+          "tipo": "PAGO",
+          "monto": "206000.00",
+          "fecha": "2026-11-15T15:48:15.334580700"
+        },
+        {
+          "id": 6,
+          "descripcion": "Pago de saldo restante - RES-00003",
+          "tipo": "PAGO",
+          "monto": "714000.00",
+          "fecha": "2026-11-15T15:48:21.328784600"
         }
       ],
       "idsOperacionesDeshacibles": [
+        6,
+        5,
+        4,
         3
       ]
     },
@@ -321,9 +791,483 @@
       "idsOperacionesDeshacibles": [
         5
       ]
+    },
+    {
+      "id": 771661460,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 1 noche(s) · 3 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "240000",
+          "fecha": "2026-11-15T14:41:01.465097400"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de reserva R-7ED14618",
+          "tipo": "PAGO",
+          "monto": "240000.00",
+          "fecha": "2026-11-15T14:41:37.573788700"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": 774873090,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 3 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1040000",
+          "fecha": "2026-11-15T15:34:33.093127500"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-AF34326F",
+          "tipo": "PAGO",
+          "monto": "312000.00",
+          "fecha": "2026-11-15T15:35:45.405355800"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-AF34326F",
+          "tipo": "PAGO",
+          "monto": "728000.00",
+          "fecha": "2026-11-15T15:36:17.525556500"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 792912473,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 4 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1200000",
+          "fecha": "2026-11-15T20:35:12.477749200"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-E00F23B0",
+          "tipo": "PAGO",
+          "monto": "360000.00",
+          "fecha": "2026-11-15T20:35:37.760732500"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-E00F23B0",
+          "tipo": "PAGO",
+          "monto": "840000.00",
+          "fecha": "2026-11-15T20:36:13.796449200"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 793948883,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 2 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "880000",
+          "fecha": "2026-11-15T20:52:28.885860300"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-E1E072B8",
+          "tipo": "PAGO",
+          "monto": "264000.00",
+          "fecha": "2026-11-15T20:53:16.155892200"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-E1E072B8",
+          "tipo": "PAGO",
+          "monto": "616000.00",
+          "fecha": "2026-11-15T20:53:20.653726200"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 803826483,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 1 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "360000",
+          "fecha": "2026-11-15T23:37:04.691757500"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-E787D85A",
+          "tipo": "PAGO",
+          "monto": "108000.00",
+          "fecha": "2026-11-15T23:37:56.625446400"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-E787D85A",
+          "tipo": "PAGO",
+          "monto": "252000.00",
+          "fecha": "2026-11-15T23:40:06.020350400"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 805087396,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 2 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1040000",
+          "fecha": "2026-11-15T23:58:05.606914500"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-8C38DC9F",
+          "tipo": "PAGO",
+          "monto": "312000.00",
+          "fecha": "2026-11-16T00:00:22.409396"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-8C38DC9F",
+          "tipo": "PAGO",
+          "monto": "728000.00",
+          "fecha": "2026-11-16T00:01:08.101533"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 805210201,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 11 noche(s) · 1 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "2640000",
+          "fecha": "2026-11-16T00:00:10.201743500"
+        },
+        {
+          "id": 2,
+          "descripcion": "Abono a alojamiento - R-4263CC45",
+          "tipo": "PAGO",
+          "monto": "100000",
+          "fecha": "2026-11-16T00:00:43.161799"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-4263CC45",
+          "tipo": "PAGO",
+          "monto": "2540000",
+          "fecha": "2026-11-16T00:01:00.787498200"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 805798786,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 4 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1080000",
+          "fecha": "2026-11-16T00:09:58.788245400"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-EA0D9EF3",
+          "tipo": "PAGO",
+          "monto": "324000.00",
+          "fecha": "2026-11-16T00:11:35.458674100"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-EA0D9EF3",
+          "tipo": "PAGO",
+          "monto": "756000.00",
+          "fecha": "2026-11-16T00:12:12.606827700"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 805866937,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 2 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "760000",
+          "fecha": "2026-11-16T00:11:05.142801800"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-7B138FDF",
+          "tipo": "PAGO",
+          "monto": "228000.00",
+          "fecha": "2026-11-16T00:11:40.426977700"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-7B138FDF",
+          "tipo": "PAGO",
+          "monto": "532000.00",
+          "fecha": "2026-11-16T00:12:07.758892200"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 806379191,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 2 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "920000",
+          "fecha": "2026-11-16T00:19:37.397975700"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-6FAAE0E7",
+          "tipo": "PAGO",
+          "monto": "276000.00",
+          "fecha": "2026-11-16T00:20:03.267290400"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-6FAAE0E7",
+          "tipo": "PAGO",
+          "monto": "644000.00",
+          "fecha": "2026-11-16T00:20:12.838960500"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 807046710,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 3 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1170000",
+          "fecha": "2026-11-16T00:30:44.916831700"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-198CD7DB",
+          "tipo": "PAGO",
+          "monto": "351000.00",
+          "fecha": "2026-11-16T00:40:02.742308600"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-198CD7DB",
+          "tipo": "PAGO",
+          "monto": "819000.00",
+          "fecha": "2026-11-16T00:40:06.840451300"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 808466041,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 1 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "350000",
+          "fecha": "2026-11-16T00:54:24.247548800"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-FC19498E",
+          "tipo": "PAGO",
+          "monto": "105000.00",
+          "fecha": "2026-11-16T00:55:15.188607200"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-FC19498E",
+          "tipo": "PAGO",
+          "monto": "245000.00",
+          "fecha": "2026-11-16T00:55:25.252508"
+        },
+        {
+          "id": 4,
+          "descripcion": "Devolución por cancelación de reserva R-FC19498E",
+          "tipo": "AJUSTE_CARGO",
+          "monto": "350000.00",
+          "fecha": "2026-11-16T00:55:46.891064800"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 808861206,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 1 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "370000",
+          "fecha": "2026-11-16T01:00:59.412940300"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-003DD97A",
+          "tipo": "PAGO",
+          "monto": "111000.00",
+          "fecha": "2026-11-16T01:01:23.413711600"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-003DD97A",
+          "tipo": "PAGO",
+          "monto": "259000.00",
+          "fecha": "2026-11-16T01:01:30.592361"
+        },
+        {
+          "id": 5,
+          "descripcion": "Regularización de cargos por cancelación de reserva R-003DD97A",
+          "tipo": "AJUSTE_ABONO",
+          "monto": "370000.00",
+          "fecha": "2026-11-16T01:01:54.051762600"
+        },
+        {
+          "id": 4,
+          "descripcion": "Devolución de pagos por cancelación de reserva R-003DD97A",
+          "tipo": "AJUSTE_CARGO",
+          "monto": "370000.00",
+          "fecha": "2026-11-16T01:01:54.051762600"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        4,
+        5,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "id": 810519738,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 2 noche(s) · 1 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "440000",
+          "fecha": "2026-11-16T01:28:39.741563100"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Cargo de alojamiento regularizado - EXT-0006",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "1080000",
+          "fecha": "2026-11-16T01:37:20.237884800"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago completo de alojamiento - EXT-0006",
+          "tipo": "PAGO",
+          "monto": "1080000",
+          "fecha": "2026-11-16T01:37:24.638235100"
+        },
+        {
+          "id": 4,
+          "descripcion": "Regularización de cargos por cancelación de reserva EXT-0006",
+          "tipo": "AJUSTE_ABONO",
+          "monto": "1080000.00",
+          "fecha": "2026-11-16T01:38:21.832012800"
+        },
+        {
+          "id": 3,
+          "descripcion": "Devolución de pagos por cancelación de reserva EXT-0006",
+          "tipo": "AJUSTE_CARGO",
+          "monto": "1080000.00",
+          "fecha": "2026-11-16T01:38:21.832012800"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        4,
+        2,
+        1
+      ]
     }
   ],
-  "solicitudesPendientes": [
+  "solicitudesPendientes": [],
+  "solicitudesHistorial": [
     {
       "idSolicitud": "SOL-001",
       "nombreSolicitante": "Ana Torres",
@@ -335,7 +1279,7 @@
       "fechaSalida": "2027-10-08",
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575134696",
-      "estado": "PENDIENTE",
+      "estado": "PROCESADA",
       "motivoRechazo": null
     },
     {
@@ -349,7 +1293,7 @@
       "fechaSalida": "2027-10-09",
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575419433",
-      "estado": "PENDIENTE",
+      "estado": "PROCESADA",
       "motivoRechazo": null
     },
     {
@@ -363,7 +1307,7 @@
       "fechaSalida": "2027-10-10",
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575472969",
-      "estado": "PENDIENTE",
+      "estado": "PROCESADA",
       "motivoRechazo": null
     },
     {
@@ -377,7 +1321,7 @@
       "fechaSalida": "2027-10-11",
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575502089",
-      "estado": "PENDIENTE",
+      "estado": "PROCESADA",
       "motivoRechazo": null
     },
     {
@@ -391,41 +1335,30 @@
       "fechaSalida": "2027-10-12",
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575532342",
-      "estado": "PENDIENTE",
+      "estado": "PROCESADA",
+      "motivoRechazo": null
+    },
+    {
+      "idSolicitud": "SOL-75413FDC",
+      "nombreSolicitante": "ana torres",
+      "documento": "1001001",
+      "telefono": "4324234",
+      "correo": "fegfdgd",
+      "codigoApartamento": "A101",
+      "fechaEntrada": "2026-11-19",
+      "fechaSalida": "2026-11-22",
+      "numeroPersonas": 2,
+      "fechaRecepcion": "2026-11-16T01:36:23.728720800",
+      "estado": "PROCESADA",
       "motivoRechazo": null
     }
   ],
-  "solicitudesHistorial": [],
   "tareasPreparacion": [
     {
-      "codigoApartamento": "B101",
-      "prioridad": 5,
-      "orden": 5,
-      "fechaSolicitud": "2026-11-14T20:58:05.575792827"
-    },
-    {
-      "codigoApartamento": "A202",
-      "prioridad": 4,
-      "orden": 4,
-      "fechaSolicitud": "2026-11-14T20:58:05.575786779"
-    },
-    {
-      "codigoApartamento": "A201",
-      "prioridad": 3,
-      "orden": 3,
-      "fechaSolicitud": "2026-11-14T20:58:05.575780408"
-    },
-    {
-      "codigoApartamento": "A102",
-      "prioridad": 2,
-      "orden": 2,
-      "fechaSolicitud": "2026-11-14T20:58:05.575766594"
-    },
-    {
-      "codigoApartamento": "A101",
-      "prioridad": 1,
+      "codigoApartamento": "B201",
+      "prioridad": 0,
       "orden": 1,
-      "fechaSolicitud": "2026-11-14T20:58:05.575749464"
+      "fechaSolicitud": "2026-11-16T00:20:15.476010500"
     }
   ],
   "recepcionistas": [
@@ -435,10 +1368,10 @@
     "2002004",
     "2002005"
   ],
-  "recepcionistaActual": "2002003",
+  "recepcionistaActual": "2002002",
   "siguienteGrupo": 1,
   "siguienteReserva": 6,
   "siguienteFolio": 6,
-  "siguienteIdFolioExterno": 1,
-  "siguienteNumeroReservaExterno": 1
+  "siguienteIdFolioExterno": 7,
+  "siguienteNumeroReservaExterno": 7
 }

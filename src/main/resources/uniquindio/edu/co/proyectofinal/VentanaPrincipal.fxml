@@ -103,6 +103,10 @@
                            -fx-text-fill: #C9D5E6;
                            -fx-padding: 13 14;"/>
 
+            <Button fx:id="btnCambiarRol" text="Cambiar de rol"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: #25466E; -fx-text-fill: white; -fx-padding: 13 14;"/>
+
             <Region VBox.vgrow="ALWAYS"/>
 
             <VBox spacing="5"

@@ -50,6 +50,15 @@ public class VistaReservasController {
             btnMenuCalendario,btnMenuUsuario,btnMenuPreparacion,btnMenuMapa,btnMenuEstadisticas,
             btnMenuCargaDatos;
 
+    @FXML private TextField txtExternoNombre, txtExternoDocumento, txtExternoTelefono,
+            txtExternoCorreo, txtExternoApartamento;
+    @FXML private DatePicker dpExternoEntrada, dpExternoSalida;
+    @FXML private Spinner<Integer> spnExternoPersonas;
+    @FXML private Button btnAgregarSolicitudExterna;
+
+    @FXML private Label lblTurnoActual;
+    @FXML private Button btnSiguienteTurno;
+
     private SistemaSGA sistema;
     private final javafx.collections.ObservableList<Ocupante> ocupantes = FXCollections.observableArrayList();
     private BigDecimal ultimaCotizacion;
@@ -123,6 +132,7 @@ public class VistaReservasController {
         btnCheckIn.setOnAction(e->operarReserva("Check-in"));
         btnCheckOut.setOnAction(e->operarReserva("Check-out"));
         btnVerFolio.setOnAction(e->verFolio());
+        btnSiguienteTurno.setOnAction(e -> avanzarTurnoRecepcion());
         btnRegistrarPago.setOnAction(e->registrarPago());
         btnBuscarDisponibilidad.setOnAction(e->buscarDisponibilidad());
         btnSeleccionarApartamento.setOnAction(e->seleccionarApartamento());
@@ -133,6 +143,10 @@ public class VistaReservasController {
         });
         btnCotizar.setOnAction(e->cotizar());
         btnCrearReserva.setOnAction(e->crearReserva());
+        spnExternoPersonas.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30, 2));
+        dpExternoEntrada.setValue(LocalDate.now().plusDays(1));
+        dpExternoSalida.setValue(LocalDate.now().plusDays(2));
+        btnAgregarSolicitudExterna.setOnAction(e -> agregarSolicitudExterna());
         btnActualizarCola.setOnAction(e->actualizarExterno());
         btnProcesarSiguiente.setOnAction(e->procesarExterno());
         btnActualizarConflictos.setOnAction(e->actualizarExterno());
@@ -155,6 +169,8 @@ public class VistaReservasController {
         col.setCellValueFactory(c->new ReadOnlyStringWrapper(f.apply(c.getValue())));
     }
     public void setSistema(SistemaSGA sistema) {
+        SesionActual.exigirPersonal();
+        SesionActual.ocultarSoloAdministrador(btnMenuEstadisticas, btnMenuCargaDatos);
         if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
             try {
                 javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));
@@ -169,7 +185,46 @@ public class VistaReservasController {
 
         this.sistema=Objects.requireNonNull(sistema);
         actualizarTodo();
+        actualizarTurnoRecepcion();
     }
+
+    private void actualizarTurnoRecepcion() {
+        if (sistema == null) return;
+        try {
+            var turnos = sistema.getServicioTurnos();
+            if (turnos.estaVacia()) {
+                lblTurnoActual.setText("Sin recepcionistas asignados");
+                btnSiguienteTurno.setDisable(true);
+                return;
+            }
+            var actual = turnos.consultarTurnoActual();
+            lblTurnoActual.setText(actual.getNombre() + " · " + actual.getDocumento());
+            btnSiguienteTurno.setDisable(turnos.cantidadRecepcionistas() < 2);
+        } catch (RuntimeException ex) {
+            lblTurnoActual.setText("Turno no disponible");
+            btnSiguienteTurno.setDisable(true);
+        }
+    }
+
+    private void avanzarTurnoRecepcion() {
+        if (sistema == null) return;
+        var turnos = sistema.getServicioTurnos();
+        if (turnos.cantidadRecepcionistas() < 2) return;
+        var anterior = turnos.consultarTurnoActual();
+        try {
+            turnos.avanzarTurno();
+            sistema.guardar();
+            actualizarTurnoRecepcion();
+        } catch (Exception ex) {
+            try {
+                turnos.restaurarTurnos(turnos.listarRecepcionistas(), anterior.getDocumento());
+            } catch (RuntimeException ignored) { }
+            actualizarTurnoRecepcion();
+            new Alert(Alert.AlertType.ERROR,
+                    "No se pudo guardar el cambio de turno: " + ex.getMessage()).showAndWait();
+        }
+    }
+
     private void actualizarTodo() { actualizarReservas();actualizarExterno(); }
     private void actualizarReservas() {
         if(sistema==null)return;
@@ -493,6 +548,56 @@ public class VistaReservasController {
                     + "\nSelecciona la reserva y pulsa 'Registrar pago' para abonar o liquidar.");
             ocupantes.clear(); invalidarCotizacion(); actualizarReservas();
         } catch (Exception ex) { error(ex); }
+    }
+
+    private void agregarSolicitudExterna() {
+        try {
+            if (sistema == null) throw new IllegalStateException("El sistema no está disponible.");
+            String nombre = textoExterno(txtExternoNombre, "nombre del solicitante");
+            String documento = textoExterno(txtExternoDocumento, "documento");
+            String telefono = textoExterno(txtExternoTelefono, "teléfono");
+            String correo = textoExterno(txtExternoCorreo, "correo");
+            String apartamento = textoExterno(txtExternoApartamento, "apartamento").toUpperCase(Locale.ROOT);
+            LocalDate entrada = dpExternoEntrada.getValue();
+            LocalDate salida = dpExternoSalida.getValue();
+            if (entrada == null || salida == null || !salida.isAfter(entrada))
+                throw new IllegalArgumentException("La salida debe ser posterior a la entrada.");
+            if (entrada.isBefore(LocalDate.now()))
+                throw new IllegalArgumentException("La entrada no puede ser anterior a hoy.");
+            int personas = spnExternoPersonas.getValue();
+            String id;
+            do {
+                id = "SOL-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT);
+            } while (existeIdSolicitudExterna(id));
+            SolicitudExterna solicitud = new SolicitudExterna(id, nombre, documento, telefono,
+                    correo, apartamento, entrada, salida, personas);
+            sistema.getServicioExterno().recibirSolicitud(solicitud);
+            try {
+                guardar();
+            } catch (Exception ex) {
+                // Si falla el guardado, la solicitud sigue en memoria y se muestra en la cola.
+                actualizarExterno();
+                throw new IllegalStateException("La solicitud quedó en memoria, pero no se pudo guardar: "
+                        + ex.getMessage(), ex);
+            }
+            actualizarExterno();
+            lblResultadoExterno.setText("Solicitud " + id + " agregada al final de la cola.");
+            informar("Canal externo", "Solicitud " + id + " registrada. Se procesará en orden de llegada.");
+        } catch (Exception ex) { error(ex); }
+    }
+
+    private static String textoExterno(TextField campo, String nombre) {
+        String valor = campo.getText() == null ? "" : campo.getText().trim();
+        if (valor.isEmpty()) throw new IllegalArgumentException("Ingresa el " + nombre + ".");
+        return valor;
+    }
+
+    private boolean existeIdSolicitudExterna(String id) {
+        for (SolicitudExterna s : sistema.getServicioExterno().listarSolicitudesPendientes())
+            if (id.equals(s.getIdSolicitud())) return true;
+        for (SolicitudExterna s : sistema.getServicioExterno().listarHistorial())
+            if (id.equals(s.getIdSolicitud())) return true;
+        return false;
     }
 
     private void actualizarExterno() {

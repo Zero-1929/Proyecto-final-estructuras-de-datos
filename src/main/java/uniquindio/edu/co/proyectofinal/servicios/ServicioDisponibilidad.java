@@ -29,6 +29,9 @@ public class ServicioDisponibilidad {
         this.reservas = reservas;
     }
 
+    /** Reconstruye el índice tras cambiar fechas o estados sin añadir reservas. */
+    public void invalidarIndice() { cantidadIndexada = -1; }
+
     private void sincronizar() {
         if (cantidadIndexada == reservas.tamano()) return;
         indices.limpiar();

@@ -1,6 +1,9 @@
 package uniquindio.edu.co.proyectofinal.servicios;
 
 import java.math.BigDecimal;
+import java.util.Locale;
+
+import uniquindio.edu.co.proyectofinal.estructuras.ABB;
 
 import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
 import uniquindio.edu.co.proyectofinal.modelo.Apartamento;
@@ -15,12 +18,30 @@ import uniquindio.edu.co.proyectofinal.modelo.TipoTemporada;
 public class ServicioApartamento {
 
     private final ListaDoble<Apartamento> apartamentos;
+    // Indice de busqueda jerarquica, sin sustituir la lista usada por otros modulos.
+    private final ABB<EntradaIndice> indicePorCodigo;
+
+    private static final class EntradaIndice implements Comparable<EntradaIndice> {
+        private final String codigo;
+        private final Apartamento apartamento;
+
+        private EntradaIndice(String codigo, Apartamento apartamento) {
+            this.codigo = codigo.trim().toUpperCase(Locale.ROOT);
+            this.apartamento = apartamento;
+        }
+
+        @Override
+        public int compareTo(EntradaIndice otra) {
+            return codigo.compareTo(otra.codigo);
+        }
+    }
 
     /**
      * Crea el servicio con una lista vacía.
      */
     public ServicioApartamento() {
         this.apartamentos = new ListaDoble<>();
+        this.indicePorCodigo = new ABB<>();
     }
 
     /**
@@ -33,6 +54,13 @@ public class ServicioApartamento {
         }
 
         this.apartamentos = apartamentos;
+        this.indicePorCodigo = new ABB<>();
+        for (Apartamento apartamento : apartamentos) {
+            if (indicePorCodigo.contiene(new EntradaIndice(apartamento.getCodigo(), null))) {
+                throw new IllegalArgumentException("Codigo de apartamento duplicado: " + apartamento.getCodigo());
+            }
+            indicePorCodigo.insertar(new EntradaIndice(apartamento.getCodigo(), apartamento));
+        }
     }
 
     /**
@@ -48,6 +76,7 @@ public class ServicioApartamento {
         }
 
         apartamentos.agregarFinal(apartamento);
+        indicePorCodigo.insertar(new EntradaIndice(apartamento.getCodigo(), apartamento));
         return true;
     }
 
@@ -57,15 +86,8 @@ public class ServicioApartamento {
     public Apartamento buscarPorCodigo(String codigo) {
         String codigoValidado = validarCodigo(codigo);
 
-        for (int i = 0; i < apartamentos.tamano(); i++) {
-            Apartamento apartamento = apartamentos.obtener(i);
-
-            if (apartamento.getCodigo().equalsIgnoreCase(codigoValidado)) {
-                return apartamento;
-            }
-        }
-
-        return null;
+        EntradaIndice encontrada = indicePorCodigo.buscar(new EntradaIndice(codigoValidado, null));
+        return encontrada == null ? null : encontrada.apartamento;
     }
 
     /**
@@ -88,7 +110,11 @@ public class ServicioApartamento {
             return false;
         }
 
-        return apartamentos.eliminar(apartamento);
+        boolean eliminado = apartamentos.eliminar(apartamento);
+        if (eliminado) {
+            indicePorCodigo.eliminar(new EntradaIndice(apartamento.getCodigo(), null));
+        }
+        return eliminado;
     }
 
     /**

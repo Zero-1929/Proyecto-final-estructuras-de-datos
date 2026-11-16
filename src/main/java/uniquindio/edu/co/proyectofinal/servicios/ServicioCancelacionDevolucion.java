@@ -25,28 +25,48 @@ public final class ServicioCancelacionDevolucion {
     }
 
     /**
-     * Registra la devolución como AJUSTE_CARGO, compensando el pago previo.
-     * Esto registra contablemente una salida de dinero; la transferencia bancaria
-     * o entrega física debe realizarse por fuera de este servicio.
-     * Si la devolución es cero, no crea un movimiento ficticio.
+     * Cancela la reserva y deja el folio saldado, sin borrar movimientos previos.
+     * AJUSTE_CARGO representa la salida de dinero (devolución), mientras
+     * AJUSTE_ABONO anula el cargo pendiente de una estancia cancelada.
      */
     public BigDecimal cancelarYRegistrarDevolucion(String codigo, BigDecimal porcentaje,
                                                    int idMovimientoDevolucion) {
         Reserva reserva = exigirCancelable(codigo);
         BigDecimal monto = previsualizarDevolucion(codigo, porcentaje);
-        if (monto.signum() > 0) {
+        Folio folio = reserva.getFolio();
+
+        // Saldo que quedaría tras devolver el dinero: debe regularizarse a cero.
+        BigDecimal ajuste = folio.calcularSaldo().add(monto);
+        boolean registrarDevolucion = monto.signum() > 0;
+        boolean registrarRegularizacion = ajuste.signum() != 0;
+        if (registrarDevolucion || registrarRegularizacion) {
             if (idMovimientoDevolucion <= 0)
                 throw new IllegalArgumentException("ID de movimiento inválido");
-            for (Movimiento movimiento : reserva.getFolio().getMovimientos())
-                if (movimiento.getId() == idMovimientoDevolucion)
-                    throw new IllegalArgumentException("ID de movimiento duplicado en el folio");
         }
-        // Primero cambia estado, después registra movimiento ya validado.
+        int maxId = 0;
+        for (Movimiento movimiento : folio.getMovimientos()) {
+            if (movimiento.getId() == idMovimientoDevolucion)
+                throw new IllegalArgumentException("ID de movimiento duplicado en el folio");
+            maxId = Math.max(maxId, movimiento.getId());
+        }
+        int idRegularizacion = Math.max(maxId, idMovimientoDevolucion) + 1;
+        if (registrarRegularizacion && idRegularizacion <= 0)
+            throw new IllegalStateException("No hay identificadores de movimiento disponibles");
+
         reserva.cancelar();
-        if (monto.signum() > 0) {
-            reserva.getFolio().agregarMovimiento(new Movimiento(
-                    idMovimientoDevolucion, "Devolución por cancelación de reserva " + codigo,
-                    TipoMovimiento.AJUSTE_CARGO, monto, LocalDateTime.now()));
+        LocalDateTime ahora = LocalDateTime.now();
+        if (registrarRegularizacion) {
+            folio.agregarMovimiento(new Movimiento(
+                    registrarDevolucion ? idRegularizacion : idMovimientoDevolucion,
+                    "Regularización de cargos por cancelación de reserva " + codigo,
+                    ajuste.signum() > 0 ? TipoMovimiento.AJUSTE_ABONO : TipoMovimiento.AJUSTE_CARGO,
+                    ajuste.abs(), ahora));
+        }
+        if (registrarDevolucion) {
+            folio.agregarMovimiento(new Movimiento(
+                    idMovimientoDevolucion,
+                    "Devolución de pagos por cancelación de reserva " + codigo,
+                    TipoMovimiento.AJUSTE_CARGO, monto, ahora));
         }
         return monto;
     }

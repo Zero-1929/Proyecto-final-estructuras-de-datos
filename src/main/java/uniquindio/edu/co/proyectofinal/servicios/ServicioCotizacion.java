@@ -84,6 +84,11 @@ public class ServicioCotizacion {
         return true;
     }
 
+    /** Retira un período del cálculo de cotizaciones sin modificar los demás. */
+    public boolean eliminarTemporada(Temporada temporada) {
+        return temporada != null && temporadas.eliminar(temporada);
+    }
+
     /**
      * Obtiene el tipo de temporada correspondiente
      * a una fecha.
