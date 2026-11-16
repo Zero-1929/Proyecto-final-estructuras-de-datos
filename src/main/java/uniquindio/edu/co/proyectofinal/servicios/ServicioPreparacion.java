@@ -157,6 +157,28 @@ public class ServicioPreparacion {
     }
 
     /**
+     * Recupera tareas de apartamentos pendientes sin duplicar las existentes.
+     * Es seguro llamarlo tras importar datos o despues de un check-out.
+     * Las tareas restauradas mantienen su orden y fecha originales.
+     *
+     * @return numero de tareas recuperadas
+     */
+    public int sincronizarPendientes(Iterable<Apartamento> apartamentos) {
+        if (apartamentos == null)
+            throw new IllegalArgumentException("Se requieren apartamentos.");
+        int recuperadas = 0;
+        for (Apartamento apartamento : apartamentos) {
+            if (apartamento != null
+                    && apartamento.getEstado() == EstadoApartamento.PENDIENTE_PREPARACION
+                    && !estaEnCola(apartamento)) {
+                solicitarPreparacion(apartamento);
+                recuperadas++;
+            }
+        }
+        return recuperadas;
+    }
+
+    /**
      * Restaura una tarea de preparacion que estaba pendiente.
      *
      * Se usa al cargar los datos guardados. Conserva la prioridad, el orden
