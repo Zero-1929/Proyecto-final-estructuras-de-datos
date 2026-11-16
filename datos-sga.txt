@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "apartamentos": [
     {
       "codigo": "A101",
@@ -219,7 +219,7 @@
       "numeroDormitorios": 4,
       "capacidad": 8,
       "caracteristicas": "m",
-      "estado": "PREPARADO",
+      "estado": "PENDIENTE_PREPARACION",
       "motivoFueraServicio": null,
       "tarifaBaja": "100000",
       "tarifaMedia": "200000",
@@ -377,7 +377,8 @@
       "canalReserva": "RECEPCION",
       "fechaCreacion": "2026-12-01T09:30",
       "horaLlegadaEstimada": "15:00",
-      "folioId": 1
+      "folioId": 1,
+      "ocupantes": []
     },
     {
       "codigo": "RES-00002",
@@ -389,7 +390,8 @@
       "canalReserva": "RECEPCION",
       "fechaCreacion": "2026-12-02T09:30",
       "horaLlegadaEstimada": "15:00",
-      "folioId": 2
+      "folioId": 2,
+      "ocupantes": []
     },
     {
       "codigo": "RES-00003",
@@ -401,7 +403,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-12-03T09:30",
       "horaLlegadaEstimada": "15:00",
-      "folioId": 3
+      "folioId": 3,
+      "ocupantes": []
     },
     {
       "codigo": "RES-00004",
@@ -413,7 +416,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-12-04T09:30",
       "horaLlegadaEstimada": "15:00",
-      "folioId": 4
+      "folioId": 4,
+      "ocupantes": []
     },
     {
       "codigo": "RES-00005",
@@ -425,7 +429,8 @@
       "canalReserva": "RECEPCION",
       "fechaCreacion": "2026-12-05T09:30",
       "horaLlegadaEstimada": "15:00",
-      "folioId": 5
+      "folioId": 5,
+      "ocupantes": []
     },
     {
       "codigo": "R-7ED14618",
@@ -437,7 +442,8 @@
       "canalReserva": "RECEPCION",
       "fechaCreacion": "2026-11-15T14:41:01.460080200",
       "horaLlegadaEstimada": "14:43",
-      "folioId": 771661460
+      "folioId": 771661460,
+      "ocupantes": []
     },
     {
       "codigo": "R-AF34326F",
@@ -449,7 +455,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-15T15:34:33.090119900",
       "horaLlegadaEstimada": "15:35",
-      "folioId": 774873090
+      "folioId": 774873090,
+      "ocupantes": []
     },
     {
       "codigo": "EXT-0001",
@@ -461,7 +468,8 @@
       "canalReserva": "PLATAFORMA_EXTERNA",
       "fechaCreacion": "2026-11-15T15:37:09.753413200",
       "horaLlegadaEstimada": null,
-      "folioId": 1
+      "folioId": 1,
+      "ocupantes": []
     },
     {
       "codigo": "R-E00F23B0",
@@ -473,7 +481,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-15T20:35:12.473780700",
       "horaLlegadaEstimada": "20:40",
-      "folioId": 792912473
+      "folioId": 792912473,
+      "ocupantes": []
     },
     {
       "codigo": "R-E1E072B8",
@@ -485,7 +494,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-15T20:52:28.883860100",
       "horaLlegadaEstimada": "20:52",
-      "folioId": 793948883
+      "folioId": 793948883,
+      "ocupantes": []
     },
     {
       "codigo": "R-E787D85A",
@@ -497,7 +507,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-15T23:37:04.688980200",
       "horaLlegadaEstimada": null,
-      "folioId": 803826483
+      "folioId": 803826483,
+      "ocupantes": []
     },
     {
       "codigo": "R-8C38DC9F",
@@ -509,7 +520,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-15T23:58:05.601387600",
       "horaLlegadaEstimada": null,
-      "folioId": 805087396
+      "folioId": 805087396,
+      "ocupantes": []
     },
     {
       "codigo": "R-4263CC45",
@@ -521,7 +533,8 @@
       "canalReserva": "RECEPCION",
       "fechaCreacion": "2026-11-16T00:00:10.201743500",
       "horaLlegadaEstimada": "12:00",
-      "folioId": 805210201
+      "folioId": 805210201,
+      "ocupantes": []
     },
     {
       "codigo": "R-EA0D9EF3",
@@ -533,7 +546,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-16T00:09:58.786244500",
       "horaLlegadaEstimada": "12:00",
-      "folioId": 805798786
+      "folioId": 805798786,
+      "ocupantes": []
     },
     {
       "codigo": "R-7B138FDF",
@@ -545,7 +559,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-16T00:11:05.142801800",
       "horaLlegadaEstimada": null,
-      "folioId": 805866937
+      "folioId": 805866937,
+      "ocupantes": []
     },
     {
       "codigo": "R-6FAAE0E7",
@@ -557,7 +572,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-16T00:19:37.396995600",
       "horaLlegadaEstimada": null,
-      "folioId": 806379191
+      "folioId": 806379191,
+      "ocupantes": []
     },
     {
       "codigo": "R-198CD7DB",
@@ -569,7 +585,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-16T00:30:44.916831700",
       "horaLlegadaEstimada": null,
-      "folioId": 807046710
+      "folioId": 807046710,
+      "ocupantes": []
     },
     {
       "codigo": "R-FC19498E",
@@ -581,7 +598,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-16T00:54:24.246542100",
       "horaLlegadaEstimada": null,
-      "folioId": 808466041
+      "folioId": 808466041,
+      "ocupantes": []
     },
     {
       "codigo": "R-003DD97A",
@@ -593,7 +611,8 @@
       "canalReserva": "WEB",
       "fechaCreacion": "2026-11-16T01:00:59.411940400",
       "horaLlegadaEstimada": null,
-      "folioId": 808861206
+      "folioId": 808861206,
+      "ocupantes": []
     },
     {
       "codigo": "R-D71C6D00",
@@ -605,7 +624,8 @@
       "canalReserva": "TELEFONO",
       "fechaCreacion": "2026-11-16T01:28:39.738550700",
       "horaLlegadaEstimada": "12:00",
-      "folioId": 810519738
+      "folioId": 810519738,
+      "ocupantes": []
     },
     {
       "codigo": "EXT-0002",
@@ -617,7 +637,8 @@
       "canalReserva": "PLATAFORMA_EXTERNA",
       "fechaCreacion": "2026-11-16T01:30:32.587347100",
       "horaLlegadaEstimada": null,
-      "folioId": 2
+      "folioId": 2,
+      "ocupantes": []
     },
     {
       "codigo": "EXT-0003",
@@ -629,7 +650,8 @@
       "canalReserva": "PLATAFORMA_EXTERNA",
       "fechaCreacion": "2026-11-16T01:36:35.852151200",
       "horaLlegadaEstimada": null,
-      "folioId": 3
+      "folioId": 3,
+      "ocupantes": []
     },
     {
       "codigo": "EXT-0004",
@@ -641,7 +663,8 @@
       "canalReserva": "PLATAFORMA_EXTERNA",
       "fechaCreacion": "2026-11-16T01:36:37.628488",
       "horaLlegadaEstimada": null,
-      "folioId": 4
+      "folioId": 4,
+      "ocupantes": []
     },
     {
       "codigo": "EXT-0005",
@@ -653,7 +676,8 @@
       "canalReserva": "PLATAFORMA_EXTERNA",
       "fechaCreacion": "2026-11-16T01:36:39.214267800",
       "horaLlegadaEstimada": null,
-      "folioId": 5
+      "folioId": 5,
+      "ocupantes": []
     },
     {
       "codigo": "EXT-0006",
@@ -665,7 +689,32 @@
       "canalReserva": "PLATAFORMA_EXTERNA",
       "fechaCreacion": "2026-11-16T01:36:41.423412800",
       "horaLlegadaEstimada": null,
-      "folioId": 6
+      "folioId": 6,
+      "ocupantes": []
+    },
+    {
+      "codigo": "R-AD53B96A",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "C102",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-17",
+      "estado": "FINALIZADA",
+      "canalReserva": "WEB",
+      "fechaCreacion": "2026-11-16T02:22:29.856824800",
+      "horaLlegadaEstimada": null,
+      "folioId": 813751651,
+      "ocupantes": [
+        {
+          "nombre": "Ana Torres",
+          "fechaNacimiento": "1990-01-15",
+          "documentoHuespedVinculado": "1001001"
+        },
+        {
+          "nombre": "wererer",
+          "fechaNacimiento": "2003-11-12",
+          "documentoHuespedVinculado": null
+        }
+      ]
     }
   ],
   "folios": [
@@ -1264,6 +1313,37 @@
         2,
         1
       ]
+    },
+    {
+      "id": 813751651,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento 4 noche(s) · 2 ocupante(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "800000",
+          "fecha": "2026-11-16T02:22:29.857824400"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago de anticipo WEB (30 %) - R-AD53B96A",
+          "tipo": "PAGO",
+          "monto": "240000.00",
+          "fecha": "2026-11-16T02:23:52.695343700"
+        },
+        {
+          "id": 3,
+          "descripcion": "Pago de saldo restante - R-AD53B96A",
+          "tipo": "PAGO",
+          "monto": "560000.00",
+          "fecha": "2026-11-16T02:24:05.658261300"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        3,
+        2,
+        1
+      ]
     }
   ],
   "solicitudesPendientes": [],
@@ -1280,7 +1360,8 @@
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575134696",
       "estado": "PROCESADA",
-      "motivoRechazo": null
+      "motivoRechazo": null,
+      "ocupantes": []
     },
     {
       "idSolicitud": "SOL-002",
@@ -1294,7 +1375,8 @@
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575419433",
       "estado": "PROCESADA",
-      "motivoRechazo": null
+      "motivoRechazo": null,
+      "ocupantes": []
     },
     {
       "idSolicitud": "SOL-003",
@@ -1308,7 +1390,8 @@
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575472969",
       "estado": "PROCESADA",
-      "motivoRechazo": null
+      "motivoRechazo": null,
+      "ocupantes": []
     },
     {
       "idSolicitud": "SOL-004",
@@ -1322,7 +1405,8 @@
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575502089",
       "estado": "PROCESADA",
-      "motivoRechazo": null
+      "motivoRechazo": null,
+      "ocupantes": []
     },
     {
       "idSolicitud": "SOL-005",
@@ -1336,7 +1420,8 @@
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-14T20:58:05.575532342",
       "estado": "PROCESADA",
-      "motivoRechazo": null
+      "motivoRechazo": null,
+      "ocupantes": []
     },
     {
       "idSolicitud": "SOL-75413FDC",
@@ -1350,7 +1435,8 @@
       "numeroPersonas": 2,
       "fechaRecepcion": "2026-11-16T01:36:23.728720800",
       "estado": "PROCESADA",
-      "motivoRechazo": null
+      "motivoRechazo": null,
+      "ocupantes": []
     }
   ],
   "tareasPreparacion": [
@@ -1359,6 +1445,12 @@
       "prioridad": 0,
       "orden": 1,
       "fechaSolicitud": "2026-11-16T00:20:15.476010500"
+    },
+    {
+      "codigoApartamento": "C102",
+      "prioridad": 0,
+      "orden": 2,
+      "fechaSolicitud": "2026-11-16T02:24:08.276718"
     }
   ],
   "recepcionistas": [

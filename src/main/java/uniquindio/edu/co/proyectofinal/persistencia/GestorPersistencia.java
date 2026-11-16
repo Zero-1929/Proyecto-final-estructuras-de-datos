@@ -13,6 +13,7 @@ import uniquindio.edu.co.proyectofinal.modelo.Estancia;
 import uniquindio.edu.co.proyectofinal.modelo.Folio;
 import uniquindio.edu.co.proyectofinal.modelo.Huesped;
 import uniquindio.edu.co.proyectofinal.modelo.Movimiento;
+import uniquindio.edu.co.proyectofinal.modelo.Ocupante;
 import uniquindio.edu.co.proyectofinal.modelo.Reserva;
 import uniquindio.edu.co.proyectofinal.modelo.SolicitudExterna;
 import uniquindio.edu.co.proyectofinal.modelo.Temporada;
@@ -403,6 +404,7 @@ public final class GestorPersistencia {
                     )
             );
 
+            ListaDoble<Ocupante> ocupantes = restaurarOcupantes(dato.ocupantes(), servicioHuesped);
             Reserva reserva = new Reserva(
                     dato.codigo(),
                     huesped,
@@ -417,7 +419,8 @@ public final class GestorPersistencia {
                     horaOpcional(
                             dato.horaLlegadaEstimada(),
                             "llegada de " + dato.codigo()
-                    )
+                    ),
+                    ocupantes
             );
 
             aplicarEstado(reserva, dato.estado());
@@ -612,7 +615,8 @@ public final class GestorPersistencia {
                 fechaHora(
                         dato.fechaRecepcion(),
                         "recepcion de " + dato.idSolicitud()
-                )
+                ),
+                restaurarOcupantes(dato.ocupantes(), null)
         );
 
         if (dato.estado() == EstadoSolicitud.PROCESADA) {
@@ -733,8 +737,36 @@ public final class GestorPersistencia {
                 reserva.getHoraLlegadaEstimada() == null
                         ? null
                         : reserva.getHoraLlegadaEstimada().toString(),
-                reserva.getFolio().getId()
+                reserva.getFolio().getId(),
+                convertir(reserva.getOcupantes(), DatosSGA.OcupanteDatos[]::new,
+                        GestorPersistencia::aDatos)
         );
+    }
+
+    private static DatosSGA.OcupanteDatos aDatos(Ocupante ocupante) {
+        return new DatosSGA.OcupanteDatos(
+                ocupante.getNombre(), ocupante.getFechaNacimiento().toString(),
+                ocupante.getPerfilVinculado() == null ? null
+                        : ocupante.getPerfilVinculado().getDocumento());
+    }
+
+    private static ListaDoble<Ocupante> restaurarOcupantes(
+            DatosSGA.OcupanteDatos[] datos, ServicioHuesped servicioHuesped) throws IOException {
+        ListaDoble<Ocupante> ocupantes = new ListaDoble<>();
+        if (datos == null) return ocupantes; // Compatibilidad con snapshots anteriores.
+        for (DatosSGA.OcupanteDatos dato : datos) {
+            if (dato == null) throw new IOException("Ocupante nulo en el archivo de datos.");
+            Huesped perfil = null;
+            if (servicioHuesped != null && dato.documentoHuespedVinculado() != null
+                    && !dato.documentoHuespedVinculado().isBlank()) {
+                perfil = servicioHuesped.buscarPorDocumento(dato.documentoHuespedVinculado());
+                if (perfil == null) throw new IOException("Perfil de ocupante no encontrado: "
+                        + dato.documentoHuespedVinculado());
+            }
+            ocupantes.agregarFinal(new Ocupante(dato.nombre(),
+                    fecha(dato.fechaNacimiento(), "nacimiento de " + dato.nombre()), perfil));
+        }
+        return ocupantes;
     }
 
     private static DatosSGA.FolioDatos aDatos(Folio folio) {
@@ -783,7 +815,9 @@ public final class GestorPersistencia {
                 solicitud.getNumeroPersonas(),
                 solicitud.getFechaRecepcion().toString(),
                 solicitud.getEstado(),
-                solicitud.getMotivoRechazo()
+                solicitud.getMotivoRechazo(),
+                convertir(solicitud.getOcupantes(), DatosSGA.OcupanteDatos[]::new,
+                        GestorPersistencia::aDatos)
         );
     }
 

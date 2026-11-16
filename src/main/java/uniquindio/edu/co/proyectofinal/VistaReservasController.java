@@ -534,7 +534,8 @@ public class VistaReservasController {
                 throw new IllegalArgumentException("Para plataformas externas utiliza la pestaña Canal externo.");
             String codigo = "R-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             int folioId = (int)(System.currentTimeMillis() % 1_000_000_000);
-            Reserva r = new Reserva(codigo, h, apartamentoElegido, estanciaCotizada, canal, new Folio(folioId));
+            Reserva r = new Reserva(codigo, h, apartamentoElegido, estanciaCotizada,
+                    canal, new Folio(folioId), LocalDateTime.now(), null, lista);
             if (!txtHoraLlegada.getText().isBlank())
                 r.setHoraLlegadaEstimada(LocalTime.parse(txtHoraLlegada.getText().strip()));
             if (!sistema.getServicioReserva().registrarReserva(r, lista.tamano()))

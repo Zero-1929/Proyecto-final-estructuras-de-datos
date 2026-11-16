@@ -49,9 +49,38 @@ public class ServicioReserva {
             throw new IllegalArgumentException("El apartamento no está registrado.");
         if (reserva.getEstado() != EstadoReserva.PENDIENTE)
             throw new IllegalArgumentException("La reserva nueva debe estar pendiente.");
+        if (reserva.getCantidadOcupantes() > 0 && reserva.getCantidadOcupantes() != numeroOcupantes)
+            throw new IllegalArgumentException("La cantidad de ocupantes no coincide con la reserva.");
         if (!disponibilidad.estaDisponible(apartamento.getCodigo(), reserva.getEstancia(), numeroOcupantes))
             return false;
         reservas.agregarFinal(reserva);
+        disponibilidad.invalidarIndice();
+        return true;
+    }
+
+    /** Registra un lote completo sin insertar reservas parciales si alguna falla. */
+    public boolean registrarReservasAtomicas(ListaDoble<Reserva> nuevasReservas) {
+        if (nuevasReservas == null || nuevasReservas.estaVacia())
+            throw new IllegalArgumentException("Se requiere al menos una reserva.");
+        for (int i = 0; i < nuevasReservas.tamano(); i++) {
+            Reserva actual = nuevasReservas.obtener(i);
+            if (actual == null) return false;
+            int ocupantes = actual.getCantidadOcupantes();
+            if (ocupantes == 0) ocupantes = 1; // Compatibilidad con reservas sin lista de ocupantes.
+            if (buscarPorCodigo(actual.getCodigo()) != null) return false;
+            if (actual.getEstado() != EstadoReserva.PENDIENTE) return false;
+            Apartamento registrado = apartamentos.buscarPorCodigo(actual.getApartamento().getCodigo());
+            if (registrado == null || ocupantes > registrado.getCapacidad()) return false;
+            if (!disponibilidad.estaDisponible(registrado.getCodigo(), actual.getEstancia(), ocupantes))
+                return false;
+            for (int j = 0; j < i; j++) {
+                Reserva anterior = nuevasReservas.obtener(j);
+                if (anterior == null || anterior.getCodigo().equalsIgnoreCase(actual.getCodigo())
+                        || actual.seSolapaCon(anterior)) return false;
+            }
+        }
+        for (Reserva reserva : nuevasReservas) reservas.agregarFinal(reserva);
+        disponibilidad.invalidarIndice();
         return true;
     }
 

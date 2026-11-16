@@ -14,6 +14,7 @@ import uniquindio.edu.co.proyectofinal.modelo.Folio;
 import uniquindio.edu.co.proyectofinal.modelo.Huesped;
 import uniquindio.edu.co.proyectofinal.modelo.Reserva;
 import uniquindio.edu.co.proyectofinal.modelo.SolicitudExterna;
+import uniquindio.edu.co.proyectofinal.modelo.Ocupante;
 
 /**
  * Procesa las solicitudes que llegan por el canal externo.
@@ -200,7 +201,8 @@ public class ServicioExterno {
         }
 
         if (servicioReserva != null) {
-            if (!servicioReserva.registrarReserva(reserva, 1))
+            if (!servicioReserva.registrarReserva(reserva,
+                    Math.max(1, reserva.getCantidadOcupantes())))
                 throw new IllegalArgumentException("La reserva no se puede registrar.");
         } else {
             reservas.agregarFinal(reserva);
@@ -278,6 +280,12 @@ public class ServicioExterno {
             return null;
         }
 
+        if (!solicitud.getOcupantes().estaVacia()
+                && solicitud.getOcupantes().tamano() != solicitud.getNumeroPersonas()) {
+            rechazar(solicitud, "La cantidad de ocupantes detallados no coincide con la solicitud.");
+            return null;
+        }
+
         Huesped titular = buscarHuesped(solicitud.getDocumento());
 
         if (titular == null) {
@@ -296,13 +304,13 @@ public class ServicioExterno {
             codigoReserva = generarCodigoReserva();
         } while (buscarReserva(codigoReserva) != null);
 
+        // Conservar edades reales cuando la plataforma las suministra.
+        // Si no las proporciona, no inventar fechas de nacimiento para los acompañantes.
+        ListaDoble<Ocupante> ocupantes = solicitud.getOcupantes();
         Reserva reserva = new Reserva(
-                codigoReserva,
-                titular,
-                apartamento,
-                estancia,
-                CanalReserva.PLATAFORMA_EXTERNA,
-                folio
+                codigoReserva, titular, apartamento, estancia,
+                CanalReserva.PLATAFORMA_EXTERNA, folio,
+                java.time.LocalDateTime.now(), null, ocupantes
         );
 
         if (servicioReserva != null) {

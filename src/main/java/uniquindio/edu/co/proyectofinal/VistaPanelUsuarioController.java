@@ -482,7 +482,8 @@ public class VistaPanelUsuarioController {
                 throw new IllegalStateException("El apartamento ya no está disponible.");
             String codigo = "R-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             int idFolio = 1 + (int)(System.currentTimeMillis() % 999_999_999L);
-            Reserva reserva = new Reserva(codigo, huesped, a, estancia, CanalReserva.WEB, new Folio(idFolio));
+            Reserva reserva = new Reserva(codigo, huesped, a, estancia,
+                    CanalReserva.WEB, new Folio(idFolio), LocalDateTime.now(), null, personas);
             if (!sistema.getServicioReserva().registrarReserva(reserva, personas.tamano()))
                 throw new IllegalStateException("No se pudo registrar la reserva; verifica la disponibilidad.");
             reserva.getFolio().agregarMovimiento(new Movimiento(1,

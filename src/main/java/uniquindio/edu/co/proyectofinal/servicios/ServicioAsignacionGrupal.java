@@ -1,3 +1,4 @@
+
 package uniquindio.edu.co.proyectofinal.servicios;
 
 import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
@@ -7,12 +8,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * Servicio encargado de asignar apartamentos
- * para solicitudes de alojamiento grupal.
+ * Asigna apartamentos a grupos grandes mediante backtracking.
  *
- * Utiliza backtracking para encontrar la combinación
- * que permita alojar al grupo con el menor número
- * de apartamentos posible.
+ * El objetivo es alojar a todos los ocupantes utilizando
+ * el menor número posible de apartamentos.
  */
 public class ServicioAsignacionGrupal {
 
@@ -39,14 +38,9 @@ public class ServicioAsignacionGrupal {
     // --------------------------------------------------
 
     /**
-     * Busca la mejor combinación de apartamentos
-     * para alojar la cantidad de personas solicitada.
-     *
-     * @param cantidadPersonas personas que se alojarán.
-     * @param estancia periodo solicitado.
-     * @param apartamentos apartamentos disponibles en el sistema.
-     * @param reservas reservas registradas en el sistema.
-     * @return arreglo con los apartamentos seleccionados.
+     * Busca la combinación de apartamentos que permita
+     * alojar a todas las personas con el menor número
+     * de apartamentos y menor capacidad sobrante.
      */
     public Apartamento[] buscarMejorAsignacion(
             int cantidadPersonas,
@@ -54,7 +48,7 @@ public class ServicioAsignacionGrupal {
             Apartamento[] apartamentos,
             ListaDoble<Reserva> reservas) {
 
-        validarParametros(
+        validarParametrosBusqueda(
                 cantidadPersonas,
                 estancia,
                 apartamentos,
@@ -70,22 +64,27 @@ public class ServicioAsignacionGrupal {
 
         int cantidadCandidatos = 0;
 
-        // Filtrar apartamentos que pueden recibir
-        // una reserva durante las fechas solicitadas.
-        for (Apartamento apartamento : apartamentos) {
+        for (int i = 0; i < apartamentos.length; i++) {
 
-            if (apartamento != null
-                    && esCandidato(apartamento, estancia, reservas)) {
+            Apartamento apartamento = apartamentos[i];
 
-                candidatos[cantidadCandidatos] = apartamento;
-                cantidadCandidatos++;
+            if (apartamento == null) {
+                continue;
+            }
+
+            // Evitar evaluar dos veces el mismo apartamento.
+            if (estaRepetido(apartamentos, i, apartamento)) {
+                continue;
+            }
+
+            if (esCandidato(apartamento, estancia, reservas)) {
+                candidatos[cantidadCandidatos++] = apartamento;
             }
         }
 
         Apartamento[] seleccion =
                 new Apartamento[cantidadCandidatos];
 
-        // Ejecutar el algoritmo de backtracking.
         buscarCombinacion(
                 0,
                 0,
@@ -114,71 +113,70 @@ public class ServicioAsignacionGrupal {
     }
 
     /**
-     * Determina si un apartamento puede ser candidato.
+     * Comprueba si el apartamento aparece anteriormente
+     * en el arreglo.
+     */
+    private boolean estaRepetido(
+            Apartamento[] apartamentos,
+            int indiceActual,
+            Apartamento apartamento) {
+
+        for (int i = 0; i < indiceActual; i++) {
+
+            if (apartamentos[i] != null
+                    && apartamentos[i].getCodigo().equalsIgnoreCase(
+                    apartamento.getCodigo())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Un apartamento solo es candidato cuando está preparado,
+     * tiene capacidad y no presenta reservas que se solapen.
      *
-     * No permite apartamentos fuera de servicio,
-     * pendientes de preparación o en preparación.
-     *
-     * Los apartamentos ocupados solo se consideran
-     * cuando existe una reserva en curso que termina
-     * antes de la nueva fecha de entrada.
+     * No se seleccionan apartamentos ocupados o pendientes
+     * de preparación, porque deben estar preparados antes
+     * de recibir un nuevo grupo.
      */
     private boolean esCandidato(
             Apartamento apartamento,
             Estancia estancia,
             ListaDoble<Reserva> reservas) {
 
-        EstadoApartamento estado = apartamento.getEstado();
-
-        if (estado == EstadoApartamento.FUERA_DE_SERVICIO
-                || estado == EstadoApartamento.EN_PREPARACION
-                || estado == EstadoApartamento.PENDIENTE_PREPARACION) {
+        if (apartamento.getEstado() != EstadoApartamento.PREPARADO) {
             return false;
         }
-
-        boolean tieneReservaEnCurso = false;
 
         for (Reserva reserva : reservas) {
 
             if (!reserva.getApartamento().getCodigo()
-                    .equals(apartamento.getCodigo())) {
+                    .equalsIgnoreCase(apartamento.getCodigo())) {
                 continue;
             }
 
-            if (reserva.getEstado() == EstadoReserva.EN_CURSO) {
-                tieneReservaEnCurso = true;
-            }
-
-            // Las reservas pendientes, confirmadas y en curso
-            // bloquean las noches que se cruzan.
-            if (esReservaBloqueante(reserva)
-                    && estancia.seSolapaCon(reserva.getEstancia())) {
+            if (esReservaQueBloqueaFechas(reserva)
+                    && reserva.getEstancia().seSolapaCon(estancia)) {
                 return false;
             }
         }
 
-        // Si está ocupado actualmente, debe existir
-        // una reserva en curso que explique ese estado.
-        if (estado == EstadoApartamento.OCUPADO
-                && !tieneReservaEnCurso) {
-            return false;
-        }
-
-        return estado == EstadoApartamento.PREPARADO
-                || estado == EstadoApartamento.OCUPADO;
+        return true;
     }
 
     /**
-     * Comprueba si el estado de una reserva bloquea
-     * la disponibilidad del apartamento.
+     * Estados que ocupan las noches del calendario.
      */
-    private boolean esReservaBloqueante(Reserva reserva) {
+    private boolean esReservaQueBloqueaFechas(Reserva reserva) {
 
         EstadoReserva estado = reserva.getEstado();
 
         return estado == EstadoReserva.PENDIENTE
                 || estado == EstadoReserva.CONFIRMADA
-                || estado == EstadoReserva.EN_CURSO;
+                || estado == EstadoReserva.EN_CURSO
+                || estado == EstadoReserva.FINALIZADA;
     }
 
     // --------------------------------------------------
@@ -186,11 +184,11 @@ public class ServicioAsignacionGrupal {
     // --------------------------------------------------
 
     /**
-     * Busca recursivamente la combinación óptima.
+     * Explora recursivamente las combinaciones posibles.
      *
-     * Primero minimiza la cantidad de apartamentos.
-     * Si existen varias combinaciones con la misma
-     * cantidad, minimiza la capacidad sobrante.
+     * Criterios:
+     * 1. Menor cantidad de apartamentos.
+     * 2. Menor capacidad sobrante.
      */
     private void buscarCombinacion(
             int indice,
@@ -201,8 +199,6 @@ public class ServicioAsignacionGrupal {
             int cantidadCandidatos,
             Apartamento[] seleccion) {
 
-        // Si se alcanza la capacidad requerida,
-        // se evalúa la solución encontrada.
         if (capacidadAcumulada >= personasNecesarias) {
 
             int capacidadSobrante =
@@ -227,30 +223,25 @@ public class ServicioAsignacionGrupal {
             return;
         }
 
-        // No quedan candidatos para evaluar.
         if (indice >= cantidadCandidatos) {
             return;
         }
 
-        // Poda: no continuar si ya se seleccionaron
-        // tantos apartamentos como la mejor solución.
         if (cantidadSeleccionada >= mejorCantidad) {
             return;
         }
 
-        // Calcular la capacidad que todavía podría alcanzarse.
         int capacidadPosible = capacidadAcumulada;
 
         for (int i = indice; i < cantidadCandidatos; i++) {
             capacidadPosible += candidatos[i].getCapacidad();
         }
 
-        // Si no alcanza, se descarta esta rama.
         if (capacidadPosible < personasNecesarias) {
             return;
         }
 
-        // OPCIÓN 1: incluir el apartamento actual.
+        // Opción 1: seleccionar el apartamento actual.
         seleccion[cantidadSeleccionada] = candidatos[indice];
 
         buscarCombinacion(
@@ -263,7 +254,7 @@ public class ServicioAsignacionGrupal {
                 seleccion
         );
 
-        // OPCIÓN 2: no incluir el apartamento actual.
+        // Opción 2: no seleccionar el apartamento actual.
         seleccion[cantidadSeleccionada] = null;
 
         buscarCombinacion(
@@ -282,48 +273,44 @@ public class ServicioAsignacionGrupal {
     // --------------------------------------------------
 
     /**
-     * Busca apartamentos y crea una reserva individual
-     * por cada apartamento seleccionado.
+     * Crea un grupo de reservas individuales.
      *
-     * Todas las reservas pertenecen al mismo huésped
-     * responsable y quedan agrupadas en ReservaGrupo.
+     * Cada apartamento recibe:
+     * - Una reserva independiente.
+     * - Un folio independiente.
+     * - Los ocupantes que le correspondan.
      *
-     * También se agregan al registro general recibido.
-     *
-     * @param responsable huésped responsable del grupo.
-     * @param cantidadPersonas cantidad total de personas.
-     * @param estancia fechas de entrada y salida.
-     * @param apartamentos apartamentos del alojamiento.
-     * @param reservasExistentes registro general de reservas.
-     * @param canal canal por el que se realiza la reserva.
-     * @param horaLlegada hora estimada de llegada.
-     * @return grupo con sus reservas individuales.
+     * Todas las reservas comparten el huésped responsable.
+     * El registro se realiza de forma atómica en ServicioReserva.
      */
     public ReservaGrupo crearReservaGrupal(
             Huesped responsable,
-            int cantidadPersonas,
+            ListaDoble<Ocupante> ocupantes,
             Estancia estancia,
             Apartamento[] apartamentos,
-            ListaDoble<Reserva> reservasExistentes,
+            ServicioReserva servicioReserva,
             CanalReserva canal,
             LocalTime horaLlegada) {
 
-        if (responsable == null
-                || canal == null
-                || horaLlegada == null) {
-            throw new IllegalArgumentException(
-                    "El responsable, el canal y la hora de llegada son obligatorios."
-            );
-        }
-
-        validarParametros(
-                cantidadPersonas,
+        validarDatosGrupo(
+                responsable,
+                ocupantes,
                 estancia,
                 apartamentos,
-                reservasExistentes
+                servicioReserva,
+                canal,
+                horaLlegada
         );
 
-        // Buscar la mejor combinación.
+        validarTitular(responsable, ocupantes);
+
+        int cantidadPersonas = ocupantes.tamano();
+
+        // Obtener las reservas centrales actuales.
+        ListaDoble<Reserva> reservasExistentes =
+                servicioReserva.listarReservas();
+
+        // Buscar la combinación óptima.
         Apartamento[] asignados = buscarMejorAsignacion(
                 cantidadPersonas,
                 estancia,
@@ -333,20 +320,50 @@ public class ServicioAsignacionGrupal {
 
         if (asignados.length == 0) {
             throw new IllegalStateException(
-                    "No existe capacidad disponible para alojar al grupo."
+                    "No hay apartamentos preparados y disponibles "
+                            + "para alojar a todo el grupo."
             );
         }
 
-        // Crear el grupo.
-        ReservaGrupo grupo = new ReservaGrupo(
-                generador.generarCodigoGrupo(),
-                responsable
-        );
-
-        // Preparar las reservas individuales.
-        ListaDoble<Reserva> nuevasReservas = new ListaDoble<>();
+        // Comprobar la capacidad total.
+        int capacidadTotal = 0;
 
         for (Apartamento apartamento : asignados) {
+            capacidadTotal += apartamento.getCapacidad();
+        }
+
+        if (capacidadTotal < cantidadPersonas) {
+            throw new IllegalStateException(
+                    "La capacidad de los apartamentos seleccionados "
+                            + "no alcanza para todo el grupo."
+            );
+        }
+
+        // Crear las reservas sin registrarlas todavía.
+        ListaDoble<Reserva> nuevasReservas = new ListaDoble<>();
+
+        int indiceOcupante = 0;
+
+        for (Apartamento apartamento : asignados) {
+
+            ListaDoble<Ocupante> ocupantesApartamento =
+                    new ListaDoble<>();
+
+            // Distribuir ocupantes hasta completar la capacidad.
+            while (indiceOcupante < cantidadPersonas
+                    && ocupantesApartamento.tamano()
+                    < apartamento.getCapacidad()) {
+
+                ocupantesApartamento.agregarFinal(
+                        ocupantes.obtener(indiceOcupante)
+                );
+
+                indiceOcupante++;
+            }
+
+            if (ocupantesApartamento.estaVacia()) {
+                continue;
+            }
 
             Reserva reserva = new Reserva(
                     generador.generarCodigoReserva(),
@@ -356,26 +373,129 @@ public class ServicioAsignacionGrupal {
                     canal,
                     new Folio(generador.generarIdFolio()),
                     LocalDateTime.now(),
-                    horaLlegada
+                    horaLlegada,
+                    ocupantesApartamento
             );
 
             nuevasReservas.agregarFinal(reserva);
-            grupo.agregarReserva(reserva);
         }
 
-        // Registrar todas las reservas en la estructura general.
+        // Verificar que todos los ocupantes fueron distribuidos.
+        if (indiceOcupante != cantidadPersonas) {
+            throw new IllegalStateException(
+                    "No fue posible distribuir todos los ocupantes."
+            );
+        }
+
+        // Registrar todas las reservas en una sola operación.
+        boolean registradas =
+                servicioReserva.registrarReservasAtomicas(nuevasReservas);
+
+        if (!registradas) {
+            throw new IllegalStateException(
+                    "No se pudo registrar el grupo completo. "
+                            + "Una o más reservas no cumplen las "
+                            + "validaciones de disponibilidad."
+            );
+        }
+
+        // Construir el grupo únicamente después del registro exitoso.
+        ReservaGrupo grupo = new ReservaGrupo(
+                generador.generarCodigoGrupo(),
+                responsable
+        );
+
         for (Reserva reserva : nuevasReservas) {
-            reservasExistentes.agregarFinal(reserva);
+            grupo.agregarReserva(reserva);
         }
 
         return grupo;
     }
 
     // --------------------------------------------------
-    // VALIDACIONES
+    // VALIDACIONES DEL GRUPO
     // --------------------------------------------------
 
-    private void validarParametros(
+    private void validarDatosGrupo(
+            Huesped responsable,
+            ListaDoble<Ocupante> ocupantes,
+            Estancia estancia,
+            Apartamento[] apartamentos,
+            ServicioReserva servicioReserva,
+            CanalReserva canal,
+            LocalTime horaLlegada) {
+
+        if (responsable == null
+                || ocupantes == null
+                || estancia == null
+                || apartamentos == null
+                || servicioReserva == null
+                || canal == null
+                || horaLlegada == null) {
+
+            throw new IllegalArgumentException(
+                    "Todos los datos de la asignación grupal son obligatorios."
+            );
+        }
+
+        if (ocupantes.estaVacia()) {
+            throw new IllegalArgumentException(
+                    "El grupo debe tener al menos un ocupante."
+            );
+        }
+
+        for (Ocupante ocupante : ocupantes) {
+
+            if (ocupante == null) {
+                throw new IllegalArgumentException(
+                        "La lista no puede contener ocupantes nulos."
+                );
+            }
+
+            if (ocupante.getFechaNacimiento() == null) {
+                throw new IllegalArgumentException(
+                        "Todos los ocupantes deben tener fecha de nacimiento."
+                );
+            }
+        }
+
+        if (apartamentos.length == 0) {
+            throw new IllegalArgumentException(
+                    "No hay apartamentos para realizar la asignación."
+            );
+        }
+    }
+
+    /**
+     * Exige que el huésped responsable aparezca exactamente
+     * una vez como ocupante vinculado a su perfil.
+     */
+    private void validarTitular(
+            Huesped responsable,
+            ListaDoble<Ocupante> ocupantes) {
+
+        int coincidencias = 0;
+
+        for (Ocupante ocupante : ocupantes) {
+
+            if (ocupante.tienePerfil()
+                    && ocupante.getPerfilVinculado().getDocumento()
+                    .equalsIgnoreCase(responsable.getDocumento())) {
+
+                coincidencias++;
+            }
+        }
+
+        if (coincidencias != 1) {
+            throw new IllegalArgumentException(
+                    "El huésped responsable debe aparecer exactamente "
+                            + "una vez entre los ocupantes, vinculado "
+                            + "a su perfil."
+            );
+        }
+    }
+
+    private void validarParametrosBusqueda(
             int cantidadPersonas,
             Estancia estancia,
             Apartamento[] apartamentos,
@@ -387,15 +507,13 @@ public class ServicioAsignacionGrupal {
             );
         }
 
-        if (estancia == null) {
-            throw new IllegalArgumentException(
-                    "La estancia no puede ser nula."
-            );
-        }
+        if (estancia == null
+                || apartamentos == null
+                || reservas == null) {
 
-        if (apartamentos == null || reservas == null) {
             throw new IllegalArgumentException(
-                    "Los apartamentos y las reservas son obligatorios."
+                    "La estancia, los apartamentos y las reservas "
+                            + "son obligatorios."
             );
         }
 
@@ -406,4 +524,3 @@ public class ServicioAsignacionGrupal {
         }
     }
 }
-

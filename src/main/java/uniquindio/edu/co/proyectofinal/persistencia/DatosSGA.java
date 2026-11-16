@@ -58,7 +58,7 @@ public record DatosSGA(
     /**
      * Version actual del formato.
      */
-    public static final int VERSION_ACTUAL = 1;
+    public static final int VERSION_ACTUAL = 2;
 
     /**
      * Normaliza los arreglos y valores obligatorios del snapshot.
@@ -197,9 +197,17 @@ public record DatosSGA(
             CanalReserva canalReserva,
             String fechaCreacion,
             String horaLlegadaEstimada,
-            int folioId
+            int folioId,
+            OcupanteDatos[] ocupantes
     ) {
+        public ReservaDatos {
+            ocupantes = ocupantes == null ? new OcupanteDatos[0] : ocupantes;
+        }
     }
+
+    /** Persona alojada, con fecha real y perfil opcional. */
+    public record OcupanteDatos(String nombre, String fechaNacimiento,
+                                String documentoHuespedVinculado) { }
 
     /**
      * Datos persistibles de un folio.
@@ -251,8 +259,12 @@ public record DatosSGA(
             int numeroPersonas,
             String fechaRecepcion,
             EstadoSolicitud estado,
-            String motivoRechazo
+            String motivoRechazo,
+            OcupanteDatos[] ocupantes
     ) {
+        public SolicitudDatos {
+            ocupantes = ocupantes == null ? new OcupanteDatos[0] : ocupantes;
+        }
     }
 
     /**

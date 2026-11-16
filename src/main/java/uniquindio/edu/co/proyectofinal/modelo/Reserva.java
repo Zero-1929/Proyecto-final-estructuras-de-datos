@@ -1,6 +1,7 @@
 
 package uniquindio.edu.co.proyectofinal.modelo;
 
+import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -46,6 +47,10 @@ public class Reserva {
     // Folio donde se registran los cargos y pagos.
     private final Folio folio;
 
+    // Lista de los ocupantes de la reserva
+    private final ListaDoble<Ocupante> ocupantes;
+
+
     /**
      * Constructor principal de la reserva.
      * La fecha de creación se establece automáticamente.
@@ -55,7 +60,8 @@ public class Reserva {
                    CanalReserva canalReserva, Folio folio) {
 
         this(codigo, huesped, apartamento, estancia,
-                canalReserva, folio, LocalDateTime.now(), null);
+                canalReserva, folio, LocalDateTime.now(),
+                null, new ListaDoble<>());
     }
 
     /**
@@ -67,25 +73,37 @@ public class Reserva {
                    LocalDateTime fechaCreacion) {
 
         this(codigo, huesped, apartamento, estancia,
-                canalReserva, folio, fechaCreacion, null);
+                canalReserva, folio, fechaCreacion,
+                null, new ListaDoble<>());
     }
 
     /**
      * Constructor que permite establecer la fecha de creación
-     * de la reserva.
-     *
-     * @param codigo código único de la reserva.
-     * @param huesped huésped responsable.
-     * @param apartamento apartamento asignado.
-     * @param estancia periodo de alojamiento.
-     * @param canalReserva canal por el que se realizó la reserva.
-     * @param folio folio asociado a la reserva.
-     * @param fechaCreacion fecha y hora de creación.
+     * y la hora estimada de llegada.
      */
     public Reserva(String codigo, Huesped huesped,
                    Apartamento apartamento, Estancia estancia,
                    CanalReserva canalReserva, Folio folio,
-                   LocalDateTime fechaCreacion,LocalTime horaLlegadaEstimada) {
+                   LocalDateTime fechaCreacion,
+                   LocalTime horaLlegadaEstimada) {
+
+        this(codigo, huesped, apartamento, estancia,
+                canalReserva, folio, fechaCreacion,
+                horaLlegadaEstimada, new ListaDoble<>());
+    }
+
+    /**
+     * Constructor principal que permite registrar los ocupantes.
+     *
+     * El titular también debe estar incluido en la lista
+     * de ocupantes para contabilizar correctamente su capacidad.
+     */
+    public Reserva(String codigo, Huesped huesped,
+                   Apartamento apartamento, Estancia estancia,
+                   CanalReserva canalReserva, Folio folio,
+                   LocalDateTime fechaCreacion,
+                   LocalTime horaLlegadaEstimada,
+                   ListaDoble<Ocupante> ocupantes) {
 
         if (codigo == null || codigo.isBlank()) {
             throw new IllegalArgumentException(
@@ -129,6 +147,19 @@ public class Reserva {
             );
         }
 
+        if (ocupantes == null) {
+            throw new IllegalArgumentException(
+                    "La lista de ocupantes no puede ser nula."
+            );
+        }
+
+        if (ocupantes.tamano() > apartamento.getCapacidad()) {
+            throw new IllegalArgumentException(
+                    "La cantidad de ocupantes supera la capacidad "
+                            + "del apartamento."
+            );
+        }
+
         this.codigo = codigo.trim();
         this.huesped = huesped;
         this.apartamento = apartamento;
@@ -138,9 +169,24 @@ public class Reserva {
         this.fechaCreacion = fechaCreacion;
         this.horaLlegadaEstimada = horaLlegadaEstimada;
 
-        // Toda reserva nueva inicia en estado pendiente.
+        // Crear una copia propia de la lista recibida.
+        this.ocupantes = new ListaDoble<>();
+
+        for (Ocupante ocupante : ocupantes) {
+
+            if (ocupante == null) {
+                throw new IllegalArgumentException(
+                        "La lista no puede contener ocupantes nulos."
+                );
+            }
+
+            this.ocupantes.agregarFinal(ocupante);
+        }
+
+        // Toda reserva nueva inicia pendiente.
         this.estado = EstadoReserva.PENDIENTE;
     }
+
 
     // -------------------- GETTERS --------------------
 
@@ -178,6 +224,47 @@ public class Reserva {
 
     public Folio getFolio() {
         return folio;
+    }
+
+    /**
+     * Obtiene una copia de los ocupantes de la reserva.
+     */
+    public ListaDoble<Ocupante> getOcupantes() {
+
+        ListaDoble<Ocupante> copia = new ListaDoble<>();
+
+        for (Ocupante ocupante : ocupantes) {
+            copia.agregarFinal(ocupante);
+        }
+
+        return copia;
+    }
+
+    /**
+     * Agrega un ocupante a la reserva.
+     */
+    public void agregarOcupante(Ocupante ocupante) {
+
+        if (ocupante == null) {
+            throw new IllegalArgumentException(
+                    "El ocupante no puede ser nulo."
+            );
+        }
+
+        if (ocupantes.tamano() >= apartamento.getCapacidad()) {
+            throw new IllegalArgumentException(
+                    "Se excedió la capacidad del apartamento."
+            );
+        }
+
+        ocupantes.agregarFinal(ocupante);
+    }
+
+    /**
+     * Consulta la cantidad de ocupantes.
+     */
+    public int getCantidadOcupantes() {
+        return ocupantes.tamano();
     }
 
     // -------------------- GESTIÓN DEL ESTADO --------------------
