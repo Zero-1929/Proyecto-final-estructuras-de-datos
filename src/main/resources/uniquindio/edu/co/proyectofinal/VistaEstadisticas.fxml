@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:controller="uniquindio.edu.co.proyectofinal.VistaEstadisticasController" xmlns:fx="http://javafx.com/fxml" prefWidth="1440" prefHeight="900" style="-fx-background-color: #F3F6FB;">
+  <left>
+    <VBox prefWidth="245" spacing="8" style="-fx-background-color: #14243D;">
+      <padding><Insets top="28" right="15" bottom="22" left="15"/></padding>
+      <Label text="APARTA-SUITES UQ" style="-fx-text-fill: white; -fx-font-size: 21px; -fx-font-weight: bold;"/>
+      <Label text="Sistema de Gestión de Alojamiento" wrapText="true" style="-fx-text-fill: #9FB1CB; -fx-font-size: 11px;"/>
+      <Separator/>
+      <Label text="MENÚ PRINCIPAL" style="-fx-text-fill: #8195B1; -fx-font-size: 11px; -fx-padding: 8 10;"/>
+      <Button fx:id="btnMenuInicio" text="Inicio" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuReservas" text="Panel de reservas" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuCalendario" text="Calendario de ocupación" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuUsuario" text="Panel de usuario" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuPreparacion" text="Panel de preparación" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuMapa" text="Mapa interactivo" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuEstadisticas" text="Estadísticas" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: #25466E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 9; -fx-padding: 13 14;"/>
+      <Button fx:id="btnMenuCargaDatos" text="Carga de datos" maxWidth="Infinity" alignment="CENTER_LEFT" style="-fx-background-color: transparent; -fx-text-fill: #C9D5E6; -fx-padding: 13 14;"/>
+      <Region VBox.vgrow="ALWAYS"/>
+      <VBox spacing="5" style="-fx-background-color: #1D3555; -fx-background-radius: 10; -fx-padding: 14;">
+        <Label text="APARTA-SUITES UQ" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Salento, Quindío" style="-fx-text-fill: #9FB1CB; -fx-font-size: 12px;"/>
+      </VBox>
+    </VBox>
+  </left>
+  <center>
+    <VBox>
+      <HBox prefHeight="65" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-border-color: #E6EBF2; -fx-border-width: 0 0 1 0;">
+        <padding><Insets left="28" right="28"/></padding>
+        <Label text="Estadísticas" style="-fx-text-fill: #697B91;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Aparta-Suites UQ" style="-fx-text-fill: #273D58; -fx-font-weight: bold;"/>
+      </HBox>
+      <VBox spacing="16" style="-fx-padding: 24;" VBox.vgrow="ALWAYS">
+        <VBox spacing="5">
+          <Label text="Estadísticas e indicadores" style="-fx-font-size: 27px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+          <Label text="Analiza ocupación, ingresos, canales, conflictos y tiempos de preparación." style="-fx-text-fill: #718197;"/>
+        </VBox>
+        <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+          <Label text="Desde:"/><DatePicker fx:id="dpEstadisticasDesde" prefWidth="160"/>
+          <Label text="Hasta:"/><DatePicker fx:id="dpEstadisticasHasta" prefWidth="160"/>
+          <Label text="Bloque:"/><ComboBox fx:id="cmbEstadisticasBloque" promptText="Todos" prefWidth="150"/>
+          <Region HBox.hgrow="ALWAYS"/>
+          <Button fx:id="btnAplicarFiltrosEstadisticas" text="Aplicar filtros" style="-fx-background-color: #2463A6; -fx-text-fill: white;"/>
+          <Button fx:id="btnActualizarEstadisticas" text="Actualizar" style="-fx-background-color: #EAF1F9; -fx-text-fill: #315A83;"/>
+        </HBox>
+        <HBox spacing="12">
+          <VBox spacing="6" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+            <Label text="OCUPACIÓN" style="-fx-text-fill: #718197;"/><Label fx:id="lblEstadisticasOcupacion" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #2463A6;"/>
+          </VBox>
+          <VBox spacing="6" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+            <Label text="INGRESOS DEL PERÍODO" style="-fx-text-fill: #718197;"/><Label fx:id="lblEstadisticasIngresos" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #23965D;"/>
+          </VBox>
+          <VBox spacing="6" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+            <Label text="CONFLICTOS DE CANAL" style="-fx-text-fill: #718197;"/><Label fx:id="lblEstadisticasConflictos" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #D44B4B;"/>
+          </VBox>
+          <VBox spacing="6" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;">
+            <Label text="PREPARACIÓN PROMEDIO" style="-fx-text-fill: #718197;"/><Label fx:id="lblEstadisticasTiempoPreparacion" text="—" style="-fx-font-size: 25px; -fx-font-weight: bold; -fx-text-fill: #C9981B;"/>
+          </VBox>
+        </HBox>
+        <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+          <tabs>
+            <Tab text="Ocupación">
+              <ScrollPane fitToWidth="true">
+                <content><VBox spacing="16" style="-fx-background-color: #F3F6FB; -fx-padding: 18;">
+                  <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                    <Label text="Ocupación por apartamento" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                    <Label text="Noches ocupadas y porcentaje de ocupación dentro del período seleccionado." style="-fx-text-fill: #718197;"/>
+                    <TableView fx:id="tablaOcupacionApartamento" prefHeight="240"><columns>
+                      <TableColumn fx:id="colOcupacionApartamento" text="Apartamento" prefWidth="165"/>
+                      <TableColumn fx:id="colOcupacionBloque" text="Bloque" prefWidth="100"/>
+                      <TableColumn fx:id="colOcupacionNoches" text="Noches ocupadas" prefWidth="160"/>
+                      <TableColumn fx:id="colOcupacionDisponibles" text="Noches disponibles" prefWidth="160"/>
+                      <TableColumn fx:id="colOcupacionPorcentaje" text="Ocupación (%)" prefWidth="160"/>
+                    </columns></TableView>
+                    <VBox fx:id="panelGraficoOcupacionApartamento" minHeight="150" alignment="CENTER" style="-fx-background-color: #F4F7FB; -fx-background-radius: 8; -fx-padding: 16;">
+                      <Label text="Aquí se mostrará el gráfico de ocupación por apartamento." style="-fx-text-fill: #718197;"/>
+                    </VBox>
+                  </VBox>
+                  <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                    <Label text="Ocupación por temporada" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                    <TableView fx:id="tablaOcupacionTemporada" prefHeight="180"><columns>
+                      <TableColumn fx:id="colTemporadaNombre" text="Temporada" prefWidth="150"/>
+                      <TableColumn fx:id="colTemporadaNochesOcupadas" text="Noches ocupadas" prefWidth="180"/>
+                      <TableColumn fx:id="colTemporadaNochesDisponibles" text="Noches disponibles" prefWidth="180"/>
+                      <TableColumn fx:id="colTemporadaPorcentaje" text="Ocupación (%)" prefWidth="180"/>
+                    </columns></TableView>
+                    <VBox fx:id="panelGraficoOcupacionTemporada" minHeight="130" alignment="CENTER" style="-fx-background-color: #F4F7FB; -fx-background-radius: 8; -fx-padding: 16;">
+                      <Label text="Aquí se mostrará el gráfico por temporada (baja, media y alta)." style="-fx-text-fill: #718197;"/>
+                    </VBox>
+                  </VBox>
+                </VBox></content>
+              </ScrollPane>
+            </Tab>
+            <Tab text="Ingresos">
+              <ScrollPane fitToWidth="true"><content><VBox spacing="16" style="-fx-background-color: #F3F6FB; -fx-padding: 18;">
+                <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                  <Label text="Ingresos por período" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                  <Label text="Desglose de ingresos registrados en el intervalo de fechas elegido." style="-fx-text-fill: #718197;"/>
+                  <HBox spacing="18"><Label text="Total del período:"/><Label fx:id="lblIngresosTotalPeriodo" text="—" style="-fx-font-weight: bold; -fx-text-fill: #23965D;"/></HBox>
+                  <TableView fx:id="tablaIngresosPeriodo" prefHeight="260"><columns>
+                    <TableColumn fx:id="colIngresosPeriodo" text="Período" prefWidth="180"/>
+                    <TableColumn fx:id="colIngresosReservas" text="Reservas asociadas" prefWidth="170"/>
+                    <TableColumn fx:id="colIngresosValor" text="Ingresos" prefWidth="190"/>
+                  </columns></TableView>
+                  <VBox fx:id="panelGraficoIngresos" minHeight="200" alignment="CENTER" style="-fx-background-color: #F4F7FB; -fx-background-radius: 8; -fx-padding: 16;">
+                    <Label text="Aquí se mostrará la evolución de ingresos del período." style="-fx-text-fill: #718197;"/>
+                  </VBox>
+                </VBox>
+              </VBox></content></ScrollPane>
+            </Tab>
+            <Tab text="Reservas por canal">
+              <ScrollPane fitToWidth="true"><content><VBox spacing="16" style="-fx-background-color: #F3F6FB; -fx-padding: 18;">
+                <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                  <Label text="Reservas por canal y estado" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                  <Label text="Incluye las reservas canceladas y no presentadas; no se excluyen del análisis del canal." wrapText="true" style="-fx-text-fill: #718197;"/>
+                  <TableView fx:id="tablaReservasPorCanal" prefHeight="260"><columns>
+                    <TableColumn fx:id="colCanalNombre" text="Canal" prefWidth="145"/>
+                    <TableColumn fx:id="colCanalTotal" text="Total" prefWidth="100"/>
+                    <TableColumn fx:id="colCanalPendientes" text="Pendientes" prefWidth="115"/>
+                    <TableColumn fx:id="colCanalConfirmadas" text="Confirmadas" prefWidth="130"/>
+                    <TableColumn fx:id="colCanalEnCurso" text="En curso" prefWidth="110"/>
+                    <TableColumn fx:id="colCanalFinalizadas" text="Finalizadas" prefWidth="125"/>
+                    <TableColumn fx:id="colCanalCanceladas" text="Canceladas" prefWidth="120"/>
+                    <TableColumn fx:id="colCanalNoShow" text="No-show" prefWidth="115"/>
+                  </columns></TableView>
+                  <VBox fx:id="panelGraficoCanales" minHeight="200" alignment="CENTER" style="-fx-background-color: #F4F7FB; -fx-background-radius: 8; -fx-padding: 16;">
+                    <Label text="Aquí se mostrará la comparación de reservas por canal y estado." style="-fx-text-fill: #718197;"/>
+                  </VBox>
+                </VBox>
+              </VBox></content></ScrollPane>
+            </Tab>
+            <Tab text="Conflictos de canal">
+              <ScrollPane fitToWidth="true"><content><VBox spacing="16" style="-fx-background-color: #F3F6FB; -fx-padding: 18;">
+                <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                  <Label text="Conflictos de reservas entre canales" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                  <Label text="Registros de solicitudes que entraron en conflicto con la disponibilidad o con otra reserva." wrapText="true" style="-fx-text-fill: #718197;"/>
+                  <HBox spacing="12"><Label text="Total de conflictos:"/><Label fx:id="lblTotalConflictosCanal" text="—" style="-fx-font-weight: bold; -fx-text-fill: #D44B4B;"/></HBox>
+                  <TableView fx:id="tablaConflictosCanal" prefHeight="300"><columns>
+                    <TableColumn fx:id="colConflictoFecha" text="Fecha" prefWidth="140"/>
+                    <TableColumn fx:id="colConflictoCanal" text="Canal" prefWidth="130"/>
+                    <TableColumn fx:id="colConflictoApartamento" text="Apartamento" prefWidth="135"/>
+                    <TableColumn fx:id="colConflictoSolicitud" text="Solicitud / Reserva" prefWidth="160"/>
+                    <TableColumn fx:id="colConflictoMotivo" text="Motivo" prefWidth="220"/>
+                    <TableColumn fx:id="colConflictoResultado" text="Resultado" prefWidth="170"/>
+                  </columns></TableView>
+                  <VBox fx:id="panelGraficoConflictos" minHeight="160" alignment="CENTER" style="-fx-background-color: #F4F7FB; -fx-background-radius: 8; -fx-padding: 16;">
+                    <Label text="Aquí se mostrará la evolución de conflictos por canal." style="-fx-text-fill: #718197;"/>
+                  </VBox>
+                </VBox>
+              </VBox></content></ScrollPane>
+            </Tab>
+            <Tab text="Preparación">
+              <ScrollPane fitToWidth="true"><content><VBox spacing="16" style="-fx-background-color: #F3F6FB; -fx-padding: 18;">
+                <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
+                  <Label text="Tiempo promedio de preparación" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #172B48;"/>
+                  <Label text="Duración entre el inicio y la finalización de cada preparación registrada." wrapText="true" style="-fx-text-fill: #718197;"/>
+                  <HBox spacing="12"><Label text="Promedio general:"/><Label fx:id="lblPromedioGeneralPreparacion" text="—" style="-fx-font-weight: bold; -fx-text-fill: #2463A6;"/></HBox>
+                  <TableView fx:id="tablaTiempoPreparacion" prefHeight="260"><columns>
+                    <TableColumn fx:id="colTiempoApartamento" text="Apartamento" prefWidth="170"/>
+                    <TableColumn fx:id="colTiempoPreparaciones" text="Preparaciones realizadas" prefWidth="210"/>
+                    <TableColumn fx:id="colTiempoPromedio" text="Tiempo promedio" prefWidth="180"/>
+                    <TableColumn fx:id="colTiempoUltima" text="Última preparación" prefWidth="190"/>
+                  </columns></TableView>
+                  <VBox fx:id="panelGraficoPreparacion" minHeight="190" alignment="CENTER" style="-fx-background-color: #F4F7FB; -fx-background-radius: 8; -fx-padding: 16;">
+                    <Label text="Aquí se mostrará la comparación de tiempos de preparación." style="-fx-text-fill: #718197;"/>
+                  </VBox>
+                </VBox>
+              </VBox></content></ScrollPane>
+            </Tab>
+          </tabs>
+        </TabPane>
+      </VBox>
+    </VBox>
+  </center>
+</BorderPane>
