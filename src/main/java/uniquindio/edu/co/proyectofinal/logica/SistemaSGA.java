@@ -89,6 +89,9 @@ public class SistemaSGA {
         this.servicioReserva = servicioReserva;
         this.servicioPreparacion = servicioPreparacion;
         this.servicioPreparacion.configurarReservas(servicioReserva.getRegistroCompartido());
+        this.servicioReserva.configurarPreparacion(servicioPreparacion);
+        // Recupera tareas faltantes al crear o cargar el sistema, sin duplicarlas.
+        this.servicioPreparacion.sincronizarPendientes(servicioApartamento.listarApartamentos());
         this.servicioTurnos = servicioTurnos;
         this.servicioExterno = servicioExterno;
         this.generadorIdentificadores = generadorIdentificadores;
