@@ -56,6 +56,18 @@ public class VistaCalendarioOcupacionController {
         actualizar();
     }
     public void setSistema(SistemaSGA sistema) {
+        if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
+            try {
+                javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));
+                javafx.scene.Scene statsScene = new javafx.scene.Scene(statsLoader.load());
+                ((VistaEstadisticasController) statsLoader.getController()).setSistema(this.sistema);
+                ((javafx.stage.Stage) btnMenuEstadisticas.getScene().getWindow()).setScene(statsScene);
+            } catch (Exception ex) {
+                new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR,
+                    "No se pudo abrir Estadísticas: " + ex.getMessage()).showAndWait();
+            }
+        });
+
         this.sistema=Objects.requireNonNull(sistema);
         actualizar();
     }
