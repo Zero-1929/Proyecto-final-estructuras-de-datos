@@ -715,6 +715,84 @@
           "documentoHuespedVinculado": null
         }
       ]
+    },
+    {
+      "codigo": "RES-00006",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A104",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-25",
+      "estado": "CONFIRMADA",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-11-16T02:40:08.363442600",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 6,
+      "ocupantes": [
+        {
+          "nombre": "Ana Torres",
+          "fechaNacimiento": "1990-01-15",
+          "documentoHuespedVinculado": "1001001"
+        },
+        {
+          "nombre": "Ana Martínez",
+          "fechaNacimiento": "1995-04-20",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Carlos Rodríguez",
+          "fechaNacimiento": "1992-08-15",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Laura Gómez",
+          "fechaNacimiento": "1998-11-03",
+          "documentoHuespedVinculado": null
+        }
+      ]
+    },
+    {
+      "codigo": "RES-00007",
+      "documentoHuesped": "1001001",
+      "codigoApartamento": "A204",
+      "fechaEntrada": "2026-11-16",
+      "fechaSalida": "2026-11-25",
+      "estado": "CONFIRMADA",
+      "canalReserva": "RECEPCION",
+      "fechaCreacion": "2026-11-16T02:40:08.363442600",
+      "horaLlegadaEstimada": "15:00",
+      "folioId": 7,
+      "ocupantes": [
+        {
+          "nombre": "Andrés Ramírez",
+          "fechaNacimiento": "1990-06-25",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Sofía Herrera",
+          "fechaNacimiento": "2001-02-14",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Daniel Castro",
+          "fechaNacimiento": "1987-09-12",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Valentina López",
+          "fechaNacimiento": "2003-07-08",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Juan Pérez",
+          "fechaNacimiento": "1996-12-30",
+          "documentoHuespedVinculado": null
+        },
+        {
+          "nombre": "Camila Torres",
+          "fechaNacimiento": "1999-05-17",
+          "documentoHuespedVinculado": null
+        }
+      ]
     }
   ],
   "folios": [
@@ -1344,6 +1422,29 @@
         2,
         1
       ]
+    },
+    {
+      "id": 7,
+      "movimientos": [
+        {
+          "id": 1,
+          "descripcion": "Alojamiento grupal 9 noche(s)",
+          "tipo": "CARGO_ALOJAMIENTO",
+          "monto": "13500000",
+          "fecha": "2026-11-16T02:40:08.380882100"
+        },
+        {
+          "id": 2,
+          "descripcion": "Pago completo de alojamiento - RES-00007",
+          "tipo": "PAGO",
+          "monto": "13500000",
+          "fecha": "2026-11-16T02:41:02.785462"
+        }
+      ],
+      "idsOperacionesDeshacibles": [
+        2,
+        1
+      ]
     }
   ],
   "solicitudesPendientes": [],
@@ -1461,9 +1562,9 @@
     "2002005"
   ],
   "recepcionistaActual": "2002002",
-  "siguienteGrupo": 1,
-  "siguienteReserva": 6,
-  "siguienteFolio": 6,
+  "siguienteGrupo": 2,
+  "siguienteReserva": 8,
+  "siguienteFolio": 8,
   "siguienteIdFolioExterno": 7,
   "siguienteNumeroReservaExterno": 7
 }

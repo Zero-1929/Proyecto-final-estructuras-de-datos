@@ -18,6 +18,7 @@ import java.util.function.Function;
 import uniquindio.edu.co.proyectofinal.logica.SistemaSGA;
 import uniquindio.edu.co.proyectofinal.modelo.*;
 import uniquindio.edu.co.proyectofinal.estructuras.ListaDoble;
+import uniquindio.edu.co.proyectofinal.servicios.ServicioAsignacionGrupal;
 
 /** Vista de reservas; todas las operaciones utilizan la instancia compartida de SistemaSGA. */
 public class VistaReservasController {
@@ -59,6 +60,16 @@ public class VistaReservasController {
     @FXML private Label lblTurnoActual;
     @FXML private Button btnSiguienteTurno;
 
+    @FXML private TextField txtGrupoDocumento;
+    @FXML private DatePicker dpGrupoEntrada, dpGrupoSalida;
+    @FXML private CheckBox chkGrupoTitular;
+    @FXML private TextArea txtGrupoAcompanantes, txtGrupoResultado;
+    @FXML private Button btnGrupoBuscar, btnGrupoCrear;
+    private Apartamento[] propuestaGrupo;
+    private Estancia estanciaGrupo;
+    private ListaDoble<Ocupante> ocupantesGrupo;
+    private String documentoGrupo;
+
     private SistemaSGA sistema;
     private final javafx.collections.ObservableList<Ocupante> ocupantes = FXCollections.observableArrayList();
     private BigDecimal ultimaCotizacion;
@@ -68,6 +79,17 @@ public class VistaReservasController {
     private boolean titularIncluidoCotizado;
 
     @FXML private void initialize() {
+        dpGrupoEntrada.setValue(LocalDate.now().plusDays(1));
+        dpGrupoSalida.setValue(LocalDate.now().plusDays(2));
+        txtGrupoResultado.setEditable(false);
+        btnGrupoBuscar.setOnAction(e -> buscarGrupo());
+        btnGrupoCrear.setOnAction(e -> crearGrupo());
+        btnGrupoCrear.setDisable(true);
+        txtGrupoDocumento.textProperty().addListener((o,a,b)->invalidarGrupo());
+        txtGrupoAcompanantes.textProperty().addListener((o,a,b)->invalidarGrupo());
+        dpGrupoEntrada.valueProperty().addListener((o,a,b)->invalidarGrupo());
+        dpGrupoSalida.valueProperty().addListener((o,a,b)->invalidarGrupo());
+        chkGrupoTitular.selectedProperty().addListener((o,a,b)->invalidarGrupo());
         cmbEstadoReserva.getItems().add("Todos");
         for (EstadoReserva e:EstadoReserva.values()) cmbEstadoReserva.getItems().add(e.name());
         cmbEstadoReserva.setValue("Todos");
@@ -548,6 +570,113 @@ public class VistaReservasController {
                     + "\nAnticipo WEB requerido: $ " + dinero(sistema.getServicioCotizacion().calcularAnticipo(totalActual))
                     + "\nSelecciona la reserva y pulsa 'Registrar pago' para abonar o liquidar.");
             ocupantes.clear(); invalidarCotizacion(); actualizarReservas();
+        } catch (Exception ex) { error(ex); }
+    }
+
+    private void invalidarGrupo() {
+        propuestaGrupo = null;
+        estanciaGrupo = null;
+        ocupantesGrupo = null;
+        btnGrupoCrear.setDisable(true);
+        if (txtGrupoResultado != null) txtGrupoResultado.clear();
+    }
+
+    private ListaDoble<Ocupante> leerOcupantesGrupo(Huesped responsable) {
+        if (!chkGrupoTitular.isSelected())
+            throw new IllegalArgumentException("El titular debe hospedarse en la reserva grupal.");
+        ListaDoble<Ocupante> resultado = new ListaDoble<>();
+        resultado.agregarFinal(new Ocupante(responsable.getNombre(), responsable.getFechaNacimiento(), responsable));
+        String texto = txtGrupoAcompanantes.getText().strip();
+        if (!texto.isEmpty()) {
+            for (String linea : texto.split("\\R")) {
+                if (linea.isBlank()) continue;
+                String[] partes = linea.split("\\|", -1);
+                if (partes.length != 2 || partes[0].isBlank())
+                    throw new IllegalArgumentException("Formato de acompañante: Nombre completo | AAAA-MM-DD");
+                String nombre = partes[0].strip();
+                LocalDate nacimiento = LocalDate.parse(partes[1].strip());
+                if (nombre.equalsIgnoreCase(responsable.getNombre())
+                        && nacimiento.equals(responsable.getFechaNacimiento()))
+                    throw new IllegalArgumentException("El titular no debe repetirse como acompañante.");
+                resultado.agregarFinal(new Ocupante(nombre, nacimiento));
+            }
+        }
+        return resultado;
+    }
+
+    private Apartamento[] apartamentosParaGrupo() {
+        ListaDoble<Apartamento> lista = sistema.getServicioApartamento().listarApartamentos();
+        Apartamento[] arreglo = new Apartamento[lista.tamano()];
+        int i = 0;
+        for (Apartamento a : lista) arreglo[i++] = a;
+        return arreglo;
+    }
+
+    private void buscarGrupo() {
+        invalidarGrupo();
+        try {
+            if (sistema == null) throw new IllegalStateException("No hay sistema cargado.");
+            String documento = txtGrupoDocumento.getText().strip();
+            Huesped responsable = sistema.getServicioHuesped().buscarPorDocumento(documento);
+            if (responsable == null) throw new IllegalArgumentException("El titular debe estar registrado como huésped.");
+            Estancia estancia = fechas(dpGrupoEntrada, dpGrupoSalida);
+            if (estancia.getFechaEntrada().isBefore(LocalDate.now()))
+                throw new IllegalArgumentException("La entrada no puede ser anterior a hoy.");
+            ListaDoble<Ocupante> personas = leerOcupantesGrupo(responsable);
+            if (personas.tamano() < 2) throw new IllegalArgumentException("Agrega acompañantes para buscar una asignación grupal.");
+            ServicioAsignacionGrupal servicio = new ServicioAsignacionGrupal(sistema.getGeneradorIdentificadores());
+            Apartamento[] disponibles = apartamentosParaGrupo();
+            Apartamento[] elegidos = servicio.buscarMejorAsignacion(personas.tamano(), estancia,
+                    disponibles, sistema.getServicioReserva().listarReservas());
+            if (elegidos.length == 0) throw new IllegalStateException("No existe una combinación disponible para todo el grupo.");
+            int capacidadMaxima = 0;
+            for (Apartamento a : disponibles) capacidadMaxima = Math.max(capacidadMaxima, a.getCapacidad());
+            if (personas.tamano() <= capacidadMaxima)
+                throw new IllegalArgumentException("Este grupo puede caber en un apartamento; utiliza Nueva reserva si hay disponibilidad.");
+            int capacidad = 0;
+            StringBuilder detalle = new StringBuilder("Backtracking: ").append(personas.tamano())
+                    .append(" personas en ").append(elegidos.length).append(" apartamento(s)\n");
+            for (Apartamento a : elegidos) {
+                capacidad += a.getCapacidad();
+                detalle.append(" • ").append(a.getCodigo()).append(" — capacidad ").append(a.getCapacidad()).append("\n");
+            }
+            detalle.append("Capacidad total: ").append(capacidad).append("\n")
+                    .append("Se creará una reserva y un folio por apartamento, en canal RECEPCION.");
+            propuestaGrupo = elegidos;
+            estanciaGrupo = estancia;
+            ocupantesGrupo = personas;
+            documentoGrupo = documento;
+            txtGrupoResultado.setText(detalle.toString());
+            btnGrupoCrear.setDisable(false);
+        } catch (Exception ex) { error(ex); }
+    }
+
+    private void crearGrupo() {
+        try {
+            if (propuestaGrupo == null || estanciaGrupo == null || ocupantesGrupo == null)
+                throw new IllegalStateException("Primero busca la asignación grupal.");
+            if (!confirmar("Crear reservas grupales", "Se registrarán " + propuestaGrupo.length
+                    + " reservas independientes para " + ocupantesGrupo.tamano() + " personas. ¿Continuar?")) return;
+            Huesped responsable = sistema.getServicioHuesped().buscarPorDocumento(documentoGrupo);
+            ServicioAsignacionGrupal servicio = new ServicioAsignacionGrupal(sistema.getGeneradorIdentificadores());
+            // El servicio vuelve a comprobar disponibilidad y registra el conjunto de manera atómica.
+            ReservaGrupo grupo = servicio.crearReservaGrupal(responsable, ocupantesGrupo,
+                    estanciaGrupo, apartamentosParaGrupo(), sistema.getServicioReserva(),
+                    CanalReserva.RECEPCION, LocalTime.of(15, 0));
+            StringBuilder resumen = new StringBuilder("Grupo: ").append(grupo.getCodigoGrupo()).append("\n");
+            for (Reserva reserva : grupo.getReservas()) {
+                BigDecimal total = sistema.getServicioCotizacion().calcularTotal(reserva.getApartamento(),
+                        reserva.getEstancia(), reserva.getOcupantes());
+                reserva.getFolio().agregarMovimiento(new Movimiento(siguienteMovimientoId(reserva.getFolio()),
+                        "Alojamiento grupal " + reserva.calcularNumeroNoches() + " noche(s)",
+                        TipoMovimiento.CARGO_ALOJAMIENTO, total, LocalDateTime.now()));
+                resumen.append(reserva.getCodigo()).append(" — ").append(reserva.getApartamento().getCodigo())
+                        .append(" — $ ").append(dinero(total)).append("\n");
+            }
+            guardar();
+            invalidarGrupo();
+            actualizarReservas();
+            informar("Grupo registrado", resumen.toString());
         } catch (Exception ex) { error(ex); }
     }
 

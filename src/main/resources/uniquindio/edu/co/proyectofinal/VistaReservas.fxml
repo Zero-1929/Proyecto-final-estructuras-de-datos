@@ -636,6 +636,40 @@
                         </Tab>
 
                         <!-- PESTAÑA 3: CANAL EXTERNO -->
+                        <Tab text="Asignación de grupos">
+                            <ScrollPane fitToWidth="true">
+                                <content>
+                                    <VBox spacing="14" style="-fx-padding: 22; -fx-background-color: #F3F6FB;">
+                                        <Label text="Asignación óptima de grupos (backtracking)" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+                                        <Label text="Busca la combinación disponible que utiliza menos apartamentos. Cada reserva tendrá su propio folio." wrapText="true"/>
+                                        <HBox spacing="12">
+                                            <VBox spacing="5">
+                                                <Label text="Documento del titular"/>
+                                                <TextField fx:id="txtGrupoDocumento" promptText="Documento registrado" prefWidth="210"/>
+                                            </VBox>
+                                            <VBox spacing="5">
+                                                <Label text="Entrada"/>
+                                                <DatePicker fx:id="dpGrupoEntrada"/>
+                                            </VBox>
+                                            <VBox spacing="5">
+                                                <Label text="Salida"/>
+                                                <DatePicker fx:id="dpGrupoSalida"/>
+                                            </VBox>
+                                        </HBox>
+                                        <CheckBox fx:id="chkGrupoTitular" text="El titular se hospeda" selected="true"/>
+                                        <Label text="Acompañantes: una persona por línea, con fecha de nacimiento"/>
+                                        <TextArea fx:id="txtGrupoAcompanantes" prefRowCount="7" promptText="Ana Pérez | 1995-04-20&#10;Luis Pérez | 2014-08-10" wrapText="true"/>
+                                        <HBox spacing="12">
+                                            <Button fx:id="btnGrupoBuscar" text="Buscar combinación óptima"/>
+                                            <Button fx:id="btnGrupoCrear" text="Registrar reservas del grupo"/>
+                                        </HBox>
+                                        <Label text="Resultado de la búsqueda" style="-fx-font-weight: bold;"/>
+                                        <TextArea fx:id="txtGrupoResultado" prefRowCount="8" wrapText="true" editable="false"/>
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </Tab>
+
                         <Tab text="Canal externo">
 
                             <ScrollPane fitToWidth="true"
