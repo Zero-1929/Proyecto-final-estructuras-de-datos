@@ -11,6 +11,7 @@ public class ServicioReserva {
     private final ServicioApartamento apartamentos;
     private final ServicioDisponibilidad disponibilidad;
     private final ServicioCotizacion cotizacion;
+    private ServicioPreparacion servicioPreparacion;
 
     public ServicioReserva(ServicioApartamento apartamentos, ServicioCotizacion cotizacion) {
         this(apartamentos, cotizacion, new ListaDoble<>());
@@ -24,6 +25,13 @@ public class ServicioReserva {
         this.cotizacion = cotizacion;
         this.reservas = reservas;
         this.disponibilidad = new ServicioDisponibilidad(apartamentos, reservas);
+    }
+
+    /** Conecta la cola compartida del sistema con el check-out. */
+    public void configurarPreparacion(ServicioPreparacion servicioPreparacion) {
+        if (servicioPreparacion == null)
+            throw new IllegalArgumentException("El servicio de preparacion es obligatorio.");
+        this.servicioPreparacion = servicioPreparacion;
     }
 
     public ServicioDisponibilidad getDisponibilidad() { return disponibilidad; }
@@ -102,8 +110,12 @@ public class ServicioReserva {
         if (reserva.getEstado() != EstadoReserva.EN_CURSO)
             throw new IllegalStateException("La reserva debe estar en curso.");
         Apartamento apartamento = exigirApartamento(reserva);
+        if (servicioPreparacion == null)
+            throw new IllegalStateException("El servicio de preparacion no esta configurado.");
         reserva.finalizar();
         apartamento.setEstado(EstadoApartamento.PENDIENTE_PREPARACION);
+        // La tarea debe existir en la cola antes de guardar el sistema.
+        servicioPreparacion.sincronizarPendientes(apartamentos.listarApartamentos());
     }
 
     public void marcarNoPresentado(String codigo) {
