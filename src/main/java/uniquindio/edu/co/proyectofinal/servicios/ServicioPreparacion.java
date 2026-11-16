@@ -223,6 +223,7 @@ public class ServicioPreparacion {
         reordenar();
         TareaPreparacion tarea = colaPreparacion.desencolar();
         tarea.getApartamento().setEstado(EstadoApartamento.EN_PREPARACION);
+        HistorialTiemposPreparacion.iniciar(tarea.getApartamento().getCodigo());
 
         return tarea;
     }
@@ -246,6 +247,7 @@ public class ServicioPreparacion {
             );
         }
 
+        HistorialTiemposPreparacion.finalizar(apartamento.getCodigo());
         apartamento.setEstado(EstadoApartamento.PREPARADO);
     }
 
