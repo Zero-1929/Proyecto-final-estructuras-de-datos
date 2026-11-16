@@ -120,6 +120,18 @@ public class VistaPanelPreparacionController {
         actualizar();
     }
     public void setSistema(SistemaSGA sistema) {
+        if (btnMenuEstadisticas != null) btnMenuEstadisticas.setOnAction(event -> {
+            try {
+                javafx.fxml.FXMLLoader statsLoader = new javafx.fxml.FXMLLoader(getClass().getResource("VistaEstadisticas.fxml"));
+                javafx.scene.Scene statsScene = new javafx.scene.Scene(statsLoader.load());
+                ((VistaEstadisticasController) statsLoader.getController()).setSistema(this.sistema);
+                ((javafx.stage.Stage) btnMenuEstadisticas.getScene().getWindow()).setScene(statsScene);
+            } catch (Exception ex) {
+                new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR,
+                    "No se pudo abrir Estadísticas: " + ex.getMessage()).showAndWait();
+            }
+        });
+
         this.sistema=Objects.requireNonNull(sistema);
         setRutas(MapaGrafoCompartido.obtener(sistema));
         actualizar();
@@ -163,27 +175,6 @@ public class VistaPanelPreparacionController {
     private void actualizar() {
         if(sistema==null)return;
         ServicioPreparacion sp=sistema.getServicioPreparacion();
-        // Recuperar tareas faltantes cuando un check-out solo cambio el estado.
-        // Usar el servicio real mantiene la cola, su prioridad y evita duplicados.
-        try {
-            Set<String> enCola = new HashSet<>();
-            for (TareaPreparacion tarea : sp.listarPendientes()) {
-                enCola.add(tarea.getApartamento().getCodigo().toUpperCase(Locale.ROOT));
-            }
-            boolean recuperadas = false;
-            for (Apartamento apartamento : sistema.getServicioApartamento().listarApartamentos()) {
-                if (apartamento.getEstado() == EstadoApartamento.PENDIENTE_PREPARACION
-                        && !enCola.contains(apartamento.getCodigo().toUpperCase(Locale.ROOT))) {
-                    sp.solicitarPreparacion(apartamento);
-                    enCola.add(apartamento.getCodigo().toUpperCase(Locale.ROOT));
-                    recuperadas = true;
-                }
-            }
-            if (recuperadas) sistema.guardar();
-        } catch (Exception ex) {
-            error(ex);
-            return;
-        }
         sp.reordenar();
         var filas=FXCollections.<Fila>observableArrayList();
         guardarObservacionLocal();
